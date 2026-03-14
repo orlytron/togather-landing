@@ -19,14 +19,31 @@
       --rule:   rgba(240,235,224,0.08);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; height: 100%; }
 
     body {
       background: var(--black);
       color: var(--white);
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
+      overflow: hidden;
+      height: 100%;
+      margin: 0;
+    }
+
+    /* ── STICKY SCROLL CONTAINER ── */
+    #scroll-container {
+      height: 100vh;
+      overflow-y: auto;
       overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #scroll-container > section,
+    #scroll-container > .ticker-snap {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
     }
 
     /* halftone grain */
@@ -44,7 +61,7 @@
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      padding: 1.2rem clamp(1.5rem,5vw,4rem);
+      padding: 0.875rem 1.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -78,7 +95,9 @@
       background: var(--yellow);
       color: #000;
       border: none;
-      padding: 0.6rem 1.2rem;
+      padding: 0.75rem 1.25rem;
+      min-height: 44px;
+      min-width: 44px;
       font-family: 'Bebas Neue', sans-serif;
       font-size: 0.95rem;
       letter-spacing: 0.08em;
@@ -89,20 +108,45 @@
 
     .nav-cta:hover { opacity: 0.85; }
 
+    /* ── SNAP SECTIONS (full viewport) ── */
+    .snap-section {
+      min-height: 100vh;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 5rem 1.25rem 1.5rem;
+    }
+
+    @media (min-width: 769px) {
+      .snap-section { padding: 6rem clamp(1.5rem,5vw,4rem) 4rem; }
+    }
+
+    .ticker-snap {
+      flex-shrink: 0;
+      height: 4.5rem;
+      min-height: 4.5rem;
+      display: flex;
+      align-items: center;
+      padding: 0;
+    }
+
+    .ticker-snap.ticker-wrap {
+      border-top: none;
+    }
+
     /* ════════════════════════════════
        SECTION 1 — CINEMATIC HOOK
     ════════════════════════════════ */
     #section-hook {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 8rem clamp(1.5rem,5vw,4rem) 4rem;
-      position: relative;
       border-bottom: 3px solid var(--white);
-      overflow: hidden;
+      padding-top: 6rem;
     }
+
+    #section-hook .hook-inner { padding: 0; }
 
     /* big bg number */
     #section-hook::after {
@@ -142,7 +186,7 @@
     .hook-line {
       display: block;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 12vw, 10rem);
+      font-size: clamp(2.5rem, 12vw, 10rem);
       line-height: 0.9;
       letter-spacing: 0.02em;
       color: rgba(255,255,255,0.15);
@@ -161,8 +205,8 @@
     .hook-line.yellow-lit { color: var(--yellow); }
 
     .hook-sub {
-      margin-top: 2rem;
-      font-size: clamp(1rem, 2vw, 1.2rem);
+      margin-top: 1.25rem;
+      font-size: clamp(0.875rem, 2vw, 1.2rem);
       color: var(--muted);
       line-height: 1.7;
       max-width: 40ch;
@@ -198,27 +242,20 @@
        SECTION 2 — AGE PICKER
     ════════════════════════════════ */
     #section-age {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem clamp(1.5rem,5vw,4rem);
       border-bottom: 3px solid var(--white);
-      position: relative;
     }
 
     .age-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1fr;
+      gap: 2rem;
       align-items: center;
     }
 
-    @media (max-width: 768px) {
-      .age-layout { grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 769px) {
+      .age-layout { grid-template-columns: 1fr 1fr; gap: 4rem; }
     }
 
-    .age-left {}
 
     .sec-kicker {
       font-size: 0.62rem;
@@ -230,16 +267,16 @@
 
     .sec-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-size: clamp(2rem, 7vw, 6rem);
       line-height: 0.9;
       letter-spacing: 0.02em;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
     }
 
     .sec-body {
-      font-size: 1rem;
+      font-size: clamp(0.875rem, 2vw, 1rem);
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.65;
       max-width: 38ch;
     }
 
@@ -253,10 +290,15 @@
       background: rgba(255,255,255,0.03);
       border: 2px solid rgba(255,255,255,0.08);
       border-radius: 12px;
-      padding: 1.4rem 1.2rem;
+      padding: 1rem 1rem;
+      min-height: 44px;
       cursor: pointer;
       transition: all 0.15s;
       text-align: left;
+    }
+
+    @media (min-width: 769px) {
+      .age-btn { padding: 1.4rem 1.2rem; }
     }
 
     .age-btn:hover { border-color: rgba(245,196,0,0.4); }
@@ -286,14 +328,7 @@
        SECTION 3 — REVEAL
     ════════════════════════════════ */
     #section-reveal {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem clamp(1.5rem,5vw,4rem);
       border-bottom: 3px solid var(--white);
-      position: relative;
-      overflow: hidden;
     }
 
     .reveal-container {
@@ -304,7 +339,7 @@
 
     .rl {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.6rem, 5vw, 3.5rem);
+      font-size: clamp(1.35rem, 5vw, 3.5rem);
       letter-spacing: 0.02em;
       color: rgba(255,255,255,0.12);
       line-height: 1.1;
@@ -322,7 +357,7 @@
 
     .rl.yellow { color: var(--yellow); }
     .rl.red    { color: var(--red); }
-    .rl.huge   { font-size: clamp(3rem, 10vw, 8rem); line-height: 0.88; margin: 0.5rem 0; }
+    .rl.huge   { font-size: clamp(2.25rem, 10vw, 8rem); line-height: 0.88; margin: 0.5rem 0; }
     .rl.gap    { margin-top: 2rem; }
 
     .rl.prose {
@@ -351,27 +386,21 @@
        SECTION 4 — REAL HOURS
     ════════════════════════════════ */
     #section-rh {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem clamp(1.5rem,5vw,4rem);
       border-bottom: 3px solid var(--white);
       background: var(--panel);
     }
 
     .rh-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
       align-items: center;
     }
 
-    @media (max-width: 768px) {
-      .rh-layout { grid-template-columns: 1fr; gap: 3rem; }
+    @media (min-width: 769px) {
+      .rh-layout { grid-template-columns: 1fr 1fr; gap: 5rem; }
     }
 
-    .rh-left {}
 
     .rh-number-wrap {
       display: flex;
@@ -396,9 +425,9 @@
     }
 
     .rh-desc {
-      font-size: 1rem;
+      font-size: clamp(0.875rem, 2vw, 1rem);
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.65;
       max-width: 40ch;
     }
 
@@ -476,14 +505,8 @@
        SECTION 5 — CALCULATOR
     ════════════════════════════════ */
     #section-calc {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem clamp(1.5rem,5vw,4rem);
       border-bottom: 3px solid var(--white);
-      position: relative;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     #section-calc::before {
@@ -496,15 +519,15 @@
 
     .calc-layout {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1fr;
+      gap: 2rem;
       align-items: start;
       position: relative;
       z-index: 2;
     }
 
-    @media (max-width: 768px) {
-      .calc-layout { grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 769px) {
+      .calc-layout { grid-template-columns: 1fr 1fr; gap: 4rem; }
     }
 
     .calc-interface {
@@ -553,7 +576,15 @@
 
     .calc-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 22px; height: 22px;
+      width: 28px; height: 28px;
+      background: var(--yellow);
+      border: 3px solid var(--black);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .calc-slider::-moz-range-thumb {
+      width: 28px; height: 28px;
       background: var(--yellow);
       border: 3px solid var(--black);
       border-radius: 50%;
@@ -576,7 +607,6 @@
       gap: 1.5rem;
     }
 
-    .calc-stat {}
 
     .calc-stat-num {
       font-family: 'Bebas Neue', sans-serif;
@@ -634,18 +664,22 @@
        SECTION 6 — HOW IT WORKS
     ════════════════════════════════ */
     #section-how {
-      padding: 6rem clamp(1.5rem,5vw,4rem);
       border-bottom: 3px solid var(--white);
       background: var(--panel);
+      overflow-y: auto;
     }
 
     .how-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 3rem;
+      margin-bottom: 1.5rem;
       flex-wrap: wrap;
       gap: 1rem;
+    }
+
+    @media (min-width: 769px) {
+      .how-header { margin-bottom: 3rem; }
     }
 
     .how-grid {
@@ -659,9 +693,13 @@
     @media (max-width: 500px) { .how-grid { grid-template-columns: 1fr; } }
 
     .how-step {
-      padding: 2.5rem 2rem;
+      padding: 1.5rem 1.25rem;
       border-right: 2px solid var(--rule);
       position: relative;
+    }
+
+    @media (min-width: 769px) {
+      .how-step { padding: 2.5rem 2rem; }
     }
 
     .how-step:last-child { border-right: none; }
@@ -705,9 +743,9 @@
     }
 
     .how-body {
-      font-size: 0.85rem;
+      font-size: clamp(0.8rem, 2vw, 0.85rem);
       color: var(--muted);
-      line-height: 1.8;
+      line-height: 1.65;
     }
 
     /* ════════════════════════════════
@@ -716,7 +754,6 @@
     #section-manifesto {
       background: var(--yellow);
       color: #000;
-      padding: 6rem clamp(1.5rem,5vw,4rem);
       border-bottom: 3px solid #000;
       position: relative;
       overflow: hidden;
@@ -742,10 +779,10 @@
 
     .manifesto-text {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.2rem, 7vw, 5.5rem);
+      font-size: clamp(1.75rem, 7vw, 5.5rem);
       line-height: 1;
       letter-spacing: 0.02em;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .manifesto-text span {
@@ -754,9 +791,9 @@
     }
 
     .manifesto-body {
-      font-size: 1rem;
+      font-size: clamp(0.875rem, 2vw, 1rem);
       color: rgba(0,0,0,0.55);
-      line-height: 1.8;
+      line-height: 1.65;
       max-width: 52ch;
     }
 
@@ -764,15 +801,7 @@
        SECTION 8 — EMAIL CAPTURE
     ════════════════════════════════ */
     #section-waitlist {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 6rem clamp(1.5rem,5vw,4rem);
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
 
     #section-waitlist::before {
@@ -803,19 +832,19 @@
 
     .waitlist-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3rem, 10vw, 8rem);
+      font-size: clamp(2.25rem, 10vw, 8rem);
       line-height: 0.88;
       letter-spacing: 0.02em;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .waitlist-title span { color: var(--yellow); }
 
     .waitlist-sub {
-      font-size: 1rem;
+      font-size: clamp(0.875rem, 2vw, 1rem);
       color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 3rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
       max-width: 38ch;
       margin-left: auto;
       margin-right: auto;
@@ -825,12 +854,18 @@
 
     .email-form {
       display: flex;
+      flex-direction: column;
       gap: 0;
       border: 3px solid var(--white);
       border-radius: 4px;
       overflow: hidden;
-      max-width: 480px;
+      width: 100%;
+      max-width: 100%;
       margin: 0 auto;
+    }
+
+    @media (min-width: 480px) {
+      .email-form { flex-direction: row; max-width: 480px; }
     }
 
     .email-form input {
@@ -838,9 +873,10 @@
       background: transparent;
       border: none;
       outline: none;
-      padding: 1rem 1.4rem;
+      padding: 1rem 1.25rem;
+      min-height: 48px;
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--white);
     }
 
@@ -849,8 +885,9 @@
     .email-form button {
       background: var(--yellow);
       border: none;
-      border-left: 3px solid var(--white);
-      padding: 1rem 1.6rem;
+      border-top: 3px solid var(--white);
+      padding: 1rem 1.5rem;
+      min-height: 48px;
       font-family: 'Bebas Neue', sans-serif;
       font-size: 1.1rem;
       letter-spacing: 0.08em;
@@ -858,6 +895,10 @@
       cursor: pointer;
       white-space: nowrap;
       transition: background 0.15s;
+    }
+
+    @media (min-width: 480px) {
+      .email-form button { border-top: none; border-left: 3px solid var(--white); }
     }
 
     .email-form button:hover { background: #ffd533; }
@@ -911,7 +952,8 @@
     }
 
     .share-btn {
-      padding: 0.6rem 1.2rem;
+      padding: 0.75rem 1.25rem;
+      min-height: 44px;
       border: 1.5px solid rgba(255,255,255,0.15);
       border-radius: 8px;
       font-size: 0.75rem;
@@ -1006,12 +1048,13 @@
     /* ── SHARED ── */
     .btn-primary {
       display: inline-block;
-      padding: 1rem 2rem;
+      padding: 0.875rem 1.5rem;
+      min-height: 44px;
       background: var(--yellow);
       border: none;
       border-radius: 4px;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       letter-spacing: 0.08em;
       color: #000;
       cursor: pointer;
@@ -1019,16 +1062,21 @@
       transition: opacity 0.15s;
     }
 
+    @media (min-width: 769px) {
+      .btn-primary { padding: 1rem 2rem; font-size: 1.2rem; }
+    }
+
     .btn-primary:hover { opacity: 0.88; }
 
     .btn-ghost {
       display: inline-block;
-      padding: 1rem 2rem;
+      padding: 0.875rem 1.5rem;
+      min-height: 44px;
       background: transparent;
       border: 2px solid rgba(255,255,255,0.2);
       border-radius: 4px;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       letter-spacing: 0.08em;
       color: rgba(255,255,255,0.5);
       cursor: pointer;
@@ -1055,6 +1103,9 @@
       z-index: 150;
     }
 
+    @media (min-width: 601px) {
+      nav { padding: 1.2rem clamp(1.5rem,5vw,4rem); }
+    }
     @media (max-width: 600px) { .progress-dots { display: none; } }
 
     .pdot {
@@ -1076,26 +1127,28 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo"><span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span></div>
+  <div class="nav-logo">Togather</div>
   <div class="nav-right">
     <div class="nav-tag">Never Scroll Alone</div>
-    <button class="nav-cta" onclick="document.getElementById('section-waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+    <button class="nav-cta" onclick="document.getElementById('section-waitlist').scrollIntoView({behavior:'smooth',block:'start'})">Join Waitlist</button>
   </div>
 </nav>
 
 <!-- PROGRESS DOTS -->
 <div class="progress-dots" id="progress-dots">
-  <div class="pdot active" onclick="scrollTo(0)"></div>
-  <div class="pdot" onclick="document.getElementById('section-age').scrollIntoView({behavior:'smooth'})"></div>
-  <div class="pdot" onclick="document.getElementById('section-reveal').scrollIntoView({behavior:'smooth'})"></div>
-  <div class="pdot" onclick="document.getElementById('section-rh').scrollIntoView({behavior:'smooth'})"></div>
-  <div class="pdot" onclick="document.getElementById('section-calc').scrollIntoView({behavior:'smooth'})"></div>
-  <div class="pdot" onclick="document.getElementById('section-how').scrollIntoView({behavior:'smooth'})"></div>
-  <div class="pdot" onclick="document.getElementById('section-waitlist').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="pdot active" data-section="section-hook"></div>
+  <div class="pdot" data-section="section-age"></div>
+  <div class="pdot" data-section="section-reveal"></div>
+  <div class="pdot" data-section="section-rh"></div>
+  <div class="pdot" data-section="section-calc"></div>
+  <div class="pdot" data-section="section-how"></div>
+  <div class="pdot" data-section="section-manifesto"></div>
+  <div class="pdot" data-section="section-waitlist"></div>
 </div>
 
+<div id="scroll-container">
 <!-- ══ S1: HOOK ══ -->
-<section id="section-hook">
+<section id="section-hook" class="snap-section">
   <div class="hook-inner">
     <div class="hook-kicker">The app that changes everything</div>
     <span class="hook-line" id="hl1">The average</span>
@@ -1111,7 +1164,7 @@
 </section>
 
 <!-- ── TICKER ── -->
-<div class="ticker-wrap">
+<div class="ticker-snap ticker-wrap">
   <div class="ticker" aria-hidden="true">
     <span class="ticker-item">Never Scroll Alone <span>◆</span></span>
     <span class="ticker-item">Real Hours <span>◆</span></span>
@@ -1127,7 +1180,7 @@
 </div>
 
 <!-- ══ S2: AGE ══ -->
-<section id="section-age">
+<section id="section-age" class="snap-section">
   <div class="age-layout">
     <div class="age-left reveal">
       <div class="sec-kicker">First — a question</div>
@@ -1160,7 +1213,7 @@
 </section>
 
 <!-- ══ S3: REVEAL ══ -->
-<section id="section-reveal">
+<section id="section-reveal" class="snap-section">
   <div class="reveal-container">
     <div class="rl" data-reveal>People your age spend</div>
     <div class="rl huge yellow" id="rv-hrs" data-reveal>6.2 hrs</div>
@@ -1176,13 +1229,13 @@
     <div class="rl prose" data-reveal>Not your career. Not your income. Not your feed.</div>
 
     <div class="reveal-btn" id="reveal-cta">
-      <button class="btn-primary" onclick="document.getElementById('section-rh').scrollIntoView({behavior:'smooth'})">So what do we do →</button>
+      <button class="btn-primary" onclick="document.getElementById('section-rh').scrollIntoView({behavior:'smooth',block:'start'})">So what do we do →</button>
     </div>
   </div>
 </section>
 
 <!-- ══ S4: REAL HOURS ══ -->
-<section id="section-rh">
+<section id="section-rh" class="snap-section">
   <div class="rh-layout">
     <div class="rh-left reveal">
       <div class="sec-kicker">The metric that changes everything</div>
@@ -1227,7 +1280,7 @@
 </section>
 
 <!-- ══ S5: CALCULATOR ══ -->
-<section id="section-calc">
+<section id="section-calc" class="snap-section">
   <div class="calc-layout">
     <div class="reveal">
       <div class="sec-kicker">The cost</div>
@@ -1236,11 +1289,9 @@
 
       <div class="calc-interface" style="margin-top:2rem">
         <div class="calc-input-row">
-          <div class="calc-q">Daily screen time</div>
           <div class="calc-slider-row">
             <div class="calc-val" id="calc-display">4</div>
             <input type="range" class="calc-slider" id="main-slider" min="1" max="16" value="4" oninput="updateCalc(this.value)"/>
-            <div class="calc-unit">hrs / day</div>
           </div>
         </div>
         <div class="calc-output">
@@ -1250,7 +1301,7 @@
           </div>
           <div class="calc-stat">
             <div class="calc-stat-num" id="c-convos">3.6k</div>
-            <div class="calc-stat-label">Conversations that won't happen</div>
+            <div class="calc-stat-label">Conversations you'll miss</div>
           </div>
           <div class="calc-stat">
             <div class="calc-stat-num" id="c-years">9.3</div>
@@ -1258,7 +1309,7 @@
           </div>
           <div class="calc-stat">
             <div class="calc-stat-num" id="c-friends">18</div>
-            <div class="calc-stat-label">Friendships that won't start</div>
+            <div class="calc-stat-label">Hours you'll never get back</div>
           </div>
         </div>
       </div>
@@ -1284,7 +1335,7 @@
 </section>
 
 <!-- ══ S6: HOW ══ -->
-<section id="section-how">
+<section id="section-how" class="snap-section">
   <div class="how-header reveal">
     <div>
       <div class="sec-kicker">The mechanic</div>
@@ -1321,19 +1372,18 @@
 </section>
 
 <!-- ══ MANIFESTO ══ -->
-<section id="section-manifesto">
+<section id="section-manifesto" class="snap-section">
   <div class="manifesto-inner reveal">
     <p class="manifesto-text">
       Loneliness isn't<br/>a feeling.<br/>
-      It's a <span>design flaw.</span><br/>
-      We fixed it.
+      It's a <span>design flaw.</span>
     </p>
-    <p class="manifesto-body">Every social platform optimizes for time spent alone on a feed. <span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> optimizes for time spent with real people doing real things. One compounds into a life. The other just compounds.</p>
+    <p class="manifesto-body">Social media forgot what social means. Every platform optimizes for time spent alone on a feed. Togather optimizes for time spent with the people who actually matter. That's it. That's the whole thing.</p>
   </div>
 </section>
 
 <!-- ══ S8: WAITLIST ══ -->
-<section id="section-waitlist">
+<section id="section-waitlist" class="snap-section">
   <div class="waitlist-inner">
     <div class="waitlist-kicker reveal">Early access — limited spots</div>
     <h2 class="waitlist-title reveal">Your Real<br/><span>Hours</span><br/>start now.</h2>
@@ -1354,14 +1404,13 @@
       <div class="success-msg">You're in.</div>
       <div class="success-sub">We'll send you the download link the day <span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> launches.<br/>In the meantime — go be with someone.</div>
       <div class="share-row">
-        <a class="share-btn" href="https://twitter.com/intent/tweet?text=I just joined the Togather waitlist. Never Scroll Alone. gettogather.com" target="_blank">Share on X</a>
-        <button class="share-btn" onclick="copyLink()">Copy Link</button>
+        <a class="share-btn" href="sms:?body=I%20just%20joined%20Togather%20%E2%80%94%20it%20locks%20your%20social%20apps%20when%20you%27re%20alone%20and%20unlocks%20when%20we%27re%20together.%20Thought%20of%20you.%20gettogather.me" target="_blank" rel="noopener">Text your people →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER (inside scroll container) -->
 <footer>
   <div class="footer-logo"><span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span></div>
   <div class="footer-right">
@@ -1369,6 +1418,8 @@
     <span class="footer-copy">© 2026</span>
   </div>
 </footer>
+
+</div><!-- #scroll-container -->
 
 <script>
   /* ── AGE SELECTION ── */
@@ -1382,7 +1433,7 @@
     document.getElementById('rv-days').textContent = days + ' days';
     // scroll to reveal
     setTimeout(() => {
-      document.getElementById('section-reveal').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('section-reveal').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 300);
   }
 
@@ -1439,7 +1490,18 @@
   if (revealContainer) lineObserver.observe(revealContainer);
 
   /* ── PROGRESS DOTS ── */
-  const sections = ['section-hook','section-age','section-reveal','section-rh','section-calc','section-how','section-waitlist'];
+  const scrollContainer = document.getElementById('scroll-container');
+  const sections = ['section-hook','section-age','section-reveal','section-rh','section-calc','section-how','section-manifesto','section-waitlist'];
+
+  document.querySelectorAll('.pdot').forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const id = sections[i];
+      if (id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
 
   const dotObserver = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -1450,7 +1512,7 @@
         });
       }
     });
-  }, { threshold: 0.4 });
+  }, { root: scrollContainer, threshold: 0.4 });
 
   sections.forEach(id => {
     const el = document.getElementById(id);
