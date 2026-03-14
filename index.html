@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Bside — Never Scroll Alone. Your social apps lock when you're by yourself. Be with someone to unlock them."/>
+  <title>Bside — Never Scroll Alone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:  #090909;
+      --panel:  #0f0f0f;
+      --white:  #f0ebe0;
+      --yellow: #f5c400;
+      --red:    #e02020;
+      --muted:  rgba(240,235,224,0.35);
+      --rule:   rgba(240,235,224,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* halftone grain */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 6px 6px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 1.2rem clamp(1.5rem,5vw,4rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 200;
+      background: rgba(9,9,9,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      color: var(--yellow);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-tag {
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-cta {
+      background: var(--yellow);
+      color: #000;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: opacity 0.15s;
+    }
+
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ════════════════════════════════
+       SECTION 1 — CINEMATIC HOOK
+    ════════════════════════════════ */
+    #section-hook {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 8rem clamp(1.5rem,5vw,4rem) 4rem;
+      position: relative;
+      border-bottom: 3px solid var(--white);
+      overflow: hidden;
+    }
+
+    /* big bg number */
+    #section-hook::after {
+      content: '11';
+      position: absolute;
+      right: -2vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(20rem, 40vw, 50rem);
+      color: rgba(255,255,255,0.02);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hook-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hook-kicker {
+      display: inline-block;
+      background: var(--yellow);
+      color: #000;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeUp 0.5s 0.3s forwards;
+    }
+
+    .hook-line {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 12vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.15);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: color 0.8s, opacity 0s, transform 0s;
+    }
+
+    .hook-line.lit {
+      color: var(--white);
+      opacity: 1;
+      transform: translateY(0);
+      transition: color 0.6s, opacity 0.6s, transform 0.6s;
+    }
+
+    .hook-line.yellow-lit { color: var(--yellow); }
+
+    .hook-sub {
+      margin-top: 2rem;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 40ch;
+      opacity: 0;
+      animation: fadeUp 0.7s 3.5s forwards;
+    }
+
+    .hook-sub strong { color: var(--white); font-weight: 500; }
+
+    .hook-scroll {
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.5s 4s forwards;
+    }
+
+    .hook-scroll-line {
+      width: 40px;
+      height: 2px;
+      background: var(--yellow);
+    }
+
+    .hook-scroll-text {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ════════════════════════════════
+       SECTION 2 — AGE PICKER
+    ════════════════════════════════ */
+    #section-age {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem clamp(1.5rem,5vw,4rem);
+      border-bottom: 3px solid var(--white);
+      position: relative;
+    }
+
+    .age-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .age-layout { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .age-left {}
+
+    .sec-kicker {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 1rem;
+    }
+
+    .sec-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.2rem;
+    }
+
+    .sec-body {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 38ch;
+    }
+
+    .age-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .age-btn {
+      background: rgba(255,255,255,0.03);
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 1.4rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+    }
+
+    .age-btn:hover { border-color: rgba(245,196,0,0.4); }
+
+    .age-btn.selected {
+      background: rgba(245,196,0,0.08);
+      border-color: var(--yellow);
+    }
+
+    .age-range {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .age-btn.selected .age-range { color: var(--yellow); }
+
+    .age-sub {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+    }
+
+    /* ════════════════════════════════
+       SECTION 3 — REVEAL
+    ════════════════════════════════ */
+    #section-reveal {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem clamp(1.5rem,5vw,4rem);
+      border-bottom: 3px solid var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reveal-container {
+      max-width: 700px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .rl {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 5vw, 3.5rem);
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.12);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+      transition: color 0.7s, opacity 0.7s, transform 0.7s;
+      opacity: 0.3;
+      transform: translateY(6px);
+    }
+
+    .rl.lit {
+      color: var(--white);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .rl.yellow { color: var(--yellow); }
+    .rl.red    { color: var(--red); }
+    .rl.huge   { font-size: clamp(3rem, 10vw, 8rem); line-height: 0.88; margin: 0.5rem 0; }
+    .rl.gap    { margin-top: 2rem; }
+
+    .rl.prose {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .rl.prose.lit { color: rgba(240,235,224,0.6); }
+
+    .reveal-btn {
+      margin-top: 3rem;
+      opacity: 0;
+      transition: opacity 0.5s;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .reveal-btn.show { opacity: 1; }
+
+    /* ════════════════════════════════
+       SECTION 4 — REAL HOURS
+    ════════════════════════════════ */
+    #section-rh {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem clamp(1.5rem,5vw,4rem);
+      border-bottom: 3px solid var(--white);
+      background: var(--panel);
+    }
+
+    .rh-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .rh-layout { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    .rh-left {}
+
+    .rh-number-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+
+    .rh-big {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 15vw, 12rem);
+      color: var(--yellow);
+      line-height: 0.85;
+      letter-spacing: 0.02em;
+    }
+
+    .rh-unit {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      color: rgba(245,196,0,0.4);
+      letter-spacing: 0.06em;
+    }
+
+    .rh-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 40ch;
+    }
+
+    .rh-desc strong { color: var(--white); font-weight: 500; }
+
+    .eq-box {
+      background: rgba(255,255,255,0.03);
+      border: 2px solid var(--rule);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .eq-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+
+    .eq-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .eq-part {
+      text-align: center;
+    }
+
+    .eq-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .eq-val.yellow { color: var(--yellow); }
+
+    .eq-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .eq-op {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: rgba(245,196,0,0.3);
+    }
+
+    .eq-examples {
+      border-top: 1px solid var(--rule);
+      padding-top: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .eq-ex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .eq-ex span { color: var(--white); font-weight: 500; }
+
+    /* ════════════════════════════════
+       SECTION 5 — CALCULATOR
+    ════════════════════════════════ */
+    #section-calc {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem clamp(1.5rem,5vw,4rem);
+      border-bottom: 3px solid var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #section-calc::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(224,32,32,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .calc-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .calc-layout { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    .calc-interface {
+      border: 3px solid var(--white);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .calc-input-row {
+      padding: 2rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 2px solid var(--rule);
+    }
+
+    .calc-q {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .calc-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .calc-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--yellow);
+      line-height: 1;
+      min-width: 3ch;
+    }
+
+    .calc-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      outline: none;
+      border-radius: 2px;
+    }
+
+    .calc-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      background: var(--yellow);
+      border: 3px solid var(--black);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .calc-unit {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .calc-output {
+      background: var(--red);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .calc-stat {}
+
+    .calc-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .calc-stat-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    /* what you could have done */
+    .could-box {
+      background: rgba(255,255,255,0.03);
+      border: 2px solid var(--rule);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 1rem;
+    }
+
+    .could-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .could-title span { color: var(--white); }
+
+    .could-items {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .could-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .could-item strong { color: var(--white); }
+    .could-icon { font-size: 1.1rem; }
+
+    /* ════════════════════════════════
+       SECTION 6 — HOW IT WORKS
+    ════════════════════════════════ */
+    #section-how {
+      padding: 6rem clamp(1.5rem,5vw,4rem);
+      border-bottom: 3px solid var(--white);
+      background: var(--panel);
+    }
+
+    .how-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 0;
+      border: 3px solid var(--white);
+    }
+
+    @media (max-width: 900px) { .how-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 500px) { .how-grid { grid-template-columns: 1fr; } }
+
+    .how-step {
+      padding: 2.5rem 2rem;
+      border-right: 2px solid var(--rule);
+      position: relative;
+    }
+
+    .how-step:last-child { border-right: none; }
+
+    @media (max-width: 900px) {
+      .how-step:nth-child(2) { border-right: none; }
+      .how-step:nth-child(n+3) { border-top: 2px solid var(--rule); }
+    }
+
+    @media (max-width: 500px) {
+      .how-step { border-right: none; border-bottom: 2px solid var(--rule); }
+      .how-step:last-child { border-bottom: none; }
+    }
+
+    .how-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      color: rgba(255,255,255,0.04);
+      line-height: 1;
+      position: absolute;
+      top: 1rem; right: 1.5rem;
+    }
+
+    .how-tag {
+      display: inline-block;
+      background: var(--yellow);
+      color: #000;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .how-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.7rem;
+    }
+
+    .how-body {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ════════════════════════════════
+       SECTION 7 — MANIFESTO BAND
+    ════════════════════════════════ */
+    #section-manifesto {
+      background: var(--yellow);
+      color: #000;
+      padding: 6rem clamp(1.5rem,5vw,4rem);
+      border-bottom: 3px solid #000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #section-manifesto::before {
+      content: 'B';
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80vw;
+      line-height: 0.8;
+      color: rgba(0,0,0,0.04);
+      right: -8vw;
+      top: -10vw;
+      pointer-events: none;
+    }
+
+    .manifesto-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .manifesto-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 7vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .manifesto-text span {
+      -webkit-text-stroke: 2px #000;
+      color: transparent;
+    }
+
+    .manifesto-body {
+      font-size: 1rem;
+      color: rgba(0,0,0,0.55);
+      line-height: 1.8;
+      max-width: 52ch;
+    }
+
+    /* ════════════════════════════════
+       SECTION 8 — EMAIL CAPTURE
+    ════════════════════════════════ */
+    #section-waitlist {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem clamp(1.5rem,5vw,4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #section-waitlist::before {
+      content: '0.0';
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(10rem, 40vw, 40rem);
+      color: rgba(245,196,0,0.03);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .waitlist-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .waitlist-kicker {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 1.5rem;
+    }
+
+    .waitlist-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.88;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .waitlist-title span { color: var(--yellow); }
+
+    .waitlist-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 3rem;
+      max-width: 38ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .waitlist-sub strong { color: var(--white); }
+
+    .email-form {
+      display: flex;
+      gap: 0;
+      border: 3px solid var(--white);
+      border-radius: 4px;
+      overflow: hidden;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .email-form input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 1rem 1.4rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--white);
+    }
+
+    .email-form input::placeholder { color: var(--muted); }
+
+    .email-form button {
+      background: var(--yellow);
+      border: none;
+      border-left: 3px solid var(--white);
+      padding: 1rem 1.6rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      color: #000;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .email-form button:hover { background: #ffd533; }
+
+    .waitlist-note {
+      margin-top: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .waitlist-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem;
+      background: rgba(245,196,0,0.06);
+      border: 2px solid rgba(245,196,0,0.2);
+      border-radius: 12px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .success-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--yellow);
+    }
+
+    .success-msg {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+
+    .success-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .share-row {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .share-btn {
+      padding: 0.6rem 1.2rem;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .share-btn:hover {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem clamp(1.5rem,5vw,4rem);
+      border-top: 2px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--yellow);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-copy {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      overflow: hidden;
+      border-top: 2px solid var(--rule);
+      border-bottom: 2px solid var(--rule);
+      padding: 1rem 0;
+      background: rgba(255,255,255,0.01);
+    }
+
+    .ticker {
+      display: inline-flex;
+      gap: 4rem;
+      animation: ticker 28s linear infinite;
+      white-space: nowrap;
+    }
+
+    .ticker-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .ticker-item span { color: var(--yellow); margin: 0 0.5rem; }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── REVEAL ON SCROLL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+
+    /* ── SHARED ── */
+    .btn-primary {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: var(--yellow);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      color: #000;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-ghost {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 4px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: var(--white); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── PROGRESS DOTS ── */
+    .progress-dots {
+      position: fixed;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 150;
+    }
+
+    @media (max-width: 600px) { .progress-dots { display: none; } }
+
+    .pdot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .pdot.active {
+      background: var(--yellow);
+      height: 20px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Bside</div>
+  <div class="nav-right">
+    <div class="nav-tag">Never Scroll Alone</div>
+    <button class="nav-cta" onclick="document.getElementById('section-waitlist').scrollIntoView({behavior:'smooth'})">Join Waitlist</button>
+  </div>
+</nav>
+
+<!-- PROGRESS DOTS -->
+<div class="progress-dots" id="progress-dots">
+  <div class="pdot active" onclick="scrollTo(0)"></div>
+  <div class="pdot" onclick="document.getElementById('section-age').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="pdot" onclick="document.getElementById('section-reveal').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="pdot" onclick="document.getElementById('section-rh').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="pdot" onclick="document.getElementById('section-calc').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="pdot" onclick="document.getElementById('section-how').scrollIntoView({behavior:'smooth'})"></div>
+  <div class="pdot" onclick="document.getElementById('section-waitlist').scrollIntoView({behavior:'smooth'})"></div>
+</div>
+
+<!-- ══ S1: HOOK ══ -->
+<section id="section-hook">
+  <div class="hook-inner">
+    <div class="hook-kicker">The app we had to build</div>
+    <span class="hook-line" id="hl1">The average</span>
+    <span class="hook-line" id="hl2">person will spend</span>
+    <span class="hook-line yellow-lit" id="hl3">11 years</span>
+    <span class="hook-line" id="hl4">on their phone.</span>
+    <p class="hook-sub">Most of it <strong>alone.</strong> Most of it <strong>forgettable.</strong><br/>We built something about that.</p>
+    <div class="hook-scroll">
+      <div class="hook-scroll-line"></div>
+      <div class="hook-scroll-text">Scroll to find out</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap">
+  <div class="ticker" aria-hidden="true">
+    <span class="ticker-item">Never Scroll Alone <span>◆</span></span>
+    <span class="ticker-item">Real Hours <span>◆</span></span>
+    <span class="ticker-item">Presence = Time × Attention <span>◆</span></span>
+    <span class="ticker-item">Locked until together <span>◆</span></span>
+    <span class="ticker-item">Your people are waiting <span>◆</span></span>
+    <span class="ticker-item">Never Scroll Alone <span>◆</span></span>
+    <span class="ticker-item">Real Hours <span>◆</span></span>
+    <span class="ticker-item">Presence = Time × Attention <span>◆</span></span>
+    <span class="ticker-item">Locked until together <span>◆</span></span>
+    <span class="ticker-item">Your people are waiting <span>◆</span></span>
+  </div>
+</div>
+
+<!-- ══ S2: AGE ══ -->
+<section id="section-age">
+  <div class="age-layout">
+    <div class="age-left reveal">
+      <div class="sec-kicker">First — a question</div>
+      <h2 class="sec-title">How old<br/>are you?</h2>
+      <p class="sec-body">Your personal benchmark is calculated from this. No data stored. Just the truth about your generation's relationship with their phones.</p>
+    </div>
+    <div class="age-grid reveal reveal-d2">
+      <div class="age-btn" onclick="selectAge(this, 6.8, 91)">
+        <div class="age-range">14–24</div>
+        <div class="age-sub">Gen Z</div>
+      </div>
+      <div class="age-btn" onclick="selectAge(this, 6.2, 94)">
+        <div class="age-range">25–34</div>
+        <div class="age-sub">Millennial</div>
+      </div>
+      <div class="age-btn" onclick="selectAge(this, 5.4, 82)">
+        <div class="age-range">35–44</div>
+        <div class="age-sub">Elder Millennial</div>
+      </div>
+      <div class="age-btn" onclick="selectAge(this, 4.8, 73)">
+        <div class="age-range">45–54</div>
+        <div class="age-sub">Gen X</div>
+      </div>
+      <div class="age-btn" onclick="selectAge(this, 4.2, 64)">
+        <div class="age-range">55+</div>
+        <div class="age-sub">Boomer+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S3: REVEAL ══ -->
+<section id="section-reveal">
+  <div class="reveal-container">
+    <div class="rl" data-reveal>People your age spend</div>
+    <div class="rl huge yellow" id="rv-hrs" data-reveal>6.2 hrs</div>
+    <div class="rl" data-reveal>on their phone. Every single day.</div>
+    <div class="rl gap" data-reveal>That's</div>
+    <div class="rl huge" id="rv-days" data-reveal>94 days</div>
+    <div class="rl" data-reveal>of your year. Gone.</div>
+    <div class="rl gap prose" data-reveal>And the loneliest years aren't when you're old.</div>
+    <div class="rl yellow" data-reveal>They're right now.</div>
+    <div class="rl gap prose" data-reveal>The Harvard Study of Adult Development — 85 years of research — found one thing above all else predicts a long, happy life.</div>
+    <div class="rl" data-reveal>The quality of your</div>
+    <div class="rl huge" data-reveal>relationships.</div>
+    <div class="rl prose" data-reveal>Not your career. Not your income. Not your feed.</div>
+
+    <div class="reveal-btn" id="reveal-cta">
+      <button class="btn-primary" onclick="document.getElementById('section-rh').scrollIntoView({behavior:'smooth'})">So what do we do →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S4: REAL HOURS ══ -->
+<section id="section-rh">
+  <div class="rh-layout">
+    <div class="rh-left reveal">
+      <div class="sec-kicker">The metric that changes everything</div>
+      <div class="rh-number-wrap">
+        <div class="rh-big">Real</div>
+      </div>
+      <div class="rh-number-wrap" style="margin-top:-1rem">
+        <div class="rh-big" style="color:rgba(245,196,0,0.3)">Hours.</div>
+      </div>
+      <p class="rh-desc" style="margin-top:1.5rem">Not screen time. Not step counts. The actual hours you spend <strong>present with the people who matter.</strong><br/><br/>Bside measures this automatically. You don't log anything. You just live.</p>
+    </div>
+    <div class="reveal reveal-d2">
+      <div class="eq-box">
+        <div class="eq-title">Presence = Time × Attention</div>
+        <div class="eq-row">
+          <div class="eq-part">
+            <div class="eq-val">2h</div>
+            <div class="eq-label">Time together</div>
+          </div>
+          <div class="eq-op">×</div>
+          <div class="eq-part">
+            <div class="eq-val">80%</div>
+            <div class="eq-label">Phone down</div>
+          </div>
+          <div class="eq-op">=</div>
+          <div class="eq-part">
+            <div class="eq-val yellow">1.6</div>
+            <div class="eq-label">Real Hours</div>
+          </div>
+        </div>
+        <div class="eq-examples">
+          <div class="eq-ex">2h together, phone down the whole time <span>→ 2.0 RH</span></div>
+          <div class="eq-ex">4h together, half the time scrolling <span>→ 2.0 RH</span></div>
+          <div class="eq-ex">1h together, fully present <span>→ 1.0 RH</span></div>
+        </div>
+      </div>
+      <div class="could-box" style="margin-top:1rem">
+        <div class="eq-ex" style="font-size:0.8rem;color:var(--muted)">Harvard data: quality relationships = #1 predictor of happiness and longevity. Dunbar's research: humans maintain ~5 truly intimate relationships. <strong style="color:var(--white)">Bside helps you invest in those five.</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S5: CALCULATOR ══ -->
+<section id="section-calc">
+  <div class="calc-layout">
+    <div class="reveal">
+      <div class="sec-kicker">The cost</div>
+      <h2 class="sec-title">How much<br/><span style="color:var(--red)">life</span><br/>are you losing?</h2>
+      <p class="sec-body" style="margin-top:1rem">Move the slider. See the real numbers.</p>
+
+      <div class="calc-interface" style="margin-top:2rem">
+        <div class="calc-input-row">
+          <div class="calc-q">Daily screen time</div>
+          <div class="calc-slider-row">
+            <div class="calc-val" id="calc-display">4</div>
+            <input type="range" class="calc-slider" id="main-slider" min="1" max="16" value="4" oninput="updateCalc(this.value)"/>
+            <div class="calc-unit">hrs / day</div>
+          </div>
+        </div>
+        <div class="calc-output">
+          <div class="calc-stat">
+            <div class="calc-stat-num" id="c-days">61</div>
+            <div class="calc-stat-label">Days lost this year</div>
+          </div>
+          <div class="calc-stat">
+            <div class="calc-stat-num" id="c-convos">3.6k</div>
+            <div class="calc-stat-label">Conversations that won't happen</div>
+          </div>
+          <div class="calc-stat">
+            <div class="calc-stat-num" id="c-years">9.3</div>
+            <div class="calc-stat-label">Years over your lifetime</div>
+          </div>
+          <div class="calc-stat">
+            <div class="calc-stat-num" id="c-friends">18</div>
+            <div class="calc-stat-label">Friendships that won't start</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-d2">
+      <div class="sec-kicker" style="margin-bottom:1rem">What you could have done instead</div>
+      <div class="could-items" id="could-items">
+        <div class="could-item"><div class="could-icon">📚</div><strong id="ci-books">6 books</strong> read cover to cover</div>
+        <div class="could-item"><div class="could-icon">🏃</div><strong id="ci-runs">2 marathons</strong> trained and finished</div>
+        <div class="could-item"><div class="could-icon">🍳</div><strong id="ci-meals">730 meals</strong> cooked from scratch</div>
+        <div class="could-item"><div class="could-icon">🎸</div><strong id="ci-songs">24 songs</strong> learned on an instrument</div>
+        <div class="could-item"><div class="could-icon">🌍</div><strong id="ci-trips">2 trips</strong> fully planned and taken</div>
+      </div>
+
+      <div class="could-box" style="margin-top:2rem; border-color:rgba(245,196,0,0.15)">
+        <div class="sec-kicker" style="margin-bottom:0.8rem">But here's the flip</div>
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--yellow); line-height:1; margin-bottom:0.6rem" id="flip-rh">1,460 Real Hours</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.6">waiting to be reclaimed.<br/>That's what Bside gives back.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ S6: HOW ══ -->
+<section id="section-how">
+  <div class="how-header reveal">
+    <div>
+      <div class="sec-kicker">The mechanic</div>
+      <h2 class="sec-title">How it works</h2>
+    </div>
+    <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Four steps</div>
+  </div>
+  <div class="how-grid">
+    <div class="how-step reveal">
+      <div class="how-num">01</div>
+      <div class="how-tag">Setup</div>
+      <div class="how-title">Lock Your Feed</div>
+      <div class="how-body">Choose which apps get locked. Instagram, TikTok, X, YouTube — all of them or just the ones that own you most.</div>
+    </div>
+    <div class="how-step reveal reveal-d1">
+      <div class="how-num">02</div>
+      <div class="how-tag">Daily life</div>
+      <div class="how-title">Bside Runs Quiet</div>
+      <div class="how-body">No nudges. No timers. Just the absence of the scroll. Bside runs in the background, waiting.</div>
+    </div>
+    <div class="how-step reveal reveal-d2">
+      <div class="how-num">03</div>
+      <div class="how-tag">The unlock</div>
+      <div class="how-title">Someone Shows Up</div>
+      <div class="how-body">A friend with Bside gets close. Bluetooth detects you're together. Both phones unlock. Mutually. Instantly.</div>
+    </div>
+    <div class="how-step reveal reveal-d3">
+      <div class="how-num">04</div>
+      <div class="how-tag">The point</div>
+      <div class="how-title">Scroll If You Want</div>
+      <div class="how-body">But now you're with someone. So maybe you don't. Every moment together builds your Real Hours. That's the whole idea.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MANIFESTO ══ -->
+<section id="section-manifesto">
+  <div class="manifesto-inner reveal">
+    <p class="manifesto-text">
+      Loneliness isn't<br/>a feeling.<br/>
+      It's a <span>design flaw.</span><br/>
+      We fixed it.
+    </p>
+    <p class="manifesto-body">Every social platform optimizes for time spent alone on a feed. Bside optimizes for time spent with real people doing real things. One compounds into a life. The other just compounds.</p>
+  </div>
+</section>
+
+<!-- ══ S8: WAITLIST ══ -->
+<section id="section-waitlist">
+  <div class="waitlist-inner">
+    <div class="waitlist-kicker reveal">Early access — limited spots</div>
+    <h2 class="waitlist-title reveal">Your Real<br/><span>Hours</span><br/>start now.</h2>
+    <p class="waitlist-sub reveal">Join the waitlist. When Bside launches, you'll get the download link directly. <strong>First in, first present.</strong></p>
+
+    <div class="reveal" id="waitlist-form-wrap">
+      <div class="email-form">
+        <input type="email" id="waitlist-email" placeholder="your@email.com"/>
+        <button onclick="submitWaitlist()">I'm In →</button>
+      </div>
+      <div class="waitlist-note" id="wl-note">Free forever for early members. No spam.</div>
+    </div>
+
+    <div class="waitlist-success" id="wl-success">
+      <div class="success-num" id="wl-number">You're #847 on the list</div>
+      <div class="success-msg">You're in.</div>
+      <div class="success-sub">We'll send the download link the day Bside launches.<br/>In the meantime — go be with someone.</div>
+      <div class="share-row">
+        <a class="share-btn" href="https://twitter.com/intent/tweet?text=I just joined the Bside waitlist. Never Scroll Alone. getbside.com" target="_blank">Share on X</a>
+        <button class="share-btn" onclick="copyLink()">Copy Link</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Bside</div>
+  <div class="footer-right">
+    <span class="footer-copy">Never Scroll Alone</span>
+    <span class="footer-copy">© 2025</span>
+  </div>
+</footer>
+
+<script>
+  /* ── AGE SELECTION ── */
+  let ageHrs = 6.2, ageDays = 94;
+
+  function selectAge(btn, hrs, days) {
+    document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    ageHrs = hrs; ageDays = days;
+    document.getElementById('rv-hrs').textContent = hrs + ' hrs';
+    document.getElementById('rv-days').textContent = days + ' days';
+    // scroll to reveal
+    setTimeout(() => {
+      document.getElementById('section-reveal').scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  }
+
+  /* ── HERO ANIMATION ── */
+  function runHook() {
+    const lines = ['hl1','hl2','hl3','hl4'];
+    const delays = [200, 600, 1000, 1400];
+    lines.forEach((id, i) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('lit');
+      }, delays[i]);
+    });
+  }
+
+  /* ── SCROLL REVEAL ── */
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+
+        // reveal lines in section-reveal
+        if (e.target.classList.contains('rl')) {
+          // handled by revealLines
+        }
+        if (e.target.id === 'reveal-cta') {
+          e.target.classList.add('show');
+        }
+        revealObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // reveal lines stagger
+  const lineObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const lines = e.target.querySelectorAll('.rl');
+        lines.forEach((line, i) => {
+          setTimeout(() => line.classList.add('lit'), i * 350);
+        });
+        setTimeout(() => {
+          const cta = document.getElementById('reveal-cta');
+          if (cta) cta.classList.add('show');
+        }, lines.length * 350 + 200);
+        lineObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  const revealContainer = document.querySelector('.reveal-container');
+  if (revealContainer) lineObserver.observe(revealContainer);
+
+  /* ── PROGRESS DOTS ── */
+  const sections = ['section-hook','section-age','section-reveal','section-rh','section-calc','section-how','section-waitlist'];
+
+  const dotObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const idx = sections.indexOf(e.target.id);
+        document.querySelectorAll('.pdot').forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) dotObserver.observe(el);
+  });
+
+  /* ── CALCULATOR ── */
+  function updateCalc(hrs) {
+    hrs = parseInt(hrs);
+    document.getElementById('calc-display').textContent = hrs;
+    const days   = Math.round(hrs * 365 / 24);
+    const years  = (hrs * 365 / 24 / 365 * 80).toFixed(1);
+    const convos = hrs * 2.5 * 365;
+    const friends = Math.round(days / 3.4);
+    const rhBack = Math.round(hrs * 365 * 0.5);
+
+    document.getElementById('c-days').textContent = days;
+    document.getElementById('c-years').textContent = years;
+    document.getElementById('c-convos').textContent = convos > 999 ? (convos/1000).toFixed(1)+'k' : convos;
+    document.getElementById('c-friends').textContent = friends;
+    document.getElementById('flip-rh').textContent = rhBack.toLocaleString() + ' Real Hours';
+
+    document.getElementById('ci-books').textContent = Math.round(hrs * 365 / 8) + ' books';
+    document.getElementById('ci-runs').textContent = Math.round(hrs * 365 / 200) + ' marathons';
+    document.getElementById('ci-meals').textContent = Math.round(hrs * 365 / 0.75) + ' meals';
+    document.getElementById('ci-songs').textContent = Math.round(hrs * 365 / 4) + ' songs';
+    document.getElementById('ci-trips').textContent = Math.round(hrs * 365 / 400) + ' trips';
+  }
+
+  updateCalc(4);
+
+  /* ── WAITLIST ── */
+  let waitlistCount = 846;
+
+  function submitWaitlist() {
+    const email = document.getElementById('waitlist-email').value;
+    if (!email || !email.includes('@')) {
+      document.getElementById('waitlist-email').style.outline = '2px solid var(--red)';
+      return;
+    }
+    waitlistCount++;
+    document.getElementById('wl-number').textContent = "You're #" + waitlistCount.toLocaleString() + " on the list";
+    document.getElementById('waitlist-form-wrap').style.display = 'none';
+    document.getElementById('wl-success').style.display = 'flex';
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText('https://getbside.com').then(() => {
+      const btn = event.target;
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy Link', 2000);
+    });
+  }
+
+  /* ── INIT ── */
+  window.addEventListener('load', runHook);
+</script>
+</body>
+</html>
