@@ -3,1141 +3,1053 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Togather — Never Scroll Alone. Your social apps lock when you're by yourself. Be with someone to unlock them. Track Real Hours with the people who matter."/>
+  <meta name="description" content="Togather — Never Scroll Alone. Your social apps lock when you're by yourself. Be with someone to unlock them."/>
   <title>Togather — Never Scroll Alone</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --black:  #090909;
-      --panel:  #0f0f0f;
-      --white:  #f0ebe0;
-      --yellow: #f5c400;
-      --red:    #e02020;
-      --muted:  rgba(240,235,224,0.65);
-      --rule:   rgba(240,235,224,0.08);
+      --blk: #080808;
+      --wht: #f0ebe0;
+      --yel: #f5c400;
+      --grn: #2ecc71;
+      --red: #e02020;
+      --pnl: #111111;
+      --mut: rgba(240,235,224,0.58);
+      --rul: rgba(240,235,224,0.1);
     }
 
-    html {
-      scroll-behavior: smooth;
-      height: 100vh;
+    html, body {
+      height: 100%;
       overflow: hidden;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: var(--black);
-      color: var(--white);
+      background: var(--blk);
+      color: var(--wht);
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
-      height: 100vh;
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
     }
 
-    /* ── STICKY SCROLL CONTAINER ── */
-    #scroll-container {
-      position: relative;
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.016) 1px, transparent 1px);
+      background-size: 6px 6px;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── SCROLL CONTAINER ── */
+    #sc {
       height: 100vh;
       overflow-y: scroll;
       overflow-x: hidden;
       scroll-snap-type: y mandatory;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+    #sc::-webkit-scrollbar { display: none; }
 
-    #scroll-container > section {
+    /* ── BASE SECTION ── */
+    .s {
       scroll-snap-align: start;
       scroll-snap-stop: always;
-      min-height: 100vh;
+      height: 100vh;
+      width: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
+    .s.ovf { overflow-y: auto; }
 
-    #scroll-container > footer {
-      scroll-snap-align: start;
-      min-height: auto;
-      padding-bottom: 4rem;
+    /* ── SECTION ENTER ANIMATION ── */
+    .sc2 {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
     }
-
-    /* halftone grain */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 6px 6px;
-      pointer-events: none;
-      z-index: 0;
-    }
+    .s.live .sc2 { opacity: 1; transform: translateY(0); }
+    #p1 .sc2 { opacity: 1; transform: none; }
 
     /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
-      padding: 0.875rem 1.25rem;
+      z-index: 500;
+      padding: 1rem clamp(1.2rem,5vw,3.5rem);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 200;
-      background: rgba(9,9,9,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--rule);
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--rul);
     }
 
-    .nav-logo {
+    .logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       letter-spacing: 0.06em;
-      color: var(--yellow);
+      line-height: 1;
     }
 
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
+    .nav-r { display: flex; align-items: center; gap: 0.8rem; }
 
     .nav-tag {
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .nav-cta {
-      background: var(--yellow);
-      color: #000;
-      border: none;
-      padding: 0.75rem 1.25rem;
-      min-height: 44px;
-      min-width: 44px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: opacity 0.15s;
-    }
-
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* ── SNAP SECTIONS (full viewport) ── */
-    .snap-section {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-      overflow-x: hidden;
-      padding: 5rem 1.25rem 1.5rem;
-    }
-
-    @media (min-width: 769px) {
-      .snap-section { padding: 6rem clamp(1.5rem,5vw,4rem) 4rem; }
-    }
-
-    .ticker-snap {
-      height: auto;
-      display: flex;
-      align-items: center;
-      padding: 0;
-    }
-
-    .ticker-snap.ticker-wrap {
-      border-top: none;
-    }
-
-    /* ════════════════════════════════
-       SECTION 1 — CINEMATIC HOOK
-    ════════════════════════════════ */
-    #section-hook {
-      border-bottom: 3px solid var(--white);
-      padding-top: 6rem;
-    }
-
-    #section-hook .hook-inner { padding: 0; }
-
-    /* big bg number */
-    #section-hook::after {
-      content: '11';
-      position: absolute;
-      right: -2vw;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(20rem, 40vw, 50rem);
-      color: rgba(255,255,255,0.02);
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .hook-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-    }
-
-    .hook-kicker {
-      display: inline-block;
-      background: var(--yellow);
-      color: #000;
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.8rem;
-      margin-bottom: 2rem;
-      font-weight: 500;
-      opacity: 0;
-      animation: fadeUp 0.5s 0.3s forwards;
-    }
-
-    .hook-line {
-      display: block;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 5vw, 4.5rem);
-      line-height: 0.9;
-      letter-spacing: 0.02em;
-      color: rgba(255,255,255,0.15);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: color 0.8s, opacity 0s, transform 0s;
-    }
-
-    .hook-line.lit {
-      color: var(--white);
-      opacity: 1;
-      transform: translateY(0);
-      transition: color 0.6s, opacity 0.6s, transform 0.6s;
-    }
-
-    .hook-line.yellow-lit { color: var(--yellow); }
-
-    .hook-sub {
-      margin-top: 1.25rem;
-      font-size: clamp(0.875rem, 2vw, 1.2rem);
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 40ch;
-      opacity: 0;
-      animation: fadeUp 0.7s 3.5s forwards;
-    }
-
-    .hook-sub strong { color: var(--white); font-weight: 500; }
-
-    .hook-scroll {
-      margin-top: 3rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.5s 4s forwards;
-    }
-
-    .hook-scroll-line {
-      width: 40px;
-      height: 2px;
-      background: var(--yellow);
-    }
-
-    .hook-scroll-text {
-      font-size: 0.62rem;
+      font-size: 0.58rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--mut);
     }
+    @media (max-width: 520px) { .nav-tag { display: none; } }
 
-    /* ════════════════════════════════
-       SECTION 2 — AGE PICKER
-    ════════════════════════════════ */
-    #section-age {
-      border-bottom: 3px solid var(--white);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .age-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    @media (min-width: 769px) {
-      .age-layout { grid-template-columns: 1fr 1fr; gap: 4rem; }
-    }
-
-
-    .sec-kicker {
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--yellow);
-      margin-bottom: 1rem;
-    }
-
-    .sec-title {
+    .btn-n {
+      background: var(--yel); color: #000; border: none;
+      padding: 0.5rem 1rem;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 7vw, 6rem);
-      line-height: 0.9;
-      letter-spacing: 0.02em;
-      margin-bottom: 1rem;
+      font-size: 0.88rem; letter-spacing: 0.08em;
+      border-radius: 4px; cursor: pointer;
+      min-height: 36px; transition: opacity 0.15s;
+    }
+    .btn-n:hover { opacity: 0.85; }
+
+    .burger {
+      background: none; border: none; cursor: pointer;
+      display: flex; flex-direction: column;
+      gap: 5px; padding: 4px;
+    }
+    .burger span {
+      display: block; width: 20px; height: 2px;
+      background: var(--wht); border-radius: 1px;
     }
 
-    .sec-body {
-      font-size: clamp(0.875rem, 2vw, 1rem);
-      color: var(--muted);
-      line-height: 1.65;
-      max-width: 38ch;
+    /* ── MENU ── */
+    #menu {
+      position: fixed; inset: 0;
+      background: rgba(8,8,8,0.98);
+      z-index: 600;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.3rem;
+      transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
     }
-
-    .age-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .age-btn {
-      background: rgba(255,255,255,0.03);
-      border: 2px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      padding: 1rem 1rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-align: left;
-    }
-
-    @media (max-width: 768px) {
-      .age-btn { min-height: 64px; }
-      .email-form input,
-      .email-form button { min-height: 48px; }
-    }
-
-    @media (min-width: 769px) {
-      .age-btn { padding: 1.4rem 1.2rem; }
-    }
-
-    .age-btn:hover { border-color: rgba(245,196,0,0.4); }
-
-    .age-btn.selected {
-      background: rgba(245,196,0,0.08);
-      border-color: var(--yellow);
-    }
-
-    .age-range {
+    #menu.open { transform: translateX(0); }
+    .mc {
+      position: absolute; top: 1.2rem;
+      right: clamp(1.2rem,5vw,3.5rem);
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      color: var(--white);
-      line-height: 1;
+      font-size: 2rem; color: var(--yel);
+      background: none; border: none; cursor: pointer;
     }
-
-    .age-btn.selected .age-range { color: var(--yellow); }
-
-    .age-sub {
-      font-size: 0.65rem;
-      color: var(--muted);
-      margin-top: 4px;
-      letter-spacing: 0.06em;
-    }
-
-    /* ════════════════════════════════
-       SECTION 3 — REVEAL
-    ════════════════════════════════ */
-    #section-reveal {
-      border-bottom: 3px solid var(--white);
-    }
-
-    .reveal-container {
-      max-width: 700px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .rl {
+    .ml {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.35rem, 5vw, 3.5rem);
-      letter-spacing: 0.02em;
-      color: rgba(255,255,255,0.12);
-      line-height: 1.1;
-      margin-bottom: 0.3rem;
-      transition: color 0.7s, opacity 0.7s, transform 0.7s;
-      opacity: 0.3;
-      transform: translateY(6px);
-    }
-
-    .rl.lit {
-      color: var(--white);
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .rl.yellow { color: var(--yellow); }
-    .rl.red    { color: var(--red); }
-    .rl.huge   { font-size: clamp(2.25rem, 10vw, 8rem); line-height: 0.88; margin: 0.5rem 0; }
-    .rl.gap    { margin-top: 2rem; }
-
-    .rl.prose {
-      font-family: 'DM Sans', sans-serif;
-      font-size: clamp(0.9rem, 2vw, 1.1rem);
-      font-weight: 300;
-      letter-spacing: 0;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .rl.prose.lit { color: rgba(240,235,224,0.6); }
-
-    .reveal-btn {
-      margin-top: 3rem;
-      opacity: 0;
-      transition: opacity 0.5s;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .reveal-btn.show { opacity: 1; }
-
-    /* ════════════════════════════════
-       SECTION 4 — REAL HOURS
-    ════════════════════════════════ */
-    #section-rh {
-      border-bottom: 3px solid var(--white);
-      background: var(--panel);
-    }
-
-    .rh-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-    @media (min-width: 769px) {
-      .rh-layout { grid-template-columns: 1fr 1fr; gap: 5rem; }
-    }
-
-
-    .rh-number-wrap {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin: 1rem 0;
-    }
-
-    .rh-big {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(5rem, 15vw, 12rem);
-      color: var(--yellow);
-      line-height: 0.85;
-      letter-spacing: 0.02em;
-    }
-
-    .rh-unit {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.5rem, 4vw, 3rem);
-      color: rgba(245,196,0,0.4);
-      letter-spacing: 0.06em;
-    }
-
-    .rh-desc {
-      font-size: clamp(0.875rem, 2vw, 1rem);
-      color: var(--muted);
-      line-height: 1.65;
-      max-width: 40ch;
-    }
-
-    .rh-desc strong { color: var(--white); font-weight: 500; }
-
-    .eq-box {
-      background: rgba(255,255,255,0.03);
-      border: 2px solid var(--rule);
-      border-radius: 16px;
-      padding: 2rem;
-    }
-
-    .eq-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem;
-      letter-spacing: 0.06em;
-      color: var(--white);
-      margin-bottom: 1.2rem;
-    }
-
-    .eq-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-    }
-
-    .eq-part {
-      text-align: center;
-    }
-
-    .eq-val {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      color: var(--white);
-      line-height: 1;
-    }
-
-    .eq-val.yellow { color: var(--yellow); }
-
-    .eq-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .eq-op {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      color: rgba(245,196,0,0.3);
-    }
-
-    .eq-examples {
-      border-top: 1px solid var(--rule);
-      padding-top: 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .eq-ex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .eq-ex span { color: var(--white); font-weight: 500; }
-
-    /* ════════════════════════════════
-       SECTION 5 — CALCULATOR
-    ════════════════════════════════ */
-    #section-calc {
-      border-bottom: 3px solid var(--white);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    #section-calc::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(224,32,32,0.06) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .calc-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      align-items: start;
-      position: relative;
-      z-index: 2;
-    }
-
-    @media (min-width: 769px) {
-      .calc-layout { grid-template-columns: 1fr 1fr; gap: 4rem; }
-    }
-
-    .calc-interface {
-      border: 3px solid var(--white);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .calc-input-row {
-      padding: 2rem;
-      background: rgba(255,255,255,0.02);
-      border-bottom: 2px solid var(--rule);
-    }
-
-    .calc-q {
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    .calc-slider-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .calc-val {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 3.5rem;
-      color: var(--yellow);
-      line-height: 1;
-      min-width: 3ch;
-    }
-
-    .calc-slider {
-      flex: 1;
-      -webkit-appearance: none;
-      appearance: none;
-      height: 3px;
-      background: rgba(255,255,255,0.1);
-      outline: none;
-      border-radius: 2px;
-    }
-
-    .calc-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 28px; height: 28px;
-      background: var(--yellow);
-      border: 3px solid var(--black);
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .calc-slider::-moz-range-thumb {
-      width: 28px; height: 28px;
-      background: var(--yellow);
-      border: 3px solid var(--black);
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .calc-unit {
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .calc-output {
-      background: var(--red);
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-
-    .calc-stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      color: var(--white);
-      line-height: 1;
-    }
-
-    .calc-stat-label {
-      font-size: 0.62rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.65);
-      margin-top: 4px;
-      line-height: 1.5;
-    }
-
-    /* what you could have done */
-    .could-box {
-      background: rgba(255,255,255,0.03);
-      border: 2px solid var(--rule);
-      border-radius: 12px;
-      padding: 2rem;
-      margin-top: 1rem;
-    }
-
-    .could-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
+      font-size: clamp(1.8rem,5.5vw,3.2rem);
+      color: rgba(255,255,255,0.38);
       letter-spacing: 0.04em;
-      color: var(--muted);
-      margin-bottom: 1rem;
+      cursor: pointer; transition: color 0.15s;
+    }
+    .ml:hover, .ml.on { color: var(--yel); }
+
+    /* ── DOTS ── */
+    #dots {
+      position: fixed; right: 1rem; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column;
+      gap: 7px; z-index: 400;
+    }
+    @media (max-width: 600px) { #dots { display: none; } }
+    .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer; transition: all 0.3s;
+    }
+    .dot.on {
+      background: var(--yel); height: 18px;
+      border-radius: 3px;
+      box-shadow: 0 0 8px rgba(245,196,0,0.5);
     }
 
-    .could-title span { color: var(--white); }
-
-    .could-items {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .could-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    .could-item strong { color: var(--white); }
-    .could-icon { font-size: 1.1rem; }
-
-    /* ════════════════════════════════
-       SECTION 6 — HOW IT WORKS
-    ════════════════════════════════ */
-    #section-how {
-      border-bottom: 3px solid var(--white);
-      background: var(--panel);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .how-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    @media (min-width: 769px) {
-      .how-header { margin-bottom: 3rem; }
-    }
-
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 0;
-      border: 3px solid var(--white);
-    }
-
-    @media (max-width: 900px) { .how-grid { grid-template-columns: repeat(2,1fr); } }
-    @media (max-width: 500px) { .how-grid { grid-template-columns: 1fr; } }
-
-    .how-step {
-      padding: 1.5rem 1.25rem;
-      border-right: 2px solid var(--rule);
-      position: relative;
-    }
-
-    @media (min-width: 769px) {
-      .how-step { padding: 2.5rem 2rem; }
-    }
-
-    .how-step:last-child { border-right: none; }
-
-    @media (max-width: 900px) {
-      .how-step:nth-child(2) { border-right: none; }
-      .how-step:nth-child(n+3) { border-top: 2px solid var(--rule); }
-    }
-
-    @media (max-width: 500px) {
-      .how-step { border-right: none; border-bottom: 2px solid var(--rule); }
-      .how-step:last-child { border-bottom: none; }
-    }
-
-    .how-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 5rem;
-      color: rgba(255,255,255,0.04);
-      line-height: 1;
-      position: absolute;
-      top: 1rem; right: 1.5rem;
-    }
-
-    .how-tag {
+    /* ── SHARED COMPONENTS ── */
+    .kk {
       display: inline-block;
-      background: var(--yellow);
-      color: #000;
-      font-size: 0.58rem;
-      letter-spacing: 0.15em;
+      font-size: 0.58rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--yel);
+      margin-bottom: 0.9rem;
+    }
+
+    .btn-p {
+      display: inline-block;
+      background: var(--yel); color: #000; border: none;
+      padding: 0.85rem 2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem; letter-spacing: 0.08em;
+      border-radius: 4px; cursor: pointer;
+      text-decoration: none; transition: opacity 0.15s;
+      min-height: 48px;
+    }
+    .btn-p:hover { opacity: 0.88; }
+
+    .btn-g {
+      display: inline-block;
+      background: transparent; color: var(--yel); border: none;
+      padding: 0.5rem 0;
+      font-size: 0.7rem; letter-spacing: 0.18em;
       text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      margin-bottom: 1rem;
-      font-weight: 500;
+      cursor: pointer; transition: opacity 0.15s;
     }
+    .btn-g:hover { opacity: 0.6; }
 
-    .how-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem;
-      letter-spacing: 0.04em;
-      margin-bottom: 0.7rem;
-    }
-
-    .how-body {
-      font-size: clamp(0.8rem, 2vw, 0.85rem);
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    /* ════════════════════════════════
-       SECTION 7 — MANIFESTO BAND
-    ════════════════════════════════ */
-    #section-manifesto {
-      background: var(--yellow);
-      color: #000;
-      border-bottom: 3px solid #000;
-      position: relative;
-      overflow: hidden;
-    }
-
-    #section-manifesto::before {
-      content: 'B';
-      position: absolute;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 80vw;
-      line-height: 0.8;
-      color: rgba(0,0,0,0.04);
-      right: -8vw;
-      top: -10vw;
-      pointer-events: none;
-    }
-
-    .manifesto-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-    }
-
-    .manifesto-text {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.75rem, 7vw, 5.5rem);
-      line-height: 1;
-      letter-spacing: 0.02em;
-      margin-bottom: 1.5rem;
-    }
-
-    .manifesto-text span {
-      -webkit-text-stroke: 2px #000;
-      color: transparent;
-    }
-
-    .manifesto-body {
-      font-size: clamp(0.875rem, 2vw, 1rem);
-      color: rgba(0,0,0,0.55);
-      line-height: 1.65;
-      max-width: 52ch;
-    }
-
-    /* ════════════════════════════════
-       SECTION 8 — EMAIL CAPTURE
-    ════════════════════════════════ */
-    #section-waitlist {
-      text-align: center;
-    }
-
-    #section-waitlist::before {
-      content: '0.0';
-      position: absolute;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(10rem, 40vw, 40rem);
-      color: rgba(245,196,0,0.03);
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .waitlist-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 600px;
-      width: 100%;
-    }
-
-    .waitlist-kicker {
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--yellow);
-      margin-bottom: 1.5rem;
-    }
-
-    .waitlist-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.25rem, 10vw, 8rem);
-      line-height: 0.88;
-      letter-spacing: 0.02em;
-      margin-bottom: 1.25rem;
-    }
-
-    .waitlist-title span { color: var(--yellow); }
-
-    .waitlist-sub {
-      font-size: clamp(0.875rem, 2vw, 1rem);
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 2rem;
-      max-width: 38ch;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .waitlist-sub strong { color: var(--white); }
-
-    .email-form {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border: 3px solid var(--white);
-      border-radius: 4px;
-      overflow: hidden;
-      width: 100%;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    @media (min-width: 480px) {
-      .email-form { flex-direction: row; max-width: 480px; }
-    }
-
-    .email-form input {
+    .inn {
+      padding: clamp(5rem,9vh,7rem) clamp(1.2rem,5vw,3.5rem) clamp(1.2rem,3vh,2.5rem);
       flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      padding: 1rem 1.25rem;
-      min-height: 48px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      color: var(--white);
-    }
-
-    .email-form input::placeholder { color: var(--muted); }
-
-    .email-form button {
-      background: var(--yellow);
-      border: none;
-      border-top: 3px solid var(--white);
-      padding: 1rem 1.5rem;
-      min-height: 48px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      color: #000;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s;
-    }
-
-    @media (min-width: 480px) {
-      .email-form button { border-top: none; border-left: 3px solid var(--white); }
-    }
-
-    .email-form button:hover { background: #ffd533; }
-
-    .waitlist-note {
-      margin-top: 1rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .waitlist-success {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      padding: 2rem;
-      background: rgba(245,196,0,0.06);
-      border: 2px solid rgba(245,196,0,0.2);
-      border-radius: 12px;
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    .success-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-      color: var(--yellow);
-    }
-
-    .success-msg {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 2rem;
-      letter-spacing: 0.04em;
-      color: var(--white);
-    }
-
-    .success-sub {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .share-row {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
+      display: flex; flex-direction: column;
       justify-content: center;
     }
 
-    .share-btn {
-      padding: 0.75rem 1.25rem;
-      min-height: 44px;
-      border: 1.5px solid rgba(255,255,255,0.15);
-      border-radius: 8px;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.15s;
-      text-decoration: none;
+    .sh {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem,7vw,5.5rem);
+      line-height: 0.9; letter-spacing: 0.02em;
+      margin-bottom: 0.9rem;
+    }
+    .sb {
+      font-size: clamp(0.82rem,1.6vw,0.96rem);
+      color: var(--mut); line-height: 1.8;
     }
 
-    .share-btn:hover {
-      border-color: var(--yellow);
-      color: var(--yellow);
+    /* ════════════════════════════
+       P1 — HOOK
+    ════════════════════════════ */
+    #p1 { background: var(--blk); }
+    #p1::before {
+      content: '11';
+      position: absolute; right: -3vw; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(16rem,36vw,44rem);
+      color: rgba(255,255,255,0.018);
+      line-height: 1; pointer-events: none; user-select: none;
     }
+
+    .hl {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem,9vw,8rem);
+      line-height: 0.9; letter-spacing: 0.02em;
+      color: var(--wht);
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .hl.y { color: var(--yel); }
+    .hl.lit { opacity: 1; transform: translateY(0); }
+
+    .hsub {
+      margin-top: 1.4rem;
+      font-size: clamp(0.88rem,1.6vw,1rem);
+      color: var(--mut); line-height: 1.7; max-width: 36ch;
+      opacity: 0; animation: fadeUp 0.6s 3.2s forwards;
+    }
+    .hsub strong { color: var(--wht); font-weight: 500; }
+
+    /* harvard strip on p1 */
+    .hvd {
+      margin-top: 1.6rem;
+      padding: 1rem 1.4rem;
+      background: rgba(245,196,0,0.06);
+      border: 1px solid rgba(245,196,0,0.18);
+      border-radius: 10px;
+      max-width: 520px;
+      opacity: 0;
+      animation: fadeUp 0.6s 3.6s forwards;
+    }
+    .hvd-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem; letter-spacing: 0.1em;
+      color: var(--yel); margin-bottom: 0.4rem;
+    }
+    .hvd-body {
+      font-size: 0.78rem; color: var(--mut); line-height: 1.7;
+    }
+    .hvd-body strong { color: var(--wht); font-weight: 500; }
+
+    .hscroll {
+      margin-top: 1.8rem;
+      display: flex; align-items: center; gap: 1rem;
+      opacity: 0; animation: fadeUp 0.5s 4s forwards;
+    }
+    .hbar { width: 32px; height: 2px; background: var(--yel); }
+    .htxt { font-size: 0.56rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--mut); }
+
+    /* ticker inside p1 */
+    #ticker {
+      height: 36px; overflow: hidden;
+      border-top: 1px solid var(--rul);
+      background: rgba(245,196,0,0.03);
+      display: flex; align-items: center;
+      flex-shrink: 0;
+    }
+    .ttk {
+      display: inline-flex; gap: 3rem;
+      animation: ticker 20s linear infinite;
+      white-space: nowrap;
+    }
+    .ti {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.78rem; letter-spacing: 0.2em;
+      color: var(--yel); opacity: 0.6; flex-shrink: 0;
+    }
+    .td { color: rgba(245,196,0,0.22); }
+
+    /* ════════════════════════════
+       P2 — AGE
+    ════════════════════════════ */
+    #p2 { background: var(--pnl); border-top: 2px solid var(--rul); }
+
+    .a2l {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem,5vw,5rem);
+      align-items: center;
+    }
+    @media (max-width: 680px) { .a2l { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+    .agrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .ab {
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 1.1rem 1rem;
+      cursor: pointer; transition: all 0.15s;
+      text-align: left; min-height: 68px;
+    }
+    .ab:hover { border-color: rgba(245,196,0,0.4); }
+    .ab.sel { background: rgba(245,196,0,0.08); border-color: var(--yel); }
+    .an { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--wht); line-height: 1; }
+    .ab.sel .an { color: var(--yel); }
+    .alb { font-size: 0.6rem; color: var(--mut); margin-top: 3px; letter-spacing: 0.06em; }
+
+    /* ════════════════════════════
+       P3 — REVEAL
+    ════════════════════════════ */
+    #p3 { background: var(--blk); border-top: 2px solid var(--rul); }
+
+    .rw { max-width: 660px; }
+    .rl {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.5rem,4.2vw,3rem);
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.14);
+      line-height: 1.1; margin-bottom: 0.2rem;
+      transition: color 0.6s, opacity 0.6s;
+      opacity: 0.3;
+    }
+    .rl.lit { color: var(--wht); opacity: 1; }
+    .rl.y.lit { color: var(--yel); }
+    .rl.r.lit { color: var(--red); }
+    .rl.big { font-size: clamp(2.6rem,7.5vw,5.5rem); line-height: 0.88; margin: 0.5rem 0; }
+    .rl.gap { margin-top: 1.6rem; }
+    .rl.sm {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(0.82rem,1.6vw,0.96rem);
+      font-weight: 300; letter-spacing: 0;
+      line-height: 1.7; color: var(--mut);
+    }
+    .rl.sm.lit { color: rgba(240,235,224,0.65); }
+
+    .rcta { margin-top: 2rem; opacity: 0; transition: opacity 0.5s; }
+    .rcta.show { opacity: 1; }
+
+    /* ════════════════════════════
+       P4 — CALCULATOR
+    ════════════════════════════ */
+    #p4 { background: var(--pnl); border-top: 2px solid var(--rul); }
+
+    .cl {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem,4vw,4rem);
+      align-items: start;
+    }
+    @media (max-width: 680px) { .cl { grid-template-columns: 1fr; } }
+
+    .ch {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem,5.5vw,4.2rem);
+      line-height: 0.9; letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .ch .g { color: var(--grn); }
+
+    .cbox {
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 4px; overflow: hidden;
+      margin-top: 0.8rem;
+    }
+
+    .ci {
+      padding: 1.2rem 1.4rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1.5px solid var(--rul);
+    }
+    .cq {
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--mut);
+      margin-bottom: 0.7rem;
+    }
+    .csr { display: flex; align-items: center; gap: 0.8rem; }
+    .cnum {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem; color: var(--yel);
+      line-height: 1; min-width: 2.5ch;
+    }
+    .cslider {
+      flex: 1; -webkit-appearance: none; appearance: none;
+      height: 3px; background: rgba(255,255,255,0.12);
+      outline: none; border-radius: 2px;
+    }
+    .cslider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      background: var(--yel); border: 3px solid var(--pnl);
+      border-radius: 50%; cursor: pointer;
+    }
+    .cslider::-moz-range-thumb {
+      width: 22px; height: 22px;
+      background: var(--yel); border: 3px solid var(--pnl);
+      border-radius: 50%; cursor: pointer;
+    }
+    .cu { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mut); white-space: nowrap; }
+
+    .cstats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      background: var(--red);
+    }
+    .cst {
+      padding: 1.1rem 1.2rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .csn {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem,3.5vw,2.6rem);
+      color: var(--wht); line-height: 1;
+    }
+    .csl3 {
+      font-size: 0.58rem; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.52);
+      margin-top: 3px; line-height: 1.4;
+    }
+
+    /* right col — context + continue */
+    .c-context {
+      padding-top: 0.5rem;
+    }
+    .c-avg-row {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--rul);
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .c-avg-lbl {
+      font-size: 0.6rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--mut);
+      margin-bottom: 0.5rem;
+    }
+    .c-avg-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; color: var(--mut); line-height: 1;
+    }
+    .c-avg-num span { color: var(--wht); }
+    .c-avg-bar-wrap {
+      margin-top: 0.7rem;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .c-bar-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .c-bar-lbl {
+      font-size: 0.58rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--mut);
+      min-width: 38px;
+    }
+    .c-bar-track {
+      flex: 1; height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px; overflow: hidden;
+    }
+    .c-bar-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .c-bar-fill.you { background: var(--yel); }
+    .c-bar-fill.avg { background: rgba(255,255,255,0.3); }
+    .c-bar-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem; color: var(--mut);
+      min-width: 28px; text-align: right;
+    }
+    .c-bar-val.you { color: var(--yel); }
+
+    .c-note {
+      font-size: 0.75rem; color: var(--mut);
+      line-height: 1.7; margin-bottom: 1.2rem;
+    }
+    .c-note strong { color: var(--wht); font-weight: 500; }
+
+    /* ════════════════════════════
+       P5 — COMPARISON
+    ════════════════════════════ */
+    #p5 { background: var(--blk); border-top: 2px solid var(--rul); }
+
+    .comp-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem,4vw,4rem);
+      align-items: start;
+    }
+    @media (max-width: 680px) { .comp-layout { grid-template-columns: 1fr; } }
+
+    .pp-wrap {
+      padding: 1rem 0;
+      border-top: 1px solid var(--rul);
+      margin-top: 0.8rem;
+    }
+    .pp-q {
+      font-size: 0.6rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--mut);
+      margin-bottom: 0.65rem;
+    }
+    .pp-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+    .pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px; padding: 4px 11px;
+      font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--wht);
+      cursor: pointer; transition: all 0.15s;
+      min-height: 28px;
+    }
+    .pill:hover { border-color: rgba(245,196,0,0.5); }
+    .pill.on { background: var(--yel); color: #000; border-color: var(--yel); }
+
+    .pstat {
+      margin-top: 0.8rem;
+      padding: 1rem 1.2rem;
+      background: rgba(245,196,0,0.06);
+      border: 1px solid rgba(245,196,0,0.15);
+      border-radius: 10px;
+    }
+    .ptag { font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--yel); margin-bottom: 3px; }
+    .pn { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem,3.5vw,2.6rem); color: var(--yel); line-height: 1; }
+    .pl { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,196,0,0.55); margin-top: 3px; }
+
+    .flip-box {
+      background: rgba(46,204,113,0.06);
+      border: 1.5px solid rgba(46,204,113,0.2);
+      border-radius: 14px; padding: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .fl-l { font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(46,204,113,0.6); margin-bottom: 0.4rem; }
+    .fl-n { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--grn); line-height: 1; }
+    .fl-s { font-size: 0.72rem; color: var(--mut); line-height: 1.6; margin-top: 0.4rem; }
+
+    /* ════════════════════════════
+       P6 — REAL HOURS
+    ════════════════════════════ */
+    #p6 { background: var(--pnl); border-top: 2px solid var(--rul); }
+
+    .rhl {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem,5vw,5rem);
+      align-items: center;
+    }
+    @media (max-width: 680px) { .rhl { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+    .rhw {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem,13vw,10rem);
+      color: var(--wht); line-height: 0.85;
+      letter-spacing: 0.02em; display: block;
+    }
+
+    .rh-waiting {
+      margin-top: 1.2rem;
+      padding: 1.2rem 1.4rem;
+      background: rgba(46,204,113,0.06);
+      border: 1px solid rgba(46,204,113,0.2);
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .rh-w-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem; color: var(--grn); line-height: 1;
+    }
+    .rh-w-lbl {
+      font-size: 0.58rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(46,204,113,0.6); margin-top: 4px;
+    }
+
+    .rhd {
+      font-size: clamp(0.82rem,1.6vw,0.96rem);
+      color: var(--mut); line-height: 1.8;
+      margin-bottom: 1rem; max-width: 36ch;
+    }
+    .rhd strong { color: var(--wht); font-weight: 500; }
+
+    .eqb {
+      background: rgba(255,255,255,0.03);
+      border: 1.5px solid var(--rul);
+      border-radius: 14px; padding: 1.6rem;
+    }
+    .eqt {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem; letter-spacing: 0.06em;
+      color: var(--wht); margin-bottom: 1.1rem;
+    }
+    .eqr {
+      display: flex; align-items: center;
+      gap: 0.7rem; flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+    .eqv { font-family: 'Bebas Neue', sans-serif; font-size: 1.9rem; color: var(--wht); line-height: 1; text-align: center; }
+    .eqv.g { color: var(--grn); }
+    .eql { font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mut); margin-top: 3px; text-align: center; }
+    .eqop { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: rgba(245,196,0,0.3); }
+    .eqex { border-top: 1px solid var(--rul); padding-top: 1rem; display: flex; flex-direction: column; gap: 6px; }
+    .eqex div { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--mut); }
+    .eqex span { color: var(--grn); font-weight: 500; }
+
+    /* ════════════════════════════
+       P7 — HOW IT WORKS
+    ════════════════════════════ */
+    #p7 { background: var(--blk); border-top: 2px solid var(--rul); }
+
+    .how-outer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      flex: 1;
+    }
+    @media (max-width: 720px) { .how-outer { grid-template-columns: 1fr; } }
+
+    /* stepper left */
+    .how-steps { display: flex; flex-direction: column; gap: 0; }
+
+    .how-step {
+      padding: 1rem 1.2rem;
+      border-left: 2px solid rgba(255,255,255,0.08);
+      cursor: pointer; transition: all 0.2s;
+      position: relative;
+    }
+    .how-step.on {
+      border-left-color: var(--yel);
+      background: rgba(245,196,0,0.04);
+    }
+    .how-step-num {
+      font-size: 0.55rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--mut);
+      margin-bottom: 0.3rem;
+    }
+    .how-step.on .how-step-num { color: var(--yel); }
+    .how-step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.35);
+      line-height: 1;
+    }
+    .how-step.on .how-step-title { color: var(--wht); }
+    .how-step-body {
+      font-size: 0.78rem; color: var(--mut);
+      line-height: 1.7; margin-top: 0.4rem;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s, opacity 0.3s;
+      opacity: 0;
+    }
+    .how-step.on .how-step-body { max-height: 100px; opacity: 1; }
+
+    .how-nav {
+      display: flex; gap: 0.8rem;
+      margin-top: 1.2rem;
+    }
+    .how-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      font-size: 0.7rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mut);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .how-btn:hover { border-color: var(--yel); color: var(--yel); }
+    .how-btn.primary-btn { background: var(--yel); color: #000; border-color: var(--yel); font-weight: 500; }
+
+    /* phone mockup right */
+    .phone-mock {
+      width: min(260px, 100%);
+      margin: 0 auto;
+      display: flex; flex-direction: column;
+      align-items: center;
+    }
+
+    .phone-shell {
+      width: 220px; height: 420px;
+      background: #0a0a0a;
+      border-radius: 36px;
+      border: 6px solid #1e1e1e;
+      position: relative; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .phone-shell::before {
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 22px;
+      background: #0a0a0a;
+      border-radius: 0 0 14px 14px;
+      z-index: 10;
+    }
+
+    .pscreen {
+      position: absolute; inset: 0;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 28px 20px 20px;
+    }
+    .pscreen.vis { display: flex; }
+
+    /* screen 1 — locked */
+    .pscreen-1 { background: #0a0a0a; }
+    .p-lock-icon {
+      font-size: 2rem; margin-bottom: 1rem;
+    }
+    .p-lock-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 0.04em;
+      color: var(--wht); text-align: center;
+      margin-bottom: 0.4rem;
+    }
+    .p-lock-sub {
+      font-size: 0.65rem; color: var(--mut);
+      text-align: center; line-height: 1.5;
+      max-width: 22ch;
+    }
+    .p-apps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 8px; margin-top: 1.2rem; width: 100%;
+    }
+    .p-app {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 3px;
+      opacity: 0.3; filter: grayscale(1);
+    }
+    .p-app-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center;
+      justify-content: center; font-size: 1rem;
+    }
+    .p-app-lbl { font-size: 0.45rem; color: var(--mut); }
+
+    /* screen 2 — scanning */
+    .pscreen-2 { background: #050510; }
+    .radar {
+      position: relative;
+      width: 130px; height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .radar-ring {
+      position: absolute; border-radius: 50%;
+      border: 1.5px solid rgba(245,196,0,0.3);
+      animation: radpulse 2.4s ease-out infinite;
+    }
+    .radar-ring:nth-child(1) { width: 50px; height: 50px; animation-delay: 0s; }
+    .radar-ring:nth-child(2) { width: 80px; height: 80px; animation-delay: 0.5s; }
+    .radar-ring:nth-child(3) { width: 110px; height: 110px; animation-delay: 1s; }
+    .radar-ring:nth-child(4) { width: 130px; height: 130px; animation-delay: 1.5s; }
+    @keyframes radpulse {
+      0% { opacity: 0.8; transform: scale(0.85); }
+      100% { opacity: 0; transform: scale(1); }
+    }
+    .radar-center {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--yel);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; z-index: 2;
+    }
+    .radar-dot {
+      position: absolute;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--wht); border: 2px solid var(--yel);
+      animation: orb 3s linear infinite;
+    }
+    @keyframes orb {
+      from { transform: rotate(0deg) translateX(54px); }
+      to   { transform: rotate(360deg) translateX(54px); }
+    }
+    .p-scan-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; letter-spacing: 0.04em;
+      color: var(--wht); text-align: center; margin-bottom: 0.3rem;
+    }
+    .p-scan-sub { font-size: 0.6rem; color: var(--mut); text-align: center; }
+
+    /* screen 3 — unlock */
+    .pscreen-3 { background: #050505; }
+    .p-unlock-burst {
+      position: relative;
+      width: 90px; height: 90px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .p-burst-ring {
+      position: absolute; border-radius: 50%;
+      background: rgba(245,196,0,0.1);
+      animation: burstx 1s ease-out forwards;
+    }
+    .p-burst-ring:nth-child(1) { width: 50px; height: 50px; }
+    .p-burst-ring:nth-child(2) { width: 70px; height: 70px; animation-delay: 0.15s; }
+    .p-burst-ring:nth-child(3) { width: 90px; height: 90px; animation-delay: 0.3s; }
+    @keyframes burstx {
+      from { opacity: 1; transform: scale(0); }
+      to   { opacity: 0; transform: scale(1); }
+    }
+    .p-check {
+      width: 46px; height: 46px; border-radius: 50%;
+      background: var(--yel);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; z-index: 2;
+    }
+    .p-unlock-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: 0.04em;
+      color: var(--yel); text-align: center; margin-bottom: 0.3rem;
+    }
+    .p-unlock-sub { font-size: 0.6rem; color: var(--mut); text-align: center; }
+
+    /* screen 4 — home */
+    .pscreen-4 { background: #0a0a0a; padding-top: 32px; }
+    .p-home-header {
+      width: 100%; display: flex;
+      justify-content: space-between; align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    .p-home-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem; color: var(--yel);
+    }
+    .p-session {
+      display: flex; align-items: center; gap: 4px;
+      background: rgba(245,196,0,0.1);
+      border-radius: 10px; padding: 3px 8px;
+    }
+    .p-sdot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--yel);
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .p-stxt { font-size: 0.5rem; color: var(--yel); }
+    .p-apps-unlocked {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 8px; width: 100%;
+    }
+    .p-app-u {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 3px;
+    }
+    .p-app-icon-u {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center;
+      justify-content: center; font-size: 1rem;
+      border: 1px solid rgba(46,204,113,0.3);
+    }
+    .p-app-lbl-u { font-size: 0.45rem; color: var(--grn); }
+
+    /* stick figures under phone */
+    .figures {
+      display: flex; gap: 0.5rem;
+      align-items: center; justify-content: center;
+      margin-top: 0.8rem;
+    }
+    .fig { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .fig-head { width: 14px; height: 14px; border-radius: 50%; }
+    .fig-body { width: 2px; height: 16px; border-radius: 1px; }
+    .fig-arms { width: 20px; height: 2px; border-radius: 1px; }
+    .fig-legs { display: flex; gap: 6px; }
+    .fig-leg { width: 2px; height: 12px; border-radius: 1px; transform-origin: top center; }
+    .fig.grey .fig-head, .fig.grey .fig-body, .fig.grey .fig-arms, .fig.grey .fig-leg { background: rgba(255,255,255,0.25); }
+    .fig.yel .fig-head, .fig.yel .fig-body, .fig.yel .fig-arms, .fig.yel .fig-leg { background: var(--yel); }
+    .fig-lbl { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mut); margin-top: 4px; }
+    .fig-sep { font-size: 1rem; color: rgba(255,255,255,0.15); margin: 0 4px; }
+    .fig-sep.on { color: var(--yel); }
+
+    /* ════════════════════════════
+       P8 — MANIFESTO
+    ════════════════════════════ */
+    #p8 {
+      background: var(--yel);
+      color: #000;
+      border-top: 2px solid rgba(0,0,0,0.12);
+    }
+    #p8::before {
+      content: 'T';
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80vw; line-height: 0.8;
+      color: rgba(0,0,0,0.04);
+      right: -8vw; top: -10vw;
+      pointer-events: none;
+    }
+    .mi { position: relative; z-index: 2; max-width: 780px; }
+    .mt {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem,5.5vw,4.5rem);
+      line-height: 1; letter-spacing: 0.02em;
+      margin-bottom: 1.4rem;
+    }
+    .mt .ol { -webkit-text-stroke: 2px #000; color: transparent; }
+    .mb {
+      font-size: clamp(0.88rem,1.6vw,1rem);
+      color: rgba(0,0,0,0.52); line-height: 1.8;
+      max-width: 50ch; margin-bottom: 1rem;
+    }
+    .mq {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.4rem,3.5vw,2.5rem);
+      letter-spacing: 0.03em;
+      color: #000; margin-bottom: 1.2rem;
+      line-height: 1.1;
+    }
+    .btn-dark {
+      display: inline-block;
+      background: #000; color: var(--yel);
+      border: none; padding: 0.85rem 2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem; letter-spacing: 0.08em;
+      border-radius: 4px; cursor: pointer;
+      transition: opacity 0.15s; min-height: 48px;
+    }
+    .btn-dark:hover { opacity: 0.85; }
+
+    /* ════════════════════════════
+       P9 — WAITLIST
+    ════════════════════════════ */
+    #p9 { background: var(--blk); border-top: 2px solid var(--rul); }
+    #p9::before {
+      content: '0';
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(16rem,48vw,52rem);
+      color: rgba(245,196,0,0.025); line-height: 1;
+      pointer-events: none; user-select: none;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    .wi {
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+      max-width: 520px; margin: 0 auto;
+      width: 100%; position: relative; z-index: 2;
+    }
+    .wt {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem,9vw,7rem);
+      line-height: 0.88; letter-spacing: 0.02em;
+      margin-bottom: 1rem;
+    }
+    .wt span { color: var(--yel); }
+    .ws {
+      font-size: clamp(0.85rem,1.6vw,0.96rem);
+      color: var(--mut); line-height: 1.7;
+      margin-bottom: 2rem; max-width: 36ch;
+    }
+    .ws strong { color: var(--wht); font-weight: 500; }
+    .ef {
+      display: flex;
+      border: 2.5px solid var(--wht);
+      border-radius: 4px; overflow: hidden;
+      width: 100%; max-width: 420px;
+    }
+    .ef input {
+      flex: 1; background: transparent;
+      border: none; outline: none;
+      padding: 0.85rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem; color: var(--wht);
+      min-height: 50px;
+    }
+    .ef input::placeholder { color: var(--mut); }
+    .ef button {
+      background: var(--yel); border: none;
+      border-left: 2.5px solid var(--wht);
+      padding: 0.85rem 1.2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem; letter-spacing: 0.08em;
+      color: #000; cursor: pointer;
+      white-space: nowrap; min-height: 50px;
+    }
+    .ef button:hover { background: #ffd533; }
+    .wn {
+      margin-top: 0.7rem;
+      font-size: 0.58rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mut);
+    }
+    .wsucc {
+      display: none; flex-direction: column;
+      align-items: center; gap: 0.7rem;
+      padding: 1.6rem;
+      background: rgba(245,196,0,0.06);
+      border: 1.5px solid rgba(245,196,0,0.2);
+      border-radius: 12px;
+      max-width: 420px; width: 100%;
+    }
+    .wnum { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--yel); }
+    .wmsg { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.04em; }
+    .wmsub { font-size: 0.8rem; color: var(--mut); line-height: 1.6; }
+    .tbtn {
+      margin-top: 0.8rem;
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 8px; padding: 0.55rem 1.3rem;
+      font-size: 0.7rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--mut);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .tbtn:hover { border-color: var(--yel); color: var(--yel); }
 
     /* ── FOOTER ── */
     footer {
-      padding: 2rem clamp(1.5rem,5vw,4rem);
-      border-top: 2px solid var(--rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+      padding: 1rem clamp(1.2rem,5vw,3.5rem);
+      border-top: 1px solid var(--rul);
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap;
+      gap: 0.5rem; flex-shrink: 0;
+      scroll-snap-align: none;
     }
+    .flogo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.06em; }
+    .fr { display: flex; gap: 1.5rem; }
+    .fc { font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mut); }
 
-    .footer-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem;
-      color: var(--yellow);
-      letter-spacing: 0.06em;
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-
-    .footer-right {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .footer-copy {
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* ── TICKER ── */
-    .ticker-wrap {
-      overflow: hidden;
-      border-top: 2px solid var(--rule);
-      border-bottom: 2px solid var(--rule);
-      padding: 1rem 0;
-      background: rgba(255,255,255,0.01);
-    }
-
-    .ticker {
-      display: inline-flex;
-      gap: 4rem;
-      animation: ticker 28s linear infinite;
-      white-space: nowrap;
-    }
-
-    .ticker-item {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      flex-shrink: 0;
-    }
-
-    .ticker-item span { color: var(--yellow); margin: 0 0.5rem; }
-
     @keyframes ticker {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
-    }
-
-    /* ── REVEAL ON SCROLL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-d1 { transition-delay: 0.1s; }
-    .reveal-d2 { transition-delay: 0.2s; }
-    .reveal-d3 { transition-delay: 0.3s; }
-    .reveal-d4 { transition-delay: 0.4s; }
-
-    /* ── SHARED ── */
-    .btn-primary {
-      display: inline-block;
-      padding: 0.875rem 1.5rem;
-      min-height: 44px;
-      background: var(--yellow);
-      border: none;
-      border-radius: 4px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      color: #000;
-      cursor: pointer;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-
-    @media (min-width: 769px) {
-      .btn-primary { padding: 1rem 2rem; font-size: 1.2rem; }
-    }
-
-    .btn-primary:hover { opacity: 0.88; }
-
-    .btn-ghost {
-      display: inline-block;
-      padding: 0.875rem 1.5rem;
-      min-height: 44px;
-      background: transparent;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 4px;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.6);
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.15s;
-    }
-
-    .btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: var(--white); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── PROGRESS DOTS ── */
-    .progress-dots {
-      position: fixed;
-      right: 1.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 150;
-    }
-
-    @media (min-width: 601px) {
-      nav { padding: 1.2rem clamp(1.5rem,5vw,4rem); }
-    }
-    @media (max-width: 600px) { .progress-dots { display: none; } }
-
-    .pdot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .pdot.active {
-      background: var(--yellow);
-      height: 20px;
-      border-radius: 3px;
     }
   </style>
 </head>
@@ -1145,446 +1057,611 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Togather</div>
-  <div class="nav-right">
-    <div class="nav-tag">Never Scroll Alone</div>
-    <button class="nav-cta" onclick="var c=document.getElementById('scroll-container');var e=document.getElementById('section-waitlist');if(c&&e)c.scrollTo({top:e.offsetTop,behavior:'smooth'})">Join Waitlist</button>
+  <div class="logo">
+    <span style="color:var(--wht)">To</span><span style="color:var(--yel)">gather</span>
+  </div>
+  <div class="nav-r">
+    <span class="nav-tag">Never Scroll Alone</span>
+    <button class="burger" onclick="openM()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <button class="btn-n" onclick="goTo('p9')">Join Waitlist</button>
   </div>
 </nav>
 
+<!-- MENU OVERLAY -->
+<div id="menu">
+  <button class="mc" onclick="closeM()">×</button>
+  <a class="ml" onclick="goTo('p1');closeM()">Start</a>
+  <a class="ml" onclick="goTo('p2');closeM()">Your Age</a>
+  <a class="ml" onclick="goTo('p3');closeM()">The Cost</a>
+  <a class="ml" onclick="goTo('p4');closeM()">Calculator</a>
+  <a class="ml" onclick="goTo('p5');closeM()">Comparison</a>
+  <a class="ml" onclick="goTo('p6');closeM()">Real Hours</a>
+  <a class="ml" onclick="goTo('p7');closeM()">How It Works</a>
+  <a class="ml" onclick="goTo('p9');closeM()">Join</a>
+</div>
+
 <!-- PROGRESS DOTS -->
-<div class="progress-dots" id="progress-dots">
-  <div class="pdot active" data-section="section-hook"></div>
-  <div class="pdot" data-section="section-age"></div>
-  <div class="pdot" data-section="section-reveal"></div>
-  <div class="pdot" data-section="section-rh"></div>
-  <div class="pdot" data-section="section-calc"></div>
-  <div class="pdot" data-section="section-how"></div>
-  <div class="pdot" data-section="section-manifesto"></div>
-  <div class="pdot" data-section="section-waitlist"></div>
+<div id="dots">
+  <div class="dot on" onclick="goTo('p1')"></div>
+  <div class="dot"    onclick="goTo('p2')"></div>
+  <div class="dot"    onclick="goTo('p3')"></div>
+  <div class="dot"    onclick="goTo('p4')"></div>
+  <div class="dot"    onclick="goTo('p5')"></div>
+  <div class="dot"    onclick="goTo('p6')"></div>
+  <div class="dot"    onclick="goTo('p7')"></div>
+  <div class="dot"    onclick="goTo('p8')"></div>
+  <div class="dot"    onclick="goTo('p9')"></div>
 </div>
 
-<div id="scroll-container">
-<!-- ══ S1: HOOK ══ -->
-<section id="section-hook" class="snap-section">
-  <div class="hook-inner">
-    <div class="hook-kicker">The app that changes everything</div>
-    <span class="hook-line" id="hl1">The average</span>
-    <span class="hook-line" id="hl2">person will spend</span>
-    <span class="hook-line yellow-lit" id="hl3">11 years</span>
-    <span class="hook-line" id="hl4">on their phone.</span>
-    <p class="hook-sub">Most of it <strong>alone.</strong> Most of it <strong>forgettable.</strong><br/>We built something about that.</p>
-    <div class="hook-scroll">
-      <div class="hook-scroll-line"></div>
-      <div class="hook-scroll-text">Scroll to find out</div>
-    </div>
-  </div>
-</section>
+<!-- SCROLL CONTAINER -->
+<div id="sc">
 
-<!-- ── TICKER ── -->
-<div class="ticker-snap ticker-wrap">
-  <div class="ticker" aria-hidden="true">
-    <span class="ticker-item">Never Scroll Alone <span>◆</span></span>
-    <span class="ticker-item">Real Hours <span>◆</span></span>
-    <span class="ticker-item">Presence = Time × Attention <span>◆</span></span>
-    <span class="ticker-item">Locked until together <span>◆</span></span>
-    <span class="ticker-item">Your people are waiting <span>◆</span></span>
-    <span class="ticker-item">Never Scroll Alone <span>◆</span></span>
-    <span class="ticker-item">Real Hours <span>◆</span></span>
-    <span class="ticker-item">Presence = Time × Attention <span>◆</span></span>
-    <span class="ticker-item">Locked until together <span>◆</span></span>
-    <span class="ticker-item">Your people are waiting <span>◆</span></span>
-  </div>
-</div>
-
-<!-- ══ S2: AGE ══ -->
-<section id="section-age" class="snap-section">
-  <div class="age-layout">
-    <div class="age-left reveal">
-      <div class="sec-kicker">First — a question</div>
-      <h2 class="sec-title">How old<br/>are you?</h2>
-      <p class="sec-body">Your personal benchmark is calculated from this. No data stored. Just the truth about your generation's relationship with their phones.</p>
+  <!-- P1: HOOK -->
+  <section class="s live" id="p1">
+    <div class="inn sc2" style="flex:1">
+      <span class="hl" id="hl1">The average</span>
+      <span class="hl" id="hl2">person will spend</span>
+      <span class="hl y" id="hl3">11 years</span>
+      <span class="hl" id="hl4">on their phone.</span>
+      <p class="hsub">Most of it <strong>alone.</strong> Most of it <strong>forgettable.</strong></p>
+      <div class="hvd">
+        <div class="hvd-title">85 Years of Research — One Finding</div>
+        <div class="hvd-body">The Harvard Study of Adult Development found one thing above all else predicts a long, happy life. Not wealth. Not career. <strong>The quality of your relationships.</strong> And we're spending those years scrolling.</div>
+      </div>
+      <div class="hscroll"><div class="hbar"></div><div class="htxt">Scroll to find out what we did about it</div></div>
     </div>
-    <div class="age-grid reveal reveal-d2">
-      <div class="age-btn" onclick="selectAge(this, 6.8, 91)">
-        <div class="age-range">14–24</div>
-        <div class="age-sub">Gen Z</div>
-      </div>
-      <div class="age-btn" onclick="selectAge(this, 6.2, 94)">
-        <div class="age-range">25–34</div>
-        <div class="age-sub">Millennial</div>
-      </div>
-      <div class="age-btn" onclick="selectAge(this, 5.4, 82)">
-        <div class="age-range">35–44</div>
-        <div class="age-sub">Elder Millennial</div>
-      </div>
-      <div class="age-btn" onclick="selectAge(this, 4.8, 73)">
-        <div class="age-range">45–54</div>
-        <div class="age-sub">Gen X</div>
-      </div>
-      <div class="age-btn" onclick="selectAge(this, 4.2, 64)">
-        <div class="age-range">55+</div>
-        <div class="age-sub">Boomer+</div>
+    <div id="ticker">
+      <div class="ttk" aria-hidden="true">
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
+        <span class="ti">Never Scroll Alone</span><span class="ti td"> ◆ </span>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ══ S3: REVEAL ══ -->
-<section id="section-reveal" class="snap-section">
-  <div class="reveal-container">
-    <div class="rl" data-reveal>People your age spend</div>
-    <div class="rl huge yellow" id="rv-hrs" data-reveal>6.2 hrs</div>
-    <div class="rl" data-reveal>on their phone. Every single day.</div>
-    <div class="rl gap" data-reveal>That's</div>
-    <div class="rl huge" id="rv-days" data-reveal>94 days</div>
-    <div class="rl" data-reveal>of your year. Gone.</div>
-    <div class="rl gap prose" data-reveal>And the loneliest years aren't when you're old.</div>
-    <div class="rl yellow" data-reveal>They're right now.</div>
-    <div class="rl gap prose" data-reveal>The Harvard Study of Adult Development — 85 years of research — found one thing above all else predicts a long, happy life.</div>
-    <div class="rl" data-reveal>The quality of your</div>
-    <div class="rl huge" data-reveal>relationships.</div>
-    <div class="rl prose" data-reveal>Not your career. Not your income. Not your feed.</div>
-
-    <div class="reveal-btn" id="reveal-cta">
-      <button class="btn-primary" onclick="var c=document.getElementById('scroll-container');var e=document.getElementById('section-rh');if(c&&e)c.scrollTo({top:e.offsetTop,behavior:'smooth'})">So what do we do →</button>
-    </div>
-  </div>
-</section>
-
-<!-- ══ S4: REAL HOURS ══ -->
-<section id="section-rh" class="snap-section">
-  <div class="rh-layout">
-    <div class="rh-left reveal">
-      <div class="sec-kicker">The metric that changes everything</div>
-      <div class="rh-number-wrap">
-        <div class="rh-big">Real</div>
-      </div>
-      <div class="rh-number-wrap" style="margin-top:-1rem">
-        <div class="rh-big" style="color:rgba(245,196,0,0.3)">Hours.</div>
-      </div>
-      <p class="rh-desc" style="margin-top:1.5rem">Not screen time. Not step counts. The actual hours you spend <strong>present with the people who matter.</strong><br/><br/><span style="color:var(--yellow)">Togather</span> measures this automatically. You don't log anything. You just live.</p>
-    </div>
-    <div class="reveal reveal-d2">
-      <div class="eq-box">
-        <div class="eq-title">Presence = Time × Attention</div>
-        <div class="eq-row">
-          <div class="eq-part">
-            <div class="eq-val">2h</div>
-            <div class="eq-label">Time together</div>
-          </div>
-          <div class="eq-op">×</div>
-          <div class="eq-part">
-            <div class="eq-val">80%</div>
-            <div class="eq-label">Phone down</div>
-          </div>
-          <div class="eq-op">=</div>
-          <div class="eq-part">
-            <div class="eq-val yellow">1.6</div>
-            <div class="eq-label">Real Hours</div>
-          </div>
+  <!-- P2: AGE -->
+  <section class="s" id="p2">
+    <div class="inn sc2">
+      <div class="a2l">
+        <div>
+          <h2 class="sh">How old<br/>are you?</h2>
+          <p class="sb">Let's compare your generation.</p>
         </div>
-        <div class="eq-examples">
-          <div class="eq-ex">2h together, phone down the whole time <span>→ 2.0 RH</span></div>
-          <div class="eq-ex">4h together, half the time scrolling <span>→ 2.0 RH</span></div>
-          <div class="eq-ex">1h together, fully present <span>→ 1.0 RH</span></div>
-        </div>
-      </div>
-      <div class="could-box" style="margin-top:1rem">
-        <div class="eq-ex" style="font-size:0.8rem;color:var(--muted)">Harvard data: quality relationships = #1 predictor of happiness and longevity. Dunbar's research: humans maintain ~5 truly intimate relationships. <strong style="color:var(--white)"><span style="color:var(--yellow)">Togather</span> helps you invest in those five.</strong></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ S5: CALCULATOR ══ -->
-<section id="section-calc" class="snap-section">
-  <div class="calc-layout">
-    <div class="reveal">
-      <div class="sec-kicker">The cost</div>
-      <h2 class="sec-title">How much<br/><span style="color:var(--red)">life</span><br/>are you losing?</h2>
-      <p class="sec-body" style="margin-top:1rem">Move the slider. See the real numbers.</p>
-
-      <div class="calc-interface" style="margin-top:2rem">
-        <div class="calc-input-row">
-          <div class="calc-slider-row">
-            <div class="calc-val" id="calc-display">4</div>
-            <input type="range" class="calc-slider" id="main-slider" min="1" max="16" value="4" oninput="updateCalc(this.value)"/>
+        <div class="agrid">
+          <div class="ab" onclick="pickAge(this,6.8,91,'Gen Z')">
+            <div class="an">14–24</div><div class="alb">Gen Z</div>
           </div>
-        </div>
-        <div class="calc-output">
-          <div class="calc-stat">
-            <div class="calc-stat-num" id="c-days">61</div>
-            <div class="calc-stat-label">Days lost this year</div>
+          <div class="ab" onclick="pickAge(this,6.2,94,'Millennials')">
+            <div class="an">25–34</div><div class="alb">Millennial</div>
           </div>
-          <div class="calc-stat">
-            <div class="calc-stat-num" id="c-convos">3.6k</div>
-            <div class="calc-stat-label">Conversations you'll miss</div>
+          <div class="ab" onclick="pickAge(this,5.4,82,'Elder Millennials')">
+            <div class="an">35–44</div><div class="alb">Elder Millennial</div>
           </div>
-          <div class="calc-stat">
-            <div class="calc-stat-num" id="c-years">9.3</div>
-            <div class="calc-stat-label">Years over your lifetime</div>
+          <div class="ab" onclick="pickAge(this,4.8,73,'Gen X')">
+            <div class="an">45–54</div><div class="alb">Gen X</div>
           </div>
-          <div class="calc-stat">
-            <div class="calc-stat-num" id="c-friends">18</div>
-            <div class="calc-stat-label">Hours you'll never get back</div>
+          <div class="ab" onclick="pickAge(this,4.2,64,'Boomers')" style="grid-column:1/-1">
+            <div class="an">55+</div><div class="alb">Boomer+</div>
           </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="reveal reveal-d2">
-      <div class="sec-kicker" style="margin-bottom:1rem">What you could have done instead</div>
-      <div class="could-items" id="could-items">
-        <div class="could-item"><div class="could-icon">📚</div><strong id="ci-books">6 books</strong> read cover to cover</div>
-        <div class="could-item"><div class="could-icon">🏃</div><strong id="ci-runs">2 marathons</strong> trained and finished</div>
-        <div class="could-item"><div class="could-icon">🍳</div><strong id="ci-meals">730 meals</strong> cooked from scratch</div>
-        <div class="could-item"><div class="could-icon">🎸</div><strong id="ci-songs">24 songs</strong> learned on an instrument</div>
-        <div class="could-item"><div class="could-icon">🌍</div><strong id="ci-trips">2 trips</strong> fully planned and taken</div>
-      </div>
-
-      <div class="could-box" style="margin-top:2rem; border-color:rgba(245,196,0,0.15)">
-        <div class="sec-kicker" style="margin-bottom:0.8rem">But here's the flip</div>
-        <div style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--yellow); line-height:1; margin-bottom:0.6rem" id="flip-rh">1,460 Real Hours</div>
-        <div style="font-size:0.8rem;color:var(--muted);line-height:1.6">waiting to be reclaimed.<br/>That's what <span style="color:var(--yellow)">Togather</span> gives back.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ S6: HOW ══ -->
-<section id="section-how" class="snap-section">
-  <div class="how-header reveal">
-    <div>
-      <div class="sec-kicker">The mechanic</div>
-      <h2 class="sec-title">How it works</h2>
-    </div>
-    <div style="font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)">Four steps</div>
-  </div>
-  <div class="how-grid">
-    <div class="how-step reveal">
-      <div class="how-num">01</div>
-      <div class="how-tag">Setup</div>
-      <div class="how-title">Lock Your Feed</div>
-      <div class="how-body">Choose which apps get locked. Instagram, TikTok, X, YouTube — all of them or just the ones that own you most.</div>
-    </div>
-    <div class="how-step reveal reveal-d1">
-      <div class="how-num">02</div>
-      <div class="how-tag">Daily life</div>
-      <div class="how-title"><span style="color:var(--yellow)">Togather</span> Runs Quiet</div>
-      <div class="how-body">No nudges. No timers. Just the absence of the scroll. <span style="color:var(--yellow)">Togather</span> runs in the background, waiting.</div>
-    </div>
-    <div class="how-step reveal reveal-d2">
-      <div class="how-num">03</div>
-      <div class="how-tag">The unlock</div>
-      <div class="how-title">Someone Shows Up</div>
-      <div class="how-body">A friend with <span style="color:var(--yellow)">Togather</span> gets close. Bluetooth detects you're together. Both phones unlock. Mutually. Instantly.</div>
-    </div>
-    <div class="how-step reveal reveal-d3">
-      <div class="how-num">04</div>
-      <div class="how-tag">The point</div>
-      <div class="how-title">Scroll If You Want</div>
-      <div class="how-body">But now you're with someone. So maybe you don't. Every moment together builds your Real Hours. That's the whole idea.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ MANIFESTO ══ -->
-<section id="section-manifesto" class="snap-section">
-  <div class="manifesto-inner reveal">
-    <p class="manifesto-text">
-      Loneliness isn't<br/>a feeling.<br/>
-      It's a <span>design flaw.</span>
-    </p>
-    <p class="manifesto-body">Social media forgot what social means. Every platform optimizes for time spent alone on a feed. Togather optimizes for time spent with the people who actually matter. That's it. That's the whole thing.</p>
-  </div>
-</section>
-
-<!-- ══ S8: WAITLIST ══ -->
-<section id="section-waitlist" class="snap-section">
-  <div class="waitlist-inner">
-    <div class="waitlist-kicker reveal">Early access — limited spots</div>
-    <h2 class="waitlist-title reveal">Your Real<br/><span>Hours</span><br/>start now.</h2>
-    <p class="waitlist-sub reveal">Join the waitlist. When <span style="color:var(--yellow)">Togather</span> launches, you get the download link first. <strong>Let's get togather.</strong></p>
-
-    <div class="reveal" id="waitlist-form-wrap">
-      <!-- BEEHIIV EMBED: Replace this form with your Beehiiv embed code -->
-      <div class="email-form">
-        <input type="email" id="waitlist-email" placeholder="your@email.com"/>
-        <button onclick="submitWaitlist()">I'm In →</button>
-      </div>
-      <!-- END BEEHIIV EMBED -->
-      <div class="waitlist-note" id="wl-note">Free forever for early members. No spam.</div>
-    </div>
-
-    <div class="waitlist-success" id="wl-success">
-      <div class="success-num" id="wl-number">You're #847 on the list</div>
-      <div class="success-msg">You're in.</div>
-      <div class="success-sub">We'll send you the download link the day <span style="color:var(--yellow)">Togather</span> launches.<br/>In the meantime — go be with someone.</div>
-      <div class="share-row">
-        <a class="share-btn" href="sms:?body=I%20just%20joined%20Togather%20%E2%80%94%20it%20locks%20your%20social%20apps%20when%20you%27re%20alone%20and%20unlocks%20when%20we%27re%20together.%20Thought%20of%20you.%20gettogather.me" target="_blank" rel="noopener">Text your people →</a>
+  <!-- P3: REVEAL -->
+  <section class="s" id="p3">
+    <div class="inn sc2">
+      <div class="rw">
+        <div class="rl">People your age average</div>
+        <div class="rl big y" id="rv-hrs">6.2 hrs</div>
+        <div class="rl">on social media. Every day.</div>
+        <div class="rl gap">That's</div>
+        <div class="rl big" id="rv-days">94 days</div>
+        <div class="rl">of your year. Gone.</div>
+        <div class="rl gap sm">Loneliness doesn't peak when you get old.</div>
+        <div class="rl y">It peaks when you scroll.</div>
+        <div class="rl gap">The quality of your</div>
+        <div class="rl big">relationships.</div>
+        <div class="rl sm">That's all that matters. And scrolling is taking it from you.</div>
+        <div class="rcta" id="rcta">
+          <button class="btn-p" onclick="goTo('p4')">Fix it.</button>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FOOTER (inside scroll container) -->
-<footer>
-  <div class="footer-logo">Togather</div>
-  <div class="footer-right">
-    <span class="footer-copy">Never Scroll Alone</span>
-    <span class="footer-copy">© 2026</span>
-  </div>
-</footer>
+  <!-- P4: CALCULATOR -->
+  <section class="s ovf" id="p4">
+    <div class="inn sc2" style="justify-content:flex-start">
+      <div class="cl">
+        <div>
+          <div class="kk">The cost this year</div>
+          <h2 class="ch">How much<br/><span class="g">life</span><br/>are you losing?</h2>
+          <p style="font-size:0.78rem;color:var(--mut);margin-bottom:0.7rem;line-height:1.6">Slide to set how many hours a day you spend scrolling. All numbers are for this year.</p>
+          <div class="cbox">
+            <div class="ci">
+              <div class="cq">I spend ___ hours a day scrolling</div>
+              <div class="csr">
+                <div class="cnum" id="calc-display">4</div>
+                <input type="range" class="cslider" id="main-slider" min="1" max="16" value="4" oninput="updateCalc(this.value)"/>
+                <div class="cu">hrs / day</div>
+              </div>
+            </div>
+            <div class="cstats">
+              <div class="cst"><div class="csn" id="c-days">61</div><div class="csl3">Days lost this year</div></div>
+              <div class="cst"><div class="csn" id="c-convos">3.6k</div><div class="csl3">Conversations you'll miss</div></div>
+              <div class="cst"><div class="csn" id="c-years">9.3</div><div class="csl3">Years over your lifetime</div></div>
+              <div class="cst"><div class="csn" id="c-memory">1,022</div><div class="csl3">Hours your brain won't remember</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="c-context">
+          <div class="c-avg-row">
+            <div class="c-avg-lbl">Your generation vs you</div>
+            <div class="c-avg-bar-wrap">
+              <div class="c-bar-row">
+                <div class="c-bar-lbl you" style="color:var(--yel)">You</div>
+                <div class="c-bar-track"><div class="c-bar-fill you" id="bar-you" style="width:25%"></div></div>
+                <div class="c-bar-val you" id="bar-you-val">4h</div>
+              </div>
+              <div class="c-bar-row">
+                <div class="c-bar-lbl">Avg</div>
+                <div class="c-bar-track"><div class="c-bar-fill avg" id="bar-avg" style="width:38.75%"></div></div>
+                <div class="c-bar-val" id="bar-avg-val">6.2h</div>
+              </div>
+            </div>
+          </div>
+          <div class="c-note">
+            At <strong id="c-note-hrs">4 hours</strong> a day, you'll lose <strong id="c-note-days">61 days</strong> this year. Your generation averages <strong id="c-note-avg">6.2 hrs</strong> — that's <strong id="c-note-avg-days">94 days.</strong>
+          </div>
+          <button class="btn-p" style="width:100%;text-align:center;margin-bottom:0.6rem" onclick="goTo('p5')">See what you're missing →</button>
+          <button class="btn-g" style="width:100%;text-align:center;display:block" onclick="goTo('p6')">Skip to the fix ↓</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-</div><!-- #scroll-container -->
+  <!-- P5: COMPARISON / PASSION -->
+  <section class="s ovf" id="p5">
+    <div class="inn sc2" style="justify-content:flex-start">
+      <div class="comp-layout">
+        <div>
+          <div class="kk">What you could have done instead</div>
+          <h2 class="sh">Your scroll time<br/>vs your life</h2>
+          <div class="pp-wrap">
+            <div class="pp-q">What matters most to you?</div>
+            <div class="pp-pills">
+              <button class="pill on" onclick="setPillar(this,'fitness')">Fitness</button>
+              <button class="pill" onclick="setPillar(this,'creative')">Creative</button>
+              <button class="pill" onclick="setPillar(this,'food')">Food</button>
+              <button class="pill" onclick="setPillar(this,'reading')">Reading</button>
+              <button class="pill" onclick="setPillar(this,'travel')">Travel</button>
+            </div>
+            <div class="pstat">
+              <div class="ptag" id="passion-tag">Fitness</div>
+              <div class="pn" id="passion-num">1,752</div>
+              <div class="pl" id="passion-lbl">Workouts missed this year</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flip-box">
+            <div class="fl-l">Real Hours waiting for you this year</div>
+            <div class="fl-n" id="flip-rh">1,460</div>
+            <div class="fl-s">Half your scroll time could be Real Hours — time measured by how present you actually are with other people.<br/><br/>That's what Togather gives back.</div>
+          </div>
+          <button class="btn-p" style="width:100%;text-align:center;margin-bottom:0.6rem" onclick="goTo('p6')">Show me how →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P6: REAL HOURS -->
+  <section class="s" id="p6">
+    <div class="inn sc2">
+      <div class="rhl">
+        <div>
+          <div class="kk">The first metric to measure presence</div>
+          <span class="rhw">Real</span>
+          <span class="rhw">Hours.</span>
+          <div class="rh-waiting">
+            <div class="rh-w-num" id="rh-waiting-num">1,460</div>
+            <div class="rh-w-lbl">Real Hours waiting for you this year</div>
+          </div>
+          <p class="rhd" style="margin-top:1.2rem">
+            Not screen time. Not steps. The hours you spend <strong>fully present</strong> with the people who matter.<br/><br/>No logging. Just living.
+          </p>
+          <button class="btn-g" style="margin-top:0.5rem" onclick="goTo('p9')">Join the waitlist →</button>
+        </div>
+        <div>
+          <div class="eqb">
+            <div class="eqt">Presence = Time × Attention</div>
+            <div class="eqr">
+              <div>
+                <div class="eqv">2h</div>
+                <div class="eql">Time together</div>
+              </div>
+              <div class="eqop">×</div>
+              <div>
+                <div class="eqv">80%</div>
+                <div class="eql">Phone down</div>
+              </div>
+              <div class="eqop">=</div>
+              <div>
+                <div class="eqv g">1.6</div>
+                <div class="eql">Real Hours</div>
+              </div>
+            </div>
+            <div class="eqex">
+              <div>2h together, phone completely down<span>→ 2.0 RH</span></div>
+              <div>2h together, scrolling half the time<span>→ 1.0 RH</span></div>
+              <div>1h together, fully present<span>→ 1.0 RH</span></div>
+            </div>
+          </div>
+          <div style="margin-top:0.9rem;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.03);border:1px solid var(--rul);border-radius:10px;font-size:0.75rem;color:var(--mut);line-height:1.7">
+            Dunbar's research: humans maintain ~5 truly intimate relationships. <strong style="color:var(--wht)">Togather helps you invest in those five.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P7: HOW IT WORKS -->
+  <section class="s" id="p7">
+    <div class="inn sc2">
+      <div class="kk">The mechanic</div>
+      <div class="how-outer">
+        <!-- Steps left -->
+        <div>
+          <div class="how-steps" id="how-steps">
+            <div class="how-step on" onclick="setStep(0)">
+              <div class="how-step-num">Step 01</div>
+              <div class="how-step-title">Lock Your Feed</div>
+              <div class="how-step-body">Choose which apps get locked. Instagram, TikTok, X, YouTube. They go dark until someone shows up.</div>
+            </div>
+            <div class="how-step" onclick="setStep(1)">
+              <div class="how-step-num">Step 02</div>
+              <div class="how-step-title">Togather Scans</div>
+              <div class="how-step-body">Bluetooth runs quietly in the background. No nudges. No timers. Just waiting for the right person.</div>
+            </div>
+            <div class="how-step" onclick="setStep(2)">
+              <div class="how-step-num">Step 03</div>
+              <div class="how-step-title">Someone Shows Up</div>
+              <div class="how-step-body">A friend with Togather gets close. Bluetooth detects you're together. Both phones unlock. Mutually. Instantly.</div>
+            </div>
+            <div class="how-step" onclick="setStep(3)">
+              <div class="how-step-num">Step 04</div>
+              <div class="how-step-title">You're Together</div>
+              <div class="how-step-body">Scroll if you want. But now you're with someone. Every moment builds your Real Hours.</div>
+            </div>
+          </div>
+          <div class="how-nav">
+            <button class="how-btn" onclick="prevStep()">← Prev</button>
+            <button class="how-btn" onclick="nextStep()">Next →</button>
+            <button class="how-btn primary-btn" onclick="goTo('p9')">I'm In →</button>
+          </div>
+        </div>
+
+        <!-- Phone right -->
+        <div>
+          <div class="phone-mock">
+            <div class="phone-shell">
+              <!-- Screen 1: Locked -->
+              <div class="pscreen pscreen-1 vis" id="pscr-0">
+                <div class="p-lock-icon">🔒</div>
+                <div class="p-lock-title">You're alone.</div>
+                <div class="p-lock-sub">Your social apps are locked until someone is with you.</div>
+                <div class="p-apps">
+                  <div class="p-app"><div class="p-app-icon" style="background:linear-gradient(135deg,#f58529,#dd2a7b)">📸</div><div class="p-app-lbl">IG</div></div>
+                  <div class="p-app"><div class="p-app-icon" style="background:#111">🎵</div><div class="p-app-lbl">TT</div></div>
+                  <div class="p-app"><div class="p-app-icon" style="background:#111">𝕏</div><div class="p-app-lbl">X</div></div>
+                  <div class="p-app"><div class="p-app-icon" style="background:#ff0000">▶</div><div class="p-app-lbl">YT</div></div>
+                </div>
+              </div>
+              <!-- Screen 2: Scanning -->
+              <div class="pscreen pscreen-2" id="pscr-1">
+                <div class="radar">
+                  <div class="radar-ring"></div><div class="radar-ring"></div>
+                  <div class="radar-ring"></div><div class="radar-ring"></div>
+                  <div class="radar-dot"></div>
+                  <div class="radar-center">📡</div>
+                </div>
+                <div class="p-scan-title">Scanning nearby</div>
+                <div class="p-scan-sub">Waiting for a Togather user…</div>
+              </div>
+              <!-- Screen 3: Unlock -->
+              <div class="pscreen pscreen-3" id="pscr-2">
+                <div class="p-unlock-burst">
+                  <div class="p-burst-ring"></div>
+                  <div class="p-burst-ring"></div>
+                  <div class="p-burst-ring"></div>
+                  <div class="p-check">✓</div>
+                </div>
+                <div class="p-unlock-title">Unlocked.</div>
+                <div class="p-unlock-sub">Jordan is nearby. You're together.</div>
+              </div>
+              <!-- Screen 4: Home -->
+              <div class="pscreen pscreen-4" id="pscr-3">
+                <div class="p-home-header">
+                  <div class="p-home-logo">Togather</div>
+                  <div class="p-session"><div class="p-sdot"></div><div class="p-stxt">Active</div></div>
+                </div>
+                <div class="p-apps-unlocked">
+                  <div class="p-app-u"><div class="p-app-icon-u" style="background:linear-gradient(135deg,rgba(245,88,41,0.3),rgba(221,42,123,0.3))">📸</div><div class="p-app-lbl-u">IG</div></div>
+                  <div class="p-app-u"><div class="p-app-icon-u" style="background:rgba(255,255,255,0.05)">🎵</div><div class="p-app-lbl-u">TT</div></div>
+                  <div class="p-app-u"><div class="p-app-icon-u" style="background:rgba(255,255,255,0.05)">𝕏</div><div class="p-app-lbl-u">X</div></div>
+                  <div class="p-app-u"><div class="p-app-icon-u" style="background:rgba(255,0,0,0.15)">▶</div><div class="p-app-lbl-u">YT</div></div>
+                </div>
+              </div>
+            </div>
+            <!-- Stick figures -->
+            <div class="figures" id="figures">
+              <div class="fig grey">
+                <div class="fig-head"></div>
+                <div class="fig-arms"></div>
+                <div class="fig-body"></div>
+                <div class="fig-legs"><div class="fig-leg"></div><div class="fig-leg"></div></div>
+              </div>
+              <div class="fig-sep" id="fig-sep">+</div>
+              <div class="fig grey" id="fig2" style="opacity:0.15">
+                <div class="fig-head"></div>
+                <div class="fig-arms"></div>
+                <div class="fig-body"></div>
+                <div class="fig-legs"><div class="fig-leg"></div><div class="fig-leg"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P8: MANIFESTO -->
+  <section class="s" id="p8">
+    <div class="inn sc2">
+      <div class="mi">
+        <p class="mt">
+          Social media forgot<br/>
+          what <span class="ol">social</span><br/>
+          means.<br/>
+          You shouldn't.
+        </p>
+        <p class="mb">Platforms optimize for loneliness. Togather optimizes against it. That's the whole thing.</p>
+        <p class="mq">It's you versus $100 billion<br/>worth of data scientists.<br/>We can't beat them alone.<br/>Are you in?</p>
+        <button class="btn-dark" onclick="goTo('p9')">I'm In →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- P9: WAITLIST -->
+  <section class="s" id="p9">
+    <div class="inn sc2" style="justify-content:center;align-items:center">
+      <div class="wi">
+        <div class="kk" style="margin-bottom:1rem">Early access</div>
+        <h2 class="wt">Your Real<br/><span>Hours</span><br/>start now.</h2>
+        <p class="ws">Join the waitlist. When Togather launches you get the download link first. <strong>Let's get togather.</strong></p>
+        <div id="wl-wrap">
+          <div class="ef">
+            <input type="email" id="wl-email" placeholder="your@email.com"/>
+            <button onclick="submitWL()">I'm In →</button>
+          </div>
+          <div class="wn">Free forever for early members. No spam.</div>
+        </div>
+        <div class="wsucc" id="wl-succ">
+          <div class="wnum" id="wl-num">You're #847 on the list</div>
+          <div class="wmsg">You're in.</div>
+          <div class="wmsub">We'll send the download link the day Togather launches.<br/>In the meantime — go be with someone.</div>
+          <button class="tbtn" onclick="textPeople()">Text your people →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="flogo"><span style="color:var(--wht)">To</span><span style="color:var(--yel)">gather</span></div>
+    <div class="fr">
+      <span class="fc">Never Scroll Alone</span>
+      <span class="fc">© 2026</span>
+    </div>
+  </footer>
+
+</div><!-- end #sc -->
 
 <script>
-  /* ── AGE SELECTION ── */
-  let ageHrs = 6.2, ageDays = 94;
+  const sc   = document.getElementById('sc');
+  const pids = ['p1','p2','p3','p4','p5','p6','p7','p8','p9'];
+  const dots = document.querySelectorAll('.dot');
+  const mls  = document.querySelectorAll('.ml');
 
-  function selectAge(btn, hrs, days) {
-    document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    ageHrs = hrs; ageDays = days;
-    document.getElementById('rv-hrs').textContent = hrs + ' hrs';
-    document.getElementById('rv-days').textContent = days + ' days';
-    // scroll to reveal
-    setTimeout(() => {
-      const c = document.getElementById('scroll-container');
-      const el = document.getElementById('section-reveal');
-      if (c && el) c.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
-    }, 300);
-  }
-
-  /* ── HERO ANIMATION ── */
-  function runHook() {
-    const lines = ['hl1','hl2','hl3','hl4'];
-    const delays = [200, 600, 1000, 1400];
-    lines.forEach((id, i) => {
-      setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('lit');
-      }, delays[i]);
-    });
-  }
-
-  /* ── SCROLL REVEAL ── */
-  const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-
-        // reveal lines in section-reveal
-        if (e.target.classList.contains('rl')) {
-          // handled by revealLines
-        }
-        if (e.target.id === 'reveal-cta') {
-          e.target.classList.add('show');
-        }
-        revealObserver.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-  // reveal lines stagger
-  const lineObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const lines = e.target.querySelectorAll('.rl');
-        lines.forEach((line, i) => {
-          setTimeout(() => line.classList.add('lit'), i * 350);
-        });
-        setTimeout(() => {
-          const cta = document.getElementById('reveal-cta');
-          if (cta) cta.classList.add('show');
-        }, lines.length * 350 + 200);
-        lineObserver.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  const revealContainer = document.querySelector('.reveal-container');
-  if (revealContainer) lineObserver.observe(revealContainer);
-
-  /* ── PROGRESS DOTS ── */
-  const scrollContainer = document.getElementById('scroll-container');
-  const sections = ['section-hook','section-age','section-reveal','section-rh','section-calc','section-how','section-manifesto','section-waitlist'];
-
-  document.querySelectorAll('.pdot').forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      const id = sections[i];
-      if (id && scrollContainer) {
-        const el = document.getElementById(id);
-        if (el) scrollContainer.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
-      }
-    });
-  });
-
-  const dotObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const idx = sections.indexOf(e.target.id);
-        document.querySelectorAll('.pdot').forEach((d, i) => {
-          d.classList.toggle('active', i === idx);
-        });
-      }
-    });
-  }, { root: scrollContainer, threshold: 0.4 });
-
-  sections.forEach(id => {
+  /* ── NAVIGATION ── */
+  function goTo(id) {
     const el = document.getElementById(id);
-    if (el) dotObserver.observe(el);
-  });
+    if (el) sc.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
+  }
+  function openM()  { document.getElementById('menu').classList.add('open'); }
+  function closeM() { document.getElementById('menu').classList.remove('open'); }
+
+  /* ── ACTIVE SECTION TRACKING ── */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const idx = pids.indexOf(e.target.id);
+      dots.forEach((d,i) => d.classList.toggle('on', i === idx));
+      mls.forEach((l,i)  => l.classList.toggle('on', i === idx));
+      e.target.classList.add('live');
+      if (e.target.id === 'p3') runReveal();
+    });
+  }, { root: sc, threshold: 0.5 });
+  pids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+
+  /* ── HOOK ANIMATION ── */
+  function runHook() {
+    [['hl1',200],['hl2',600],['hl3',1000],['hl4',1400]].forEach(([id,d]) => {
+      setTimeout(() => { const el = document.getElementById(id); if (el) el.classList.add('lit'); }, d);
+    });
+  }
+
+  /* ── REVEAL (P3) ── */
+  let rvDone = false;
+  function runReveal() {
+    if (rvDone) return;
+    rvDone = true;
+    const lines = document.querySelectorAll('#p3 .rl');
+    lines.forEach((l,i) => setTimeout(() => l.classList.add('lit'), i * 300));
+    setTimeout(() => { const c = document.getElementById('rcta'); if (c) c.classList.add('show'); }, lines.length * 300 + 200);
+  }
+
+  /* ── AGE PICKER ── */
+  let ageHrs = 6.2, ageDays = 94, ageLabel = 'Millennials';
+  function pickAge(btn, hrs, days, label) {
+    document.querySelectorAll('.ab').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    ageHrs = hrs; ageDays = days; ageLabel = label;
+    const rh = document.getElementById('rv-hrs');
+    const rd = document.getElementById('rv-days');
+    if (rh) rh.textContent = hrs + ' hrs';
+    if (rd) rd.textContent = days + ' days';
+    updateCalc(document.getElementById('main-slider').value);
+    setTimeout(() => goTo('p3'), 300);
+  }
 
   /* ── CALCULATOR ── */
+  const passions = {
+    fitness:  { tag:'Fitness',  lbl:'Workouts missed this year',  fn: h => Math.round((h*365)/1.25) },
+    creative: { tag:'Creative', lbl:'Pages unwritten this year',   fn: h => Math.round((h*365)/0.5)  },
+    food:     { tag:'Food',     lbl:'Meals uncooked this year',    fn: h => Math.round((h*365)/0.75) },
+    reading:  { tag:'Reading',  lbl:'Books unread this year',      fn: h => Math.round((h*365)/8)    },
+    travel:   { tag:'Travel',   lbl:'Day trips missed this year',  fn: h => Math.round((h*365)/6)    },
+  };
+  let passion = 'fitness';
+
+  function setPillar(btn, key) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+    btn.classList.add('on');
+    passion = key;
+    updateCalc(document.getElementById('main-slider').value);
+  }
+
   function updateCalc(hrs) {
     hrs = parseInt(hrs);
     document.getElementById('calc-display').textContent = hrs;
-    const days   = Math.round(hrs * 365 / 24);
-    const years  = (hrs * 365 / 24 / 365 * 80).toFixed(1);
-    const convos = hrs * 2.5 * 365;
-    const friends = Math.round(days / 3.4);
-    const rhBack = Math.round(hrs * 365 * 0.5);
 
-    document.getElementById('c-days').textContent = days;
-    document.getElementById('c-years').textContent = years;
-    document.getElementById('c-convos').textContent = convos > 999 ? (convos/1000).toFixed(1)+'k' : convos;
-    document.getElementById('c-friends').textContent = friends;
-    document.getElementById('flip-rh').textContent = rhBack.toLocaleString() + ' Real Hours';
+    const days  = Math.round(hrs * 365 / 24);
+    const years = (hrs / 24 * 80).toFixed(1);
+    const conv  = hrs * 2.5 * 365;
+    const mem   = Math.round(hrs * 365 * 0.7);
+    const rh    = Math.round(hrs * 365 * 0.5);
 
-    document.getElementById('ci-books').textContent = Math.round(hrs * 365 / 8) + ' books';
-    document.getElementById('ci-runs').textContent = Math.round(hrs * 365 / 200) + ' marathons';
-    document.getElementById('ci-meals').textContent = Math.round(hrs * 365 / 0.75) + ' meals';
-    document.getElementById('ci-songs').textContent = Math.round(hrs * 365 / 4) + ' songs';
-    document.getElementById('ci-trips').textContent = Math.round(hrs * 365 / 400) + ' trips';
+    // P4 stats
+    document.getElementById('c-days').textContent   = days;
+    document.getElementById('c-years').textContent  = years;
+    document.getElementById('c-convos').textContent = conv > 999 ? (conv/1000).toFixed(1)+'k' : conv;
+    document.getElementById('c-memory').textContent = mem.toLocaleString();
+
+    // Comparison bars (max 16 hrs = 100%)
+    const maxH = 16;
+    const youPct = (hrs / maxH) * 100;
+    const avgPct = (ageHrs / maxH) * 100;
+    const byou = document.getElementById('bar-you');
+    const bavg = document.getElementById('bar-avg');
+    if (byou) byou.style.width = youPct + '%';
+    if (bavg) bavg.style.width = avgPct + '%';
+    const byv = document.getElementById('bar-you-val');
+    const bav = document.getElementById('bar-avg-val');
+    if (byv) byv.textContent = hrs + 'h';
+    if (bav) bav.textContent = ageHrs + 'h';
+
+    // Note text
+    const cn1 = document.getElementById('c-note-hrs');
+    const cn2 = document.getElementById('c-note-days');
+    const cn3 = document.getElementById('c-note-avg');
+    const cn4 = document.getElementById('c-note-avg-days');
+    if (cn1) cn1.textContent = hrs + ' hours';
+    if (cn2) cn2.textContent = days + ' days';
+    if (cn3) cn3.textContent = ageHrs + ' hrs';
+    if (cn4) cn4.textContent = ageDays + ' days';
+
+    // P5 passion
+    const p = passions[passion];
+    document.getElementById('passion-tag').textContent = p.tag;
+    document.getElementById('passion-num').textContent = p.fn(hrs).toLocaleString();
+    document.getElementById('passion-lbl').textContent = p.lbl;
+
+    // Flip / real hours
+    const flipEl = document.getElementById('flip-rh');
+    const rhWait = document.getElementById('rh-waiting-num');
+    if (flipEl) flipEl.textContent = rh.toLocaleString();
+    if (rhWait) rhWait.textContent = rh.toLocaleString();
   }
 
   updateCalc(4);
 
-  /* ── WAITLIST ── */
-  let waitlistCount = 846;
+  /* ── HOW IT WORKS STEPPER ── */
+  let howStep = 0;
+  const howData = [
+    { screen: 0, fig2: false, sep: false },
+    { screen: 1, fig2: true,  sep: true  },
+    { screen: 2, fig2: true,  sep: true  },
+    { screen: 3, fig2: true,  sep: true  },
+  ];
 
-  function submitWaitlist() {
-    const email = document.getElementById('waitlist-email').value;
-    if (!email || !email.includes('@')) {
-      document.getElementById('waitlist-email').style.outline = '2px solid var(--red)';
-      return;
+  function setStep(i) {
+    howStep = i;
+    // update step tabs
+    document.querySelectorAll('.how-step').forEach((s,j) => s.classList.toggle('on', j === i));
+    // update phone screens
+    for (let k = 0; k < 4; k++) {
+      const scr = document.getElementById('pscr-' + k);
+      if (scr) { scr.classList.remove('vis'); }
     }
-    waitlistCount++;
-    document.getElementById('wl-number').textContent = "You're #" + waitlistCount.toLocaleString() + " on the list";
-    document.getElementById('waitlist-form-wrap').style.display = 'none';
-    document.getElementById('wl-success').style.display = 'flex';
+    const activeScr = document.getElementById('pscr-' + howData[i].screen);
+    if (activeScr) activeScr.classList.add('vis');
+    // update figures
+    const fig2 = document.getElementById('fig2');
+    const sep  = document.getElementById('fig-sep');
+    if (fig2) fig2.style.opacity = howData[i].fig2 ? '1' : '0.15';
+    if (sep)  sep.classList.toggle('on', howData[i].sep);
+    // yellow figures when unlocked
+    document.querySelectorAll('.fig').forEach(f => {
+      f.classList.toggle('yel', i >= 2);
+      f.classList.toggle('grey', i < 2);
+    });
   }
 
-  function copyLink() {
-    navigator.clipboard.writeText('https://gettogather.com').then(() => {
-      const btn = event.target;
-      btn.textContent = 'Copied!';
-      setTimeout(() => btn.textContent = 'Copy Link', 2000);
-    });
+  function nextStep() {
+    if (howStep < 3) setStep(howStep + 1);
+    else goTo('p9');
+  }
+  function prevStep() {
+    if (howStep > 0) setStep(howStep - 1);
+  }
+
+  /* ── WAITLIST ── */
+  let wlN = 846;
+  function submitWL() {
+    const em = document.getElementById('wl-email').value;
+    if (!em || !em.includes('@')) {
+      document.getElementById('wl-email').style.outline = '2px solid var(--red)';
+      return;
+    }
+    wlN++;
+    document.getElementById('wl-num').textContent = "You're #" + wlN.toLocaleString() + " on the list";
+    document.getElementById('wl-wrap').style.display = 'none';
+    document.getElementById('wl-succ').style.display = 'flex';
+  }
+
+  function textPeople() {
+    const msg = encodeURIComponent("I just joined Togather — it locks your social apps when you're alone and unlocks when we're together. Thought of you. gettogather.me");
+    window.location.href = 'sms:?body=' + msg;
   }
 
   /* ── INIT ── */
