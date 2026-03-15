@@ -15,35 +15,49 @@
       --white:  #f0ebe0;
       --yellow: #f5c400;
       --red:    #e02020;
-      --muted:  rgba(240,235,224,0.35);
+      --muted:  rgba(240,235,224,0.65);
       --rule:   rgba(240,235,224,0.08);
     }
 
-    html { scroll-behavior: smooth; height: 100%; }
+    html {
+      scroll-behavior: smooth;
+      height: 100vh;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--black);
       color: var(--white);
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
+      height: 100vh;
       overflow: hidden;
-      height: 100%;
       margin: 0;
+      padding: 0;
     }
 
     /* ── STICKY SCROLL CONTAINER ── */
     #scroll-container {
+      position: relative;
       height: 100vh;
-      overflow-y: auto;
+      overflow-y: scroll;
       overflow-x: hidden;
       scroll-snap-type: y mandatory;
       -webkit-overflow-scrolling: touch;
     }
 
-    #scroll-container > section,
-    #scroll-container > .ticker-snap {
+    #scroll-container > section {
       scroll-snap-align: start;
       scroll-snap-stop: always;
+      min-height: 100vh;
+    }
+
+    #scroll-container > footer {
+      scroll-snap-align: start;
+      min-height: auto;
+      padding-bottom: 4rem;
     }
 
     /* halftone grain */
@@ -110,13 +124,10 @@
 
     /* ── SNAP SECTIONS (full viewport) ── */
     .snap-section {
-      min-height: 100vh;
-      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       position: relative;
-      overflow-y: auto;
       overflow-x: hidden;
       padding: 5rem 1.25rem 1.5rem;
     }
@@ -126,9 +137,7 @@
     }
 
     .ticker-snap {
-      flex-shrink: 0;
-      height: 4.5rem;
-      min-height: 4.5rem;
+      height: auto;
       display: flex;
       align-items: center;
       padding: 0;
@@ -186,7 +195,7 @@
     .hook-line {
       display: block;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.5rem, 12vw, 10rem);
+      font-size: clamp(2rem, 5vw, 4.5rem);
       line-height: 0.9;
       letter-spacing: 0.02em;
       color: rgba(255,255,255,0.15);
@@ -243,6 +252,8 @@
     ════════════════════════════════ */
     #section-age {
       border-bottom: 3px solid var(--white);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .age-layout {
@@ -291,10 +302,15 @@
       border: 2px solid rgba(255,255,255,0.08);
       border-radius: 12px;
       padding: 1rem 1rem;
-      min-height: 44px;
       cursor: pointer;
       transition: all 0.15s;
       text-align: left;
+    }
+
+    @media (max-width: 768px) {
+      .age-btn { min-height: 64px; }
+      .email-form input,
+      .email-form button { min-height: 48px; }
     }
 
     @media (min-width: 769px) {
@@ -507,6 +523,7 @@
     #section-calc {
       border-bottom: 3px solid var(--white);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     #section-calc::before {
@@ -619,7 +636,7 @@
       font-size: 0.62rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.65);
       margin-top: 4px;
       line-height: 1.5;
     }
@@ -667,6 +684,7 @@
       border-bottom: 3px solid var(--white);
       background: var(--panel);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .how-header {
@@ -959,7 +977,7 @@
       font-size: 0.75rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.6);
       background: transparent;
       cursor: pointer;
       transition: all 0.15s;
@@ -1078,7 +1096,7 @@
       font-family: 'Bebas Neue', sans-serif;
       font-size: 1.1rem;
       letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.6);
       cursor: pointer;
       text-decoration: none;
       transition: all 0.15s;
@@ -1130,7 +1148,7 @@
   <div class="nav-logo">Togather</div>
   <div class="nav-right">
     <div class="nav-tag">Never Scroll Alone</div>
-    <button class="nav-cta" onclick="document.getElementById('section-waitlist').scrollIntoView({behavior:'smooth',block:'start'})">Join Waitlist</button>
+    <button class="nav-cta" onclick="var c=document.getElementById('scroll-container');var e=document.getElementById('section-waitlist');if(c&&e)c.scrollTo({top:e.offsetTop,behavior:'smooth'})">Join Waitlist</button>
   </div>
 </nav>
 
@@ -1229,7 +1247,7 @@
     <div class="rl prose" data-reveal>Not your career. Not your income. Not your feed.</div>
 
     <div class="reveal-btn" id="reveal-cta">
-      <button class="btn-primary" onclick="document.getElementById('section-rh').scrollIntoView({behavior:'smooth',block:'start'})">So what do we do →</button>
+      <button class="btn-primary" onclick="var c=document.getElementById('scroll-container');var e=document.getElementById('section-rh');if(c&&e)c.scrollTo({top:e.offsetTop,behavior:'smooth'})">So what do we do →</button>
     </div>
   </div>
 </section>
@@ -1245,7 +1263,7 @@
       <div class="rh-number-wrap" style="margin-top:-1rem">
         <div class="rh-big" style="color:rgba(245,196,0,0.3)">Hours.</div>
       </div>
-      <p class="rh-desc" style="margin-top:1.5rem">Not screen time. Not step counts. The actual hours you spend <strong>present with the people who matter.</strong><br/><br/><span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> measures this automatically. You don't log anything. You just live.</p>
+      <p class="rh-desc" style="margin-top:1.5rem">Not screen time. Not step counts. The actual hours you spend <strong>present with the people who matter.</strong><br/><br/><span style="color:var(--yellow)">Togather</span> measures this automatically. You don't log anything. You just live.</p>
     </div>
     <div class="reveal reveal-d2">
       <div class="eq-box">
@@ -1273,7 +1291,7 @@
         </div>
       </div>
       <div class="could-box" style="margin-top:1rem">
-        <div class="eq-ex" style="font-size:0.8rem;color:var(--muted)">Harvard data: quality relationships = #1 predictor of happiness and longevity. Dunbar's research: humans maintain ~5 truly intimate relationships. <strong style="color:var(--white)"><span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> helps you invest in those five.</strong></div>
+        <div class="eq-ex" style="font-size:0.8rem;color:var(--muted)">Harvard data: quality relationships = #1 predictor of happiness and longevity. Dunbar's research: humans maintain ~5 truly intimate relationships. <strong style="color:var(--white)"><span style="color:var(--yellow)">Togather</span> helps you invest in those five.</strong></div>
       </div>
     </div>
   </div>
@@ -1328,7 +1346,7 @@
       <div class="could-box" style="margin-top:2rem; border-color:rgba(245,196,0,0.15)">
         <div class="sec-kicker" style="margin-bottom:0.8rem">But here's the flip</div>
         <div style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; color:var(--yellow); line-height:1; margin-bottom:0.6rem" id="flip-rh">1,460 Real Hours</div>
-        <div style="font-size:0.8rem;color:var(--muted);line-height:1.6">waiting to be reclaimed.<br/>That's what <span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> gives back.</div>
+        <div style="font-size:0.8rem;color:var(--muted);line-height:1.6">waiting to be reclaimed.<br/>That's what <span style="color:var(--yellow)">Togather</span> gives back.</div>
       </div>
     </div>
   </div>
@@ -1353,14 +1371,14 @@
     <div class="how-step reveal reveal-d1">
       <div class="how-num">02</div>
       <div class="how-tag">Daily life</div>
-      <div class="how-title"><span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> Runs Quiet</div>
-      <div class="how-body">No nudges. No timers. Just the absence of the scroll. <span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> runs in the background, waiting.</div>
+      <div class="how-title"><span style="color:var(--yellow)">Togather</span> Runs Quiet</div>
+      <div class="how-body">No nudges. No timers. Just the absence of the scroll. <span style="color:var(--yellow)">Togather</span> runs in the background, waiting.</div>
     </div>
     <div class="how-step reveal reveal-d2">
       <div class="how-num">03</div>
       <div class="how-tag">The unlock</div>
       <div class="how-title">Someone Shows Up</div>
-      <div class="how-body">A friend with <span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> gets close. Bluetooth detects you're together. Both phones unlock. Mutually. Instantly.</div>
+      <div class="how-body">A friend with <span style="color:var(--yellow)">Togather</span> gets close. Bluetooth detects you're together. Both phones unlock. Mutually. Instantly.</div>
     </div>
     <div class="how-step reveal reveal-d3">
       <div class="how-num">04</div>
@@ -1387,7 +1405,7 @@
   <div class="waitlist-inner">
     <div class="waitlist-kicker reveal">Early access — limited spots</div>
     <h2 class="waitlist-title reveal">Your Real<br/><span>Hours</span><br/>start now.</h2>
-    <p class="waitlist-sub reveal">Join the waitlist. When <span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> launches, you get the download link first. <strong>Let's get togather.</strong></p>
+    <p class="waitlist-sub reveal">Join the waitlist. When <span style="color:var(--yellow)">Togather</span> launches, you get the download link first. <strong>Let's get togather.</strong></p>
 
     <div class="reveal" id="waitlist-form-wrap">
       <!-- BEEHIIV EMBED: Replace this form with your Beehiiv embed code -->
@@ -1402,7 +1420,7 @@
     <div class="waitlist-success" id="wl-success">
       <div class="success-num" id="wl-number">You're #847 on the list</div>
       <div class="success-msg">You're in.</div>
-      <div class="success-sub">We'll send you the download link the day <span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span> launches.<br/>In the meantime — go be with someone.</div>
+      <div class="success-sub">We'll send you the download link the day <span style="color:var(--yellow)">Togather</span> launches.<br/>In the meantime — go be with someone.</div>
       <div class="share-row">
         <a class="share-btn" href="sms:?body=I%20just%20joined%20Togather%20%E2%80%94%20it%20locks%20your%20social%20apps%20when%20you%27re%20alone%20and%20unlocks%20when%20we%27re%20together.%20Thought%20of%20you.%20gettogather.me" target="_blank" rel="noopener">Text your people →</a>
       </div>
@@ -1412,7 +1430,7 @@
 
 <!-- FOOTER (inside scroll container) -->
 <footer>
-  <div class="footer-logo"><span style="color:var(--white)">To</span><span style="color:var(--yellow)">gather</span></div>
+  <div class="footer-logo">Togather</div>
   <div class="footer-right">
     <span class="footer-copy">Never Scroll Alone</span>
     <span class="footer-copy">© 2026</span>
@@ -1433,7 +1451,9 @@
     document.getElementById('rv-days').textContent = days + ' days';
     // scroll to reveal
     setTimeout(() => {
-      document.getElementById('section-reveal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const c = document.getElementById('scroll-container');
+      const el = document.getElementById('section-reveal');
+      if (c && el) c.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
     }, 300);
   }
 
@@ -1496,9 +1516,9 @@
   document.querySelectorAll('.pdot').forEach((dot, i) => {
     dot.addEventListener('click', () => {
       const id = sections[i];
-      if (id) {
+      if (id && scrollContainer) {
         const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (el) scrollContainer.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
       }
     });
   });
