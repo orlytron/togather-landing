@@ -633,7 +633,6 @@
             <div class="wn">No spam. Download link sent on launch day.</div>
           </div>
           <div class="wsucc" id="wl-succ">
-            <div class="wnum" id="wl-num">You're #2,848 on the list</div>
             <div class="wmsg">You're in.</div>
             <div class="wmsub">We'll send you the download link the day Togather launches. In the meantime — go be with someone.</div>
             <button class="tbtn" onclick="textPeople()">Text your people →</button>
@@ -645,7 +644,10 @@
 
   <footer>
     <div class="flogo"><span style="color:var(--wht)">To</span><span style="color:var(--yel)">gather</span></div>
-    <div class="fr"><span class="fc">Never Scroll Alone</span><span class="fc">© 2026</span></div>
+    <div class="fr"><span class="fc">Never Scroll Alone</span><span class="fc">© 2026 Better Listener</span></div>
+    <div style="font-size:.58rem;color:rgba(240,235,224,.2);margin-top:.6rem;line-height:1.7;max-width:480px;text-align:center;padding:0 1rem">
+      By joining the waitlist you agree to receive email updates about Togather. We will never sell your data or spam you. To unsubscribe or request data deletion contact <a href="mailto:orly@thelisteningtable.com" style="color:rgba(240,235,224,.35);text-decoration:underline">orly@thelisteningtable.com</a>.
+    </div>
   </footer>
 
 </div>
@@ -685,18 +687,12 @@
   }
 
   // ── REVEAL ──
-  let rvDone = false;
-  // runReveal removed — P6 deleted
-
   // ── AGE ──
-  let ageHrs = 6.2, ageDays = 94;
+  let ageHrs = 6.2;
   function pickAge(btn, hrs, days, label) {
     document.querySelectorAll('.ab').forEach(b => b.classList.remove('sel'));
     btn.classList.add('sel');
-    ageHrs = hrs; ageDays = days;
-    S('gen-label', label + ' vs you');
-    const rh2 = document.getElementById('rv-hrs');
-    if (rh2) rh2.textContent = hrs + ' hrs';
+    ageHrs = hrs;
     calc(document.getElementById('slider').value);
     setTimeout(() => goTo('p3'), 300);
   }
@@ -881,21 +877,41 @@
   }, { passive: false });
 
   // ── WAITLIST ──
-  let wlN = 2847;
-  function submitWL() {
-    const em = document.getElementById('wl-email').value;
+  async function submitWL() {
+    const emailEl = document.getElementById('wl-email');
+    const em = emailEl.value.trim();
     if (!em || !em.includes('@')) {
-      document.getElementById('wl-email').style.outline = '2px solid rgba(0,0,0,.4)';
+      emailEl.style.outline = '2px solid rgba(0,0,0,.4)';
       return;
     }
-    wlN++;
-    S('wl-num', "You're #" + wlN.toLocaleString() + " on the list");
-    document.getElementById('wl-wrap').style.display = 'none';
-    document.getElementById('wl-succ').style.display = 'flex';
+
+    const btn = document.querySelector('#wl-wrap button');
+    btn.textContent = '...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: em }),
+      });
+
+      if (res.ok) {
+        document.getElementById('wl-wrap').style.display = 'none';
+        document.getElementById('wl-succ').style.display = 'flex';
+      } else {
+        btn.textContent = 'Try again →';
+        btn.disabled = false;
+        emailEl.style.outline = '2px solid rgba(0,0,0,.4)';
+      }
+    } catch (err) {
+      btn.textContent = 'Try again →';
+      btn.disabled = false;
+    }
   }
 
   function textPeople() {
-    const msg = encodeURIComponent("I just joined Togather — it locks your social apps when you're alone and unlocks when we're together. Thought of you. gettogather.me");
+    const msg = encodeURIComponent('Gather your people — gettogather.me');
     window.location.href = 'sms:?body=' + msg;
   }
 
