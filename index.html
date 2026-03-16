@@ -335,7 +335,6 @@
   <a class="ml" onclick="goTo('p3');closeM()">Your Numbers</a>
   <a class="ml" onclick="goTo('p4');closeM()">Your Generation</a>
   <a class="ml" onclick="goTo('p5');closeM()">Real Hours</a>
-  <a class="ml" onclick="goTo('p6');closeM()">The Cost</a>
   <a class="ml" onclick="goTo('p7');closeM()">Try The App</a>
   <a class="ml" onclick="goTo('p8');closeM()">Your Life</a>
   <a class="ml" onclick="goTo('p9');closeM()">Are You In?</a>
@@ -348,7 +347,6 @@
   <div class="dot" onclick="goTo('p3')"></div>
   <div class="dot" onclick="goTo('p4')"></div>
   <div class="dot" onclick="goTo('p5')"></div>
-  <div class="dot" onclick="goTo('p6')"></div>
   <div class="dot" onclick="goTo('p7')"></div>
   <div class="dot" onclick="goTo('p8')"></div>
   <div class="dot" onclick="goTo('p9')"></div>
@@ -551,53 +549,11 @@
         </div>
       </div>
       <p style="font-size:.7rem;color:rgba(240,235,224,.3);margin-top:.8rem;max-width:420px;line-height:1.6">Source: U.S. Surgeon General's Advisory on the Healing Effects of Social Connection and Community, 2023. Highest loneliness rates among young adults.</p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:.04em;color:var(--yel);margin-top:1rem;line-height:1.1">Loneliness doesn't peak<br/>when you get old.<br/>It peaks when you scroll.</p>
     </div>
   </section>
 
   <!-- P5 REAL HOURS -->
-  <section class="s" id="p5">
-    <div class="inn sc">
-      <div class="kk">The first metric to measure presence</div>
-      <span class="rhw">Real</span>
-      <span class="rhw">Hours.</span>
-      <div class="rh-wait">
-        <div class="rh-wn" id="rh-w">1,460</div>
-        <div class="rh-wl">Real Hours waiting for you this year</div>
-      </div>
-      <div class="eqb">
-        <div class="eqt">Presence = Time × Attention</div>
-        <div class="eqr">
-          <div><div class="eqv">2h</div><div class="eql">Together</div></div>
-          <div class="eqop">×</div>
-          <div><div class="eqv">80%</div><div class="eql">Phone down</div></div>
-          <div class="eqop">=</div>
-          <div><div class="eqv g">1.6</div><div class="eql">Real Hours</div></div>
-        </div>
-        <div class="eqnote">The unlock is the door. <strong>Presence is the reward.</strong> Being together but scrolling gives you low Real Hours. Put it down and it compounds.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- P6 REVEAL -->
-  <section class="s" id="p6">
-    <div class="inn sc">
-      <div class="rw">
-        <div class="rl">People your age average</div>
-        <div class="rl big y" id="rv-hrs">6.2 hrs</div>
-        <div class="rl">on social media. Every day.</div>
-        <div class="rl gap sm">Loneliness doesn't peak when you get old.</div>
-        <div class="rl y">It peaks when you scroll.</div>
-        <div class="rl gap">The quality of your</div>
-        <div class="rl big">relationships.</div>
-        <div class="rl sm">That's all that matters. And we built something about it.</div>
-        <div class="rcta" id="rcta">
-          <button class="btn-p" onclick="goTo('p7')">See it. →</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- P7 PHONE DEMO -->
   <section class="s" id="p7">
     <div class="p7-before sc" id="p7-before">
       <div class="p7-title">Try the app.<br/>Right now.</div>
@@ -696,7 +652,7 @@
 
 <script>
   const sc   = document.getElementById('sc');
-  const pids = ['p1','p2','p3','p4','p5','p6','p7','p8','p9'];
+  const pids = ['p1','p2','p3','p4','p5','p7','p8','p9'];
   const dots = document.querySelectorAll('.dot');
   const mls  = document.querySelectorAll('.ml');
 
@@ -715,7 +671,6 @@
       dots.forEach((d,i) => d.classList.toggle('on', i === idx));
       mls.forEach((l,i)  => l.classList.toggle('on', i === idx));
       e.target.classList.add('live');
-      if (e.target.id === 'p6') runReveal();
       if (e.target.id === 'p7') enterPhoneMode();
       else exitPhoneMode();
     });
@@ -731,12 +686,7 @@
 
   // ── REVEAL ──
   let rvDone = false;
-  function runReveal() {
-    if (rvDone) return; rvDone = true;
-    const lines = document.querySelectorAll('#p6 .rl');
-    lines.forEach((l,i) => setTimeout(() => l.classList.add('lit'), i * 280));
-    setTimeout(() => { const c = document.getElementById('rcta'); if (c) c.classList.add('show'); }, lines.length * 280 + 200);
-  }
+  // runReveal removed — P6 deleted
 
   // ── AGE ──
   let ageHrs = 6.2, ageDays = 94;
