@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Togather — Never Scroll Alone."/>
+  <meta name="description" content="Togather — Never Scroll Alone. Let your friends help."/>
   <title>Togather — Never Scroll Alone</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
@@ -16,13 +16,9 @@
     }
     html,body{width:100%;height:100%;overflow:hidden;background:var(--blk);color:var(--wht);font-family:'DM Sans',sans-serif;font-weight:300;-webkit-text-size-adjust:100%}
     body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.015) 1px,transparent 1px);background-size:6px 6px;pointer-events:none;z-index:998}
-
-    /* SCROLL */
     #sc{height:100vh;overflow-y:scroll;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
     #sc::-webkit-scrollbar{display:none}
     .s{scroll-snap-align:start;scroll-snap-stop:always;height:100vh;width:100%;position:relative;display:flex;flex-direction:column;overflow:hidden}
-
-    /* section enter */
     .sc{opacity:0;transform:translateY(14px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
     .s.live .sc{opacity:1;transform:translateY(0)}
     #p1 .sc{opacity:1;transform:none}
@@ -56,31 +52,22 @@
     .kk{display:inline-block;font-size:.54rem;letter-spacing:.25em;text-transform:uppercase;color:var(--yel);margin-bottom:.7rem}
     .btn-p{display:inline-block;background:var(--yel);color:#000;border:none;padding:.78rem 1.7rem;font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.08em;border-radius:4px;cursor:pointer;min-height:44px;transition:opacity .15s}
     .btn-p:hover{opacity:.88}
-    .btn-g{display:inline-block;background:transparent;color:var(--yel);border:none;padding:.35rem 0;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:opacity .15s}
-    .btn-g:hover{opacity:.6}
     .inn{padding:calc(var(--nh) + clamp(.8rem,3vh,2rem)) clamp(1rem,4vw,2.5rem) clamp(.8rem,2.5vh,1.8rem);flex:1;display:flex;flex-direction:column;justify-content:center}
     .h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,7vw,5.5rem);line-height:.9;letter-spacing:.02em;margin-bottom:.7rem}
-    .body{font-size:clamp(.82rem,1.8vw,1rem);color:var(--mut);line-height:1.8}
-    .body strong{color:var(--wht);font-weight:500}
 
-    /* ════ P1 HOOK ════ */
+    /* ═══ P1 HOOK ═══ */
     #p1{background:var(--blk)}
-    #p1::before{content:'11';position:absolute;right:-2vw;top:50%;transform:translateY(-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(12rem,32vw,40rem);color:rgba(255,255,255,.016);line-height:1;pointer-events:none;user-select:none}
     .hl{display:block;font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,8vw,7rem);line-height:.9;letter-spacing:.02em;color:var(--wht);opacity:0;transform:translateY(12px);transition:opacity .5s,transform .5s}
     .hl.y{color:var(--yel)}
     .hl.lit{opacity:1;transform:translateY(0)}
-    .hsub{margin-top:1rem;font-size:clamp(.84rem,1.8vw,1rem);color:var(--mut);line-height:1.7;max-width:32ch;opacity:0;animation:fu .6s 3.2s forwards}
+    .hsub{margin-top:.9rem;font-size:clamp(.84rem,1.8vw,1rem);color:var(--mut);line-height:1.7;max-width:38ch;opacity:0;animation:fu .6s 3.2s forwards}
     .hsub strong{color:var(--wht);font-weight:500}
-    .hvd{margin-top:1rem;padding:.82rem 1.1rem;background:rgba(245,196,0,.06);border:1px solid rgba(245,196,0,.18);border-radius:10px;max-width:440px;opacity:0;animation:fu .6s 3.6s forwards}
-    .hvd-t{font-family:'Bebas Neue',sans-serif;font-size:.78rem;letter-spacing:.1em;color:var(--yel);margin-bottom:.25rem}
-    .hvd-b{font-size:.74rem;color:var(--mut);line-height:1.65}
-    .hvd-b strong{color:var(--wht);font-weight:500}
-    .hproof{margin-top:.9rem;display:flex;align-items:center;gap:.6rem;opacity:0;animation:fu .5s 4s forwards}
+    .hproof{margin-top:.8rem;display:flex;align-items:center;gap:.6rem;opacity:0;animation:fu .5s 3.7s forwards}
     .hproof-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
     .hproof-txt{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
     .hproof-txt span{color:var(--grn)}
-    .hscroll{margin-top:1.2rem;display:flex;align-items:center;gap:.7rem;opacity:0;animation:fu .5s 4.3s forwards}
+    .hscroll{margin-top:.9rem;display:flex;align-items:center;gap:.7rem;opacity:0;animation:fu .5s 4s forwards}
     .hbar{width:26px;height:2px;background:var(--yel)}
     .htxt{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--mut)}
     #ticker{height:32px;overflow:hidden;border-top:1px solid var(--rul);background:rgba(245,196,0,.02);display:flex;align-items:center;flex-shrink:0}
@@ -88,20 +75,21 @@
     .ti{font-family:'Bebas Neue',sans-serif;font-size:.72rem;letter-spacing:.2em;color:var(--yel);opacity:.55;flex-shrink:0}
     .td{color:rgba(245,196,0,.18)}
 
-    /* ════ P2 AGE ════ */
+    /* ═══ P2 RESEARCH ═══ */
     #p2{background:var(--pnl);border-top:2px solid var(--rul)}
-    .agrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:.8rem}
-    .ab{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:.9rem .85rem;cursor:pointer;transition:all .15s;text-align:left;min-height:60px}
-    .ab:hover{border-color:rgba(245,196,0,.4)}
-    .ab.sel{background:rgba(245,196,0,.08);border-color:var(--yel)}
-    .an{font-family:'Bebas Neue',sans-serif;font-size:1.65rem;color:var(--wht);line-height:1}
-    .ab.sel .an{color:var(--yel)}
-    .alb{font-size:.56rem;color:var(--mut);margin-top:2px;letter-spacing:.06em}
+    .p2-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,5vw,3.5rem);line-height:.9;letter-spacing:.02em;margin-bottom:.6rem}
+    .rcards{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:.7rem;max-width:480px}
+    .rcard{padding:.8rem .95rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:10px}
+    .rcard-t{font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.04em;color:var(--yel);line-height:1;margin-bottom:.28rem}
+    .rcard-b{font-size:.58rem;color:var(--mut);line-height:1.6}
+    .rcard-b strong{color:var(--wht);font-weight:500}
+    .rubin{margin-top:7px;padding:.85rem 1rem;background:rgba(245,196,0,.05);border:1px solid rgba(245,196,0,.15);border-radius:10px;max-width:480px}
+    .rubin-t{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.04em;color:var(--yel);margin-bottom:.28rem}
+    .rubin-b{font-size:.6rem;color:var(--mut);line-height:1.65}
+    .rubin-b strong{color:var(--wht);font-weight:500}
 
-    /* ════ P3 SLIDER ════ */
+    /* ═══ P3 CALCULATOR ═══ */
     #p3{background:var(--blk);border-top:2px solid var(--rul)}
-    .p3-hook{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,2.5vw,1.4rem);letter-spacing:.04em;color:var(--mut);margin-bottom:.5rem}
-    .p3-hook span{color:var(--wht)}
     .cbox{border:2px solid rgba(255,255,255,.18);border-radius:4px;overflow:hidden;margin-top:.7rem}
     .ci{padding:.9rem 1.1rem;background:rgba(255,255,255,.02);border-bottom:1.5px solid var(--rul)}
     .cq{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-bottom:.55rem}
@@ -116,56 +104,30 @@
     .csn{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--wht);line-height:1}
     .csl{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:2px;line-height:1.4}
 
-    /* ════ P4 COMPARISON ════ */
-    #p4{background:var(--pnl);border-top:2px solid var(--rul)}
-    .bars{display:flex;flex-direction:column;gap:10px;margin-top:.8rem}
-    .br{display:flex;align-items:center;gap:8px}
-    .bn{font-size:.54rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);min-width:28px}
-    .bn.y{color:var(--yel)}
-    .bt{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
-    .bf{height:100%;border-radius:3px;transition:width .45s cubic-bezier(.16,1,.3,1)}
-    .bf.y{background:var(--yel)}
-    .bf.a{background:rgba(255,255,255,.28)}
-    .bv{font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--mut);min-width:26px;text-align:right}
-    .bv.y{color:var(--yel)}
-    .cnote{font-size:clamp(.78rem,1.6vw,.9rem);color:var(--mut);line-height:1.75;margin-top:1rem}
-    .cnote strong{color:var(--wht);font-weight:500}
+    /* ═══ P8 CAROUSEL ═══ */
+    #p8{background:var(--pnl);border-top:2px solid var(--rul)}
+    .car-wrap{width:100%;max-width:460px;margin-top:.8rem;user-select:none}
+    .car-card{background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:1.2rem 1.4rem;transition:opacity .15s;min-height:130px}
+    .car-card.fade{opacity:0}
+    .car-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,5rem);color:var(--yel);line-height:1;letter-spacing:.02em}
+    .car-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,3vw,1.6rem);color:var(--wht);line-height:1;letter-spacing:.03em;margin-top:.1rem}
+    .car-time{font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:.35rem}
+    .car-desc{font-size:.66rem;color:rgba(240,235,224,.32);margin-top:.2rem;line-height:1.5}
+    .car-prog-wrap{height:2px;background:rgba(255,255,255,.07);border-radius:1px;margin-top:.9rem;overflow:hidden}
+    .car-prog{height:100%;background:var(--yel);border-radius:1px;width:0%}
+    .car-nav{display:flex;align-items:center;justify-content:space-between;margin-top:.7rem}
+    .car-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .85rem;font-family:'Bebas Neue',sans-serif;font-size:.78rem;letter-spacing:.06em;color:var(--mut);cursor:pointer;transition:all .15s;min-height:30px}
+    .car-btn:hover{border-color:var(--yel);color:var(--yel)}
+    .car-idx{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(240,235,224,.22)}
+    .p8-bridge{font-size:clamp(.8rem,1.6vw,.92rem);color:var(--mut);line-height:1.7;max-width:36ch;margin-top:.9rem}
+    .p8-bridge strong{color:var(--wht);font-weight:500}
 
-    /* ════ P5 REAL HOURS ════ */
-    #p5{background:var(--blk);border-top:2px solid var(--rul)}
-    .rhw{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,12vw,9rem);color:var(--wht);line-height:.85;letter-spacing:.02em;display:block}
-    .rh-wait{margin-top:.9rem;padding:.9rem 1.1rem;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.18);border-radius:10px;display:inline-block}
-    .rh-wn{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--grn);line-height:1}
-    .rh-wl{font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(46,204,113,.6);margin-top:3px}
-    .eqb{background:rgba(255,255,255,.03);border:1.5px solid var(--rul);border-radius:12px;padding:1.2rem;margin-top:1rem}
-    .eqt{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:.06em;color:var(--wht);margin-bottom:.9rem}
-    .eqr{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.9rem}
-    .eqv{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--wht);line-height:1;text-align:center}
-    .eqv.g{color:var(--grn)}
-    .eql{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-top:2px;text-align:center}
-    .eqop{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:rgba(245,196,0,.28)}
-    .eqnote{border-top:1px solid var(--rul);padding-top:.8rem;font-size:.72rem;color:var(--mut);line-height:1.7}
-    .eqnote strong{color:var(--wht);font-weight:500}
-
-    /* ════ P6 REVEAL ════ */
-    #p6{background:var(--pnl);border-top:2px solid var(--rul)}
-    .rw{max-width:600px}
-    .rl{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.3rem,4vw,2.8rem);letter-spacing:.02em;color:rgba(255,255,255,.13);line-height:1.1;margin-bottom:.15rem;transition:color .6s,opacity .6s;opacity:.3}
-    .rl.lit{color:var(--wht);opacity:1}
-    .rl.y.lit{color:var(--yel)}
-    .rl.big{font-size:clamp(2.2rem,7vw,5rem);line-height:.88;margin:.4rem 0}
-    .rl.gap{margin-top:1.2rem}
-    .rl.sm{font-family:'DM Sans',sans-serif;font-size:clamp(.8rem,1.6vw,.92rem);font-weight:300;letter-spacing:0;line-height:1.7;color:var(--mut)}
-    .rl.sm.lit{color:rgba(240,235,224,.6)}
-    .rcta{margin-top:1.6rem;opacity:0;transition:opacity .5s}
-    .rcta.show{opacity:1}
-
-    /* ════ P7 PHONE DEMO ════ */
+    /* ═══ P7 PHONE DEMO ═══ */
     #p7{background:var(--blk);border-top:2px solid var(--rul);overflow:hidden}
     .p7-before{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:calc(var(--nh)+1rem) 1.5rem 1.5rem;transition:opacity .4s,transform .4s;z-index:2}
     .p7-before.hidden{opacity:0;transform:translateY(-16px);pointer-events:none}
     .p7-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,5vw,3.2rem);letter-spacing:.04em;text-align:center;margin-bottom:.5rem}
-    .p7-sub{font-size:clamp(.8rem,1.6vw,.92rem);color:var(--mut);text-align:center;max-width:26ch;line-height:1.6;margin-bottom:1.2rem}
+    .p7-sub{font-size:clamp(.8rem,1.6vw,.92rem);color:var(--mut);text-align:center;max-width:28ch;line-height:1.6;margin-bottom:1.2rem}
     .p7-hint{font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--yel);opacity:.7;animation:pulsetxt 2s infinite}
     @keyframes pulsetxt{0%,100%{opacity:.35}50%{opacity:.85}}
 
@@ -173,25 +135,49 @@
     #floatphone{position:fixed;left:50%;transform:translateX(-50%) translateY(115vh);z-index:800;transition:transform .65s cubic-bezier(.16,1,.3,1);pointer-events:none}
     #floatphone.risen{transform:translateX(-50%) translateY(-50%);top:50%;pointer-events:auto}
     #floatphone.exiting{transform:translateX(-50%) translateY(115vh)}
-
     .fp-shell{width:clamp(200px,52vw,280px);height:clamp(380px,100vw,520px);background:#0a0a0a;border-radius:clamp(30px,5vw,42px);border:6px solid #222;position:relative;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.85),inset 0 0 0 1px rgba(255,255,255,.06)}
     .fp-shell::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:64px;height:19px;background:#0a0a0a;border-radius:0 0 13px 13px;z-index:10}
-
     .fps{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px 18px 18px}
     .fps.vis{display:flex}
 
-    /* screen 0 locked */
-    .fps0{background:#0a0a0a}
-    .fp-lock{font-size:2rem;margin-bottom:.8rem}
+    /* screen 0 — friend feed */
+    .fps0{background:#0a0a0a;justify-content:flex-start;align-items:stretch;padding-top:28px}
+    .fp-feed-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .fp-feed-logo{font-family:'Bebas Neue',sans-serif;font-size:.9rem;letter-spacing:.06em;color:var(--yel)}
+    .fp-badge{display:flex;align-items:center;gap:3px;background:rgba(245,196,0,.1);border-radius:5px;padding:2px 7px}
+    .fp-bdot{width:4px;height:4px;border-radius:50%;background:var(--yel)}
+    .fp-btxt{font-size:.44rem;color:var(--yel)}
+    .fp-lbl{font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,235,224,.25);margin-bottom:7px}
+    .fp-frow{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:9px;margin-bottom:5px}
+    .fp-frow.g{background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.2)}
+    .fp-frow.d{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07)}
+    .fp-frow.y{background:rgba(245,196,0,.08);border:1.5px solid rgba(245,196,0,.32)}
+    .fp-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:.52rem;font-weight:500;flex-shrink:0}
+    .fp-av.g{background:rgba(46,204,113,.18);color:#2ecc71}
+    .fp-av.d{background:rgba(255,255,255,.07);color:rgba(240,235,224,.35)}
+    .fp-av.y{background:rgba(245,196,0,.15);color:#f5c400;font-size:.42rem}
+    .fp-fn{font-size:.6rem;font-weight:500;color:#f0ebe0;line-height:1.2}
+    .fp-fn.y{color:#f5c400}
+    .fp-fs{font-size:.48rem;margin-top:1px}
+    .fp-fs.g{color:#2ecc71}
+    .fp-fs.d{color:rgba(240,235,224,.3)}
+    .fp-fs.y{color:rgba(245,196,0,.55)}
+    .fp-fdot{width:6px;height:6px;border-radius:50%;margin-left:auto;flex-shrink:0}
+    .fp-fdot.g{background:#2ecc71}
+    .fp-fdot.d{background:rgba(255,255,255,.15)}
+
+    /* screen 1 — locked */
+    .fps1{background:#0a0a0a}
+    .fp-lock-icon{font-size:2rem;margin-bottom:.8rem}
     .fp-lock-t{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.04em;text-align:center;margin-bottom:.3rem}
     .fp-lock-s{font-size:.6rem;color:var(--mut);text-align:center;line-height:1.5;max-width:20ch;margin-bottom:1rem}
     .fp-apps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
-    .fpa{display:flex;flex-direction:column;align-items:center;gap:3px;opacity:.3;filter:grayscale(1)}
-    .fpai{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem}
-    .fpal{font-size:.44rem;color:var(--mut)}
+    .fpa{display:flex;flex-direction:column;align-items:center;gap:4px;opacity:.28;filter:grayscale(1)}
+    .fpai{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:.58rem;letter-spacing:.04em;color:rgba(255,255,255,.8)}
+    .fpal{font-size:.42rem;color:var(--mut);letter-spacing:.06em}
 
-    /* screen 1 scanning */
-    .fps1{background:#050510}
+    /* screen 2 — scanning */
+    .fps2{background:#050510}
     .fp-radar{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;margin-bottom:.8rem}
     .fp-rr{position:absolute;border-radius:50%;border:1.5px solid rgba(245,196,0,.3);animation:rp 2.4s ease-out infinite}
     .fp-rr:nth-child(1){width:44px;height:44px;animation-delay:0s}
@@ -205,8 +191,8 @@
     .fp-scan-t{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.04em;text-align:center;margin-bottom:.25rem}
     .fp-scan-s{font-size:.6rem;color:var(--mut);text-align:center}
 
-    /* screen 2 unlock */
-    .fps2{background:#050505}
+    /* screen 3 — unlock */
+    .fps3{background:#050505}
     .fp-burst{position:relative;width:88px;height:88px;display:flex;align-items:center;justify-content:center;margin-bottom:.8rem}
     .fp-br{position:absolute;border-radius:50%;background:rgba(245,196,0,.1)}
     .fp-br.go{animation:bx .8s ease-out forwards}
@@ -218,8 +204,8 @@
     .fp-unlock-t{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;color:var(--yel);text-align:center;margin-bottom:.25rem}
     .fp-unlock-s{font-size:.6rem;color:var(--mut);text-align:center}
 
-    /* screen 3 home */
-    .fps3{background:#0a0a0a;padding-top:30px}
+    /* screen 4 — real hours */
+    .fps4{background:#0a0a0a;padding-top:30px}
     .fp-hdr{width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
     .fp-hlogo{font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:var(--yel)}
     .fp-sess{display:flex;align-items:center;gap:3px;background:rgba(245,196,0,.1);border-radius:8px;padding:3px 8px}
@@ -227,10 +213,10 @@
     @keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
     .fp-st{font-size:.48rem;color:var(--yel)}
     .fp-apps-u{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
-    .fpau{display:flex;flex-direction:column;align-items:center;gap:3px}
-    .fpaui{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;border:1px solid rgba(46,204,113,.3)}
-    .fpaul{font-size:.44rem;color:var(--grn)}
-    .fp-rh-row{margin-top:1rem;padding:.7rem .9rem;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.2);border-radius:10px;width:100%;text-align:center}
+    .fpau{display:flex;flex-direction:column;align-items:center;gap:4px}
+    .fpaui{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:.58rem;letter-spacing:.04em;color:rgba(255,255,255,.7);border:1px solid rgba(46,204,113,.3)}
+    .fpaul{font-size:.42rem;color:var(--grn);letter-spacing:.06em}
+    .fp-rh-row{margin-top:.9rem;padding:.7rem .9rem;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.2);border-radius:10px;width:100%;text-align:center}
     .fp-rh-num{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--grn);line-height:1}
     .fp-rh-lbl{font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(46,204,113,.6);margin-top:2px}
 
@@ -238,15 +224,11 @@
     .fp-prog{display:flex;gap:7px;margin-top:.8rem;justify-content:center}
     .fp-pd{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s}
     .fp-pd.on{background:var(--yel);width:14px;border-radius:3px}
-
-    /* step label above buttons */
     .fp-step-lbl{font-family:'Bebas Neue',sans-serif;font-size:clamp(.9rem,2.5vw,1.2rem);letter-spacing:.04em;color:var(--mut);text-align:center;margin-bottom:.5rem;transition:all .3s}
 
-    /* overlay + controls */
+    /* phone overlay + controls */
     #phone-overlay{position:fixed;inset:0;background:rgba(8,8,8,.85);z-index:790;opacity:0;pointer-events:none;transition:opacity .4s}
     #phone-overlay.vis{opacity:1;pointer-events:auto}
-
-    /* tap controls — fallback for scroll hijack */
     #phone-controls{position:fixed;bottom:clamp(1.5rem,5vh,3rem);left:50%;transform:translateX(-50%);z-index:810;display:flex;flex-direction:column;align-items:center;gap:.7rem;opacity:0;transition:opacity .4s;pointer-events:none}
     #phone-controls.vis{opacity:1;pointer-events:auto}
     .pc-hint{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:var(--yel);opacity:.7}
@@ -256,34 +238,20 @@
     .pc-btn.next{background:var(--yel);color:#000;border-color:var(--yel)}
     .pc-btn.next:hover{opacity:.88}
 
-    /* stick figs */
-    #figs-wrap{position:fixed;bottom:clamp(6rem,14vh,9rem);left:50%;transform:translateX(-50%);z-index:810;display:flex;gap:.5rem;align-items:flex-end;opacity:0;transition:opacity .4s;pointer-events:none}
+    /* stick figs — raised, smaller */
+    #figs-wrap{position:fixed;bottom:clamp(8rem,18vh,11rem);left:50%;transform:translateX(-50%);z-index:810;display:flex;gap:.5rem;align-items:flex-end;opacity:0;transition:opacity .4s;pointer-events:none}
     #figs-wrap.vis{opacity:1}
     .fig{display:flex;flex-direction:column;align-items:center;gap:2px}
-    .f-h{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.22)}
-    .f-b{width:2px;height:14px;border-radius:1px;background:rgba(255,255,255,.22)}
-    .f-a{width:18px;height:2px;border-radius:1px;background:rgba(255,255,255,.22)}
-    .f-l{display:flex;gap:5px}
-    .f-lg{width:2px;height:10px;border-radius:1px;background:rgba(255,255,255,.22)}
+    .f-h{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.22)}
+    .f-b{width:2px;height:12px;border-radius:1px;background:rgba(255,255,255,.22)}
+    .f-a{width:15px;height:2px;border-radius:1px;background:rgba(255,255,255,.22)}
+    .f-l{display:flex;gap:4px}
+    .f-lg{width:2px;height:8px;border-radius:1px;background:rgba(255,255,255,.22)}
     .fig.y .f-h,.fig.y .f-b,.fig.y .f-a,.fig.y .f-lg{background:var(--yel)}
-    .f-sep{font-size:.85rem;color:rgba(255,255,255,.14);margin:0 4px;align-self:center}
+    .f-sep{font-size:.75rem;color:rgba(255,255,255,.14);margin:0 3px;align-self:center}
     .f-sep.y{color:var(--yel)}
 
-    /* ════ P8 YOUR LIFE ════ */
-    #p8{background:var(--pnl);border-top:2px solid var(--rul)}
-    .pp-q{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut);margin-bottom:.55rem}
-    .pp-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.8rem}
-    .pill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:4px 10px;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;color:var(--wht);cursor:pointer;transition:all .15s;min-height:28px}
-    .pill:hover{border-color:rgba(245,196,0,.5)}
-    .pill.on{background:var(--yel);color:#000;border-color:var(--yel)}
-    .pstat{padding:.9rem 1.1rem;background:rgba(245,196,0,.06);border:1px solid rgba(245,196,0,.14);border-radius:10px;margin-bottom:.9rem}
-    .ptag{font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--yel);margin-bottom:3px}
-    .pn{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.7rem,4vw,2.6rem);color:var(--yel);line-height:1}
-    .pl{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,196,0,.55);margin-top:2px}
-    .p8-bridge{font-size:clamp(.8rem,1.6vw,.92rem);color:var(--mut);line-height:1.7;max-width:36ch}
-    .p8-bridge strong{color:var(--wht);font-weight:500}
-
-    /* ════ P9 MANIFESTO + WAITLIST ════ */
+    /* ═══ P9 MANIFESTO + WAITLIST ═══ */
     #p9{background:var(--yel);color:#000;border-top:2px solid rgba(0,0,0,.12)}
     #p9::before{content:'T';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:80vw;line-height:.8;color:rgba(0,0,0,.04);right:-8vw;top:-10vw;pointer-events:none}
     .p9-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,4rem);align-items:center;position:relative;z-index:2}
@@ -292,7 +260,6 @@
     .mt .ol{-webkit-text-stroke:2px #000;color:transparent}
     .mb{font-size:clamp(.84rem,1.6vw,.96rem);color:rgba(0,0,0,.5);line-height:1.8;max-width:42ch;margin-bottom:.7rem}
     .mq{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,3vw,2rem);letter-spacing:.03em;color:#000;margin-bottom:0;line-height:1.2}
-    /* waitlist on p9 */
     .wf{display:flex;border:2.5px solid #000;border-radius:4px;overflow:hidden;width:100%;max-width:360px}
     .wf input{flex:1;background:transparent;border:none;outline:none;padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.86rem;color:#000;min-height:46px}
     .wf input::placeholder{color:rgba(0,0,0,.38)}
@@ -300,7 +267,6 @@
     .wf button:hover{opacity:.85}
     .wn{margin-top:.55rem;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(0,0,0,.4)}
     .wsucc{display:none;flex-direction:column;gap:.5rem;padding:1.2rem;background:rgba(0,0,0,.07);border:1.5px solid rgba(0,0,0,.18);border-radius:12px;max-width:360px;width:100%}
-    .wnum{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:#000;font-weight:500}
     .wmsg{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;color:#000}
     .wmsub{font-size:.75rem;color:rgba(0,0,0,.5);line-height:1.6}
     .tbtn{margin-top:.55rem;background:transparent;border:1.5px solid rgba(0,0,0,.2);border-radius:8px;padding:.45rem 1.1rem;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.5);cursor:pointer;transition:all .15s}
@@ -310,7 +276,6 @@
     .flogo{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.06em}
     .fr{display:flex;gap:1.1rem}
     .fc{font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
-
     @keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   </style>
@@ -331,59 +296,101 @@
 <div id="menu">
   <button class="mc" onclick="closeM()">×</button>
   <a class="ml" onclick="goTo('p1');closeM()">Start</a>
-  <a class="ml" onclick="goTo('p2');closeM()">Your Age</a>
+  <a class="ml" onclick="goTo('p2');closeM()">Why It Works</a>
   <a class="ml" onclick="goTo('p3');closeM()">Your Numbers</a>
-  <a class="ml" onclick="goTo('p4');closeM()">Your Generation</a>
-  <a class="ml" onclick="goTo('p5');closeM()">Real Hours</a>
-  <a class="ml" onclick="goTo('p7');closeM()">Try The App</a>
-  <a class="ml" onclick="goTo('p8');closeM()">Your Life</a>
+  <a class="ml" onclick="goTo('p7');closeM()">See It Work</a>
   <a class="ml" onclick="goTo('p9');closeM()">Are You In?</a>
 </div>
 
-<!-- DOTS -->
+<!-- DOTS — 6 sections -->
 <div id="dots">
   <div class="dot on" onclick="goTo('p1')"></div>
   <div class="dot" onclick="goTo('p2')"></div>
   <div class="dot" onclick="goTo('p3')"></div>
-  <div class="dot" onclick="goTo('p4')"></div>
-  <div class="dot" onclick="goTo('p5')"></div>
-  <div class="dot" onclick="goTo('p7')"></div>
   <div class="dot" onclick="goTo('p8')"></div>
+  <div class="dot" onclick="goTo('p7')"></div>
   <div class="dot" onclick="goTo('p9')"></div>
 </div>
 
-<!-- FLOATING PHONE -->
+<!-- FLOATING PHONE — 5 screens -->
 <div id="floatphone">
   <div class="fp-shell">
+
+    <!-- screen 0: friend feed -->
     <div class="fps fps0 vis" id="fps0">
-      <div class="fp-lock">🔒</div>
+      <div class="fp-feed-head">
+        <span class="fp-feed-logo">Togather</span>
+        <div class="fp-badge"><div class="fp-bdot"></div><span class="fp-btxt">3 friends</span></div>
+      </div>
+      <div class="fp-lbl">your people right now</div>
+      <div class="fp-frow g">
+        <div class="fp-av g">M</div>
+        <div style="flex:1"><div class="fp-fn">Maya</div><div class="fp-fs g">present — with someone</div></div>
+        <div class="fp-fdot g"></div>
+      </div>
+      <div class="fp-frow d">
+        <div class="fp-av d">J</div>
+        <div style="flex:1"><div class="fp-fn">Jordan</div><div class="fp-fs d">scrolling — 1h 22m</div></div>
+        <div class="fp-fdot d"></div>
+      </div>
+      <div class="fp-frow y">
+        <div class="fp-av y">YOU</div>
+        <div style="flex:1"><div class="fp-fn y">You</div><div class="fp-fs y">alone · 2:14 solo today</div></div>
+        <span style="font-size:13px;margin-left:auto">🔒</span>
+      </div>
+      <div style="margin-top:8px;padding:6px 9px;background:rgba(245,196,0,.05);border:1px solid rgba(245,196,0,.12);border-radius:7px">
+        <div style="font-size:.44rem;color:rgba(245,196,0,.5);line-height:1.5">Your friends see this. That's what makes it work.</div>
+      </div>
+      <div class="fp-prog" style="margin-top:10px">
+        <div class="fp-pd on"></div><div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd"></div>
+      </div>
+    </div>
+
+    <!-- screen 1: locked -->
+    <div class="fps fps1" id="fps1">
+      <div class="fp-lock-icon">🔒</div>
       <div class="fp-lock-t">You're alone.</div>
       <div class="fp-lock-s">Apps locked until someone is with you.</div>
       <div class="fp-apps">
-        <div class="fpa"><div class="fpai" style="background:linear-gradient(135deg,#f58529,#dd2a7b)">📸</div><div class="fpal">IG</div></div>
-        <div class="fpa"><div class="fpai" style="background:#111">🎵</div><div class="fpal">TT</div></div>
-        <div class="fpa"><div class="fpai" style="background:#111">𝕏</div><div class="fpal">X</div></div>
-        <div class="fpa"><div class="fpai" style="background:#f00">▶</div><div class="fpal">YT</div></div>
+        <div class="fpa">
+          <div class="fpai" style="background:rgba(180,60,30,.5)">IG</div>
+          <div class="fpal">Instagram</div>
+        </div>
+        <div class="fpa">
+          <div class="fpai" style="background:rgba(255,255,255,.08)">TT</div>
+          <div class="fpal">TikTok</div>
+        </div>
+        <div class="fpa">
+          <div class="fpai" style="background:rgba(255,255,255,.08)">X</div>
+          <div class="fpal">X</div>
+        </div>
+        <div class="fpa">
+          <div class="fpai" style="background:rgba(180,0,0,.4)">YT</div>
+          <div class="fpal">YouTube</div>
+        </div>
       </div>
       <div class="fp-prog">
-        <div class="fp-pd on"></div><div class="fp-pd"></div>
-        <div class="fp-pd"></div><div class="fp-pd"></div>
+        <div class="fp-pd"></div><div class="fp-pd on"></div><div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd"></div>
       </div>
     </div>
-    <div class="fps fps1" id="fps1">
+
+    <!-- screen 2: scanning -->
+    <div class="fps fps2" id="fps2">
       <div class="fp-radar">
         <div class="fp-rr"></div><div class="fp-rr"></div>
         <div class="fp-rr"></div><div class="fp-rr"></div>
-        <div class="fp-rd"></div><div class="fp-rc">📡</div>
+        <div class="fp-rd"></div>
+        <div class="fp-rc" style="font-family:'Bebas Neue',sans-serif;font-size:.65rem;letter-spacing:.04em;color:#000">BT</div>
       </div>
       <div class="fp-scan-t">Scanning nearby</div>
       <div class="fp-scan-s">Waiting for a Togather user…</div>
       <div class="fp-prog">
-        <div class="fp-pd"></div><div class="fp-pd on"></div>
-        <div class="fp-pd"></div><div class="fp-pd"></div>
+        <div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd on"></div><div class="fp-pd"></div><div class="fp-pd"></div>
       </div>
     </div>
-    <div class="fps fps2" id="fps2">
+
+    <!-- screen 3: unlocked -->
+    <div class="fps fps3" id="fps3">
       <div class="fp-burst">
         <div class="fp-br"></div><div class="fp-br"></div><div class="fp-br"></div>
         <div class="fp-chk">✓</div>
@@ -391,39 +398,50 @@
       <div class="fp-unlock-t">Unlocked.</div>
       <div class="fp-unlock-s">Jordan is nearby. Together now.</div>
       <div class="fp-prog">
-        <div class="fp-pd"></div><div class="fp-pd"></div>
-        <div class="fp-pd on"></div><div class="fp-pd"></div>
+        <div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd on"></div><div class="fp-pd"></div>
       </div>
     </div>
-    <div class="fps fps3" id="fps3">
+
+    <!-- screen 4: real hours -->
+    <div class="fps fps4" id="fps4">
       <div class="fp-hdr">
         <div class="fp-hlogo">Togather</div>
         <div class="fp-sess"><div class="fp-sd"></div><div class="fp-st">Active</div></div>
       </div>
       <div class="fp-apps-u">
-        <div class="fpau"><div class="fpaui" style="background:rgba(245,88,41,.15)">📸</div><div class="fpaul">IG</div></div>
-        <div class="fpau"><div class="fpaui" style="background:rgba(255,255,255,.04)">🎵</div><div class="fpaul">TT</div></div>
-        <div class="fpau"><div class="fpaui" style="background:rgba(255,255,255,.04)">𝕏</div><div class="fpaul">X</div></div>
-        <div class="fpau"><div class="fpaui" style="background:rgba(255,0,0,.1)">▶</div><div class="fpaul">YT</div></div>
+        <div class="fpau">
+          <div class="fpaui" style="background:rgba(180,60,30,.2)">IG</div>
+          <div class="fpaul">Instagram</div>
+        </div>
+        <div class="fpau">
+          <div class="fpaui" style="background:rgba(255,255,255,.06)">TT</div>
+          <div class="fpaul">TikTok</div>
+        </div>
+        <div class="fpau">
+          <div class="fpaui" style="background:rgba(255,255,255,.06)">X</div>
+          <div class="fpaul">X</div>
+        </div>
+        <div class="fpau">
+          <div class="fpaui" style="background:rgba(180,0,0,.18)">YT</div>
+          <div class="fpaul">YouTube</div>
+        </div>
       </div>
       <div class="fp-rh-row">
         <div class="fp-rh-num" id="fp-rh-num">0.0</div>
         <div class="fp-rh-lbl">Real Hours — growing</div>
       </div>
       <div class="fp-prog">
-        <div class="fp-pd"></div><div class="fp-pd"></div>
-        <div class="fp-pd"></div><div class="fp-pd on"></div>
+        <div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd"></div><div class="fp-pd on"></div>
       </div>
     </div>
+
   </div>
 </div>
 
-<!-- PHONE OVERLAY -->
+<!-- PHONE OVERLAY + CONTROLS -->
 <div id="phone-overlay" onclick="advancePhone(1)"></div>
-
-<!-- PHONE CONTROLS (tap fallback) -->
 <div id="phone-controls">
-  <div class="fp-step-lbl" id="step-lbl">Your apps are locked</div>
+  <div class="fp-step-lbl" id="step-lbl">Your friends can see this</div>
   <div class="pc-btns">
     <button class="pc-btn" onclick="advancePhone(-1)">← Back</button>
     <button class="pc-btn next" onclick="advancePhone(1)" id="next-btn">Next →</button>
@@ -447,26 +465,19 @@
 <!-- SCROLL CONTAINER -->
 <div id="sc">
 
-  <!-- P1 HOOK -->
+  <!-- P1: HOOK -->
   <section class="s live" id="p1">
     <div class="inn sc" style="flex:1">
-      <span class="hl" id="hl1">The average</span>
-      <span class="hl" id="hl2">person will spend</span>
-      <span class="hl y" id="hl3">11 years</span>
-      <span class="hl" id="hl4">on their phone.</span>
-      <p class="hsub">Most of it <strong>alone.</strong> Most of it <strong>forgettable.</strong><br/>We measure something different. <strong style="color:var(--grn)">Real Hours.</strong></p>
-      <div class="hvd">
-        <div class="hvd-t">85 Years of Research — One Finding</div>
-        <div class="hvd-b">The Harvard Study of Adult Development found one thing above all else predicts a long happy life. Not wealth. Not career. <strong>The quality of your relationships.</strong> The U.S. Surgeon General calls loneliness as dangerous as smoking 15 cigarettes a day.</div>
-      </div>
-      <div class="hproof" style="margin-top:.7rem;margin-bottom:0">
-        <div class="hproof-txt" style="font-size:.72rem;color:var(--mut);line-height:1.5">Togather <strong style="color:var(--wht)">locks your social apps</strong> when you're alone.<br/>Be with someone to unlock them.</div>
-      </div>
+      <span class="hl" id="hl1">Scrolling alone</span>
+      <span class="hl y" id="hl2">is the habit.</span>
+      <span class="hl" id="hl3">Your friends</span>
+      <span class="hl y" id="hl4">are the fix.</span>
+      <p class="hsub"><strong>Togather is social accountability for your screen time.</strong> Your friends see when you're scrolling alone. Apps unlock automatically when you're actually together. You and your people — accountable to each other.</p>
       <div class="hproof">
         <div class="hproof-dot"></div>
         <div class="hproof-txt"><span>2,847 people</span> already on the waitlist</div>
       </div>
-      <div class="hscroll"><div class="hbar"></div><div class="htxt">Scroll to find out</div></div>
+      <div class="hscroll"><div class="hbar"></div><div class="htxt">Scroll to see why it works</div></div>
     </div>
     <div id="ticker">
       <div class="ttk" aria-hidden="true">
@@ -484,26 +495,42 @@
     </div>
   </section>
 
-  <!-- P2 AGE -->
+  <!-- P2: WHY IT WORKS -->
   <section class="s" id="p2">
     <div class="inn sc">
-      <h2 class="h1">How old<br/>are you?</h2>
-      <p class="body">Let's see how your generation compares.</p>
-      <div class="agrid">
-        <div class="ab" onclick="pickAge(this,6.8,91,'Gen Z')"><div class="an">14–24</div><div class="alb">Gen Z</div></div>
-        <div class="ab" onclick="pickAge(this,6.2,94,'Millennials')"><div class="an">25–34</div><div class="alb">Millennial</div></div>
-        <div class="ab" onclick="pickAge(this,5.4,82,'Elder Millennials')"><div class="an">35–44</div><div class="alb">Elder Millennial</div></div>
-        <div class="ab" onclick="pickAge(this,4.8,73,'Gen X')"><div class="an">45–54</div><div class="alb">Gen X</div></div>
-        <div class="ab" onclick="pickAge(this,4.2,64,'Boomers+')" style="grid-column:1/-1"><div class="an">55+</div><div class="alb">Boomer+</div></div>
+      <div class="kk">Why every other app fails</div>
+      <h2 class="p2-h1">Self-accountability<br/>doesn't work<br/>for everyone.</h2>
+      <div class="rcards">
+        <div class="rcard">
+          <div class="rcard-t">The Hawthorne Effect</div>
+          <div class="rcard-b">Being observed changes behavior. Documented in <strong>100+ studies</strong>. Visibility alone — no punishment needed — shifts what we do.</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-t">Dean Karlan, Yale</div>
+          <div class="rcard-b">Commitments with <strong>social stakes</strong> are far more likely to be kept than private ones. Reputation outlasts willpower.</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-t">Univ. of Aberdeen</div>
+          <div class="rcard-b">A new exercise partner <strong>increased workout frequency</strong> more than any motivational intervention tested — apps, reminders, goals.</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-t">AA · Weight Watchers</div>
+          <div class="rcard-b">Every habit program that actually works is built on <strong>social accountability</strong>, not self-monitoring. The group is the mechanism.</div>
+        </div>
       </div>
+      <div class="rubin">
+        <div class="rubin-t">Most people are Obligers — and that's completely normal</div>
+        <div class="rubin-b">Gretchen Rubin's research found that Obligers — people who meet commitments made to others but struggle to meet their own — are the <strong>single largest personality group</strong>. Not a character flaw. Just how most people are wired. Togather is designed for exactly that.</div>
+      </div>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,2.5vw,1.5rem);letter-spacing:.04em;color:var(--yel);margin-top:.9rem;line-height:1.2">Most people need someone else to show up for.<br/>Togather is built for that.</p>
     </div>
   </section>
 
-  <!-- P3 SLIDER -->
+  <!-- P3: CALCULATOR -->
   <section class="s" id="p3">
     <div class="inn sc">
-      <div class="p3-hook">Be honest. <span>How much of your life is the scroll?</span></div>
-      <h2 class="h1">How much<br/><span style="color:var(--grn)">life</span><br/>this year?</h2>
+      <div class="kk">How much of your year is the scroll?</div>
+      <h2 class="h1">Move the slider.<br/>See what it<br/><span style="color:var(--red)">costs you.</span></h2>
       <div class="cbox">
         <div class="ci">
           <div class="cq">I spend ___ hours a day scrolling</div>
@@ -515,8 +542,8 @@
         </div>
         <div class="cstats">
           <div class="cst"><div class="csn" id="c-days">61</div><div class="csl">Days lost this year</div></div>
-          <div class="cst"><div class="csn" id="c-conv">183</div><div class="csl">Conversations missed this year *</div></div>
-          <div class="cst"><div class="csn" id="c-yrs">9.3</div><div class="csl">Years of scrolling in your lifetime **</div></div>
+          <div class="cst"><div class="csn" id="c-conv">183</div><div class="csl">Conversations missed *</div></div>
+          <div class="cst"><div class="csn" id="c-yrs">9.3</div><div class="csl">Years in a lifetime **</div></div>
           <div class="cst"><div class="csn" id="c-mem">1,460</div><div class="csl">Solo hours this year</div></div>
         </div>
         <div style="padding:.55rem 1rem;background:rgba(255,255,255,.02);border-top:1px solid var(--rul);font-size:.54rem;color:rgba(240,235,224,.28);line-height:1.6">* assuming 3 meaningful conversations per day &nbsp;&nbsp;** assuming 80 yr lifespan</div>
@@ -524,106 +551,55 @@
     </div>
   </section>
 
-  <!-- P4 DATA -->
-  <section class="s" id="p4">
+  <!-- P8: CAROUSEL — what those hours actually are -->
+  <section class="s" id="p8">
     <div class="inn sc">
-      <div class="kk">U.S. Surgeon General's Advisory, 2023</div>
-      <h2 class="h1">The data<br/>is worse than<br/>you think.</h2>
-      <!-- stat grid -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.8rem;max-width:480px">
-        <div style="padding:.9rem 1rem;background:rgba(224,32,32,.06);border:1px solid rgba(224,32,32,.18);border-radius:10px">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--red);line-height:1">70%</div>
-          <div style="font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-top:3px;line-height:1.5">Drop in friend time for ages 15–24 since 2003</div>
+      <div class="kk">What those hours actually are</div>
+      <h2 class="h1" style="margin-bottom:.3rem">Your scroll time<br/>in real life.</h2>
+      <div class="car-wrap" id="car-wrap">
+        <div class="car-card" id="car-card">
+          <div class="car-big" id="car-big">973</div>
+          <div class="car-name" id="car-name">Workouts</div>
+          <div class="car-time" id="car-time">= 1.5 hrs each</div>
+          <div class="car-desc" id="car-desc">A proper session, start to finish</div>
         </div>
-        <div style="padding:.9rem 1rem;background:rgba(224,32,32,.06);border:1px solid rgba(224,32,32,.18);border-radius:10px">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--red);line-height:1">1 in 2</div>
-          <div style="font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-top:3px;line-height:1.5">US adults report experiencing loneliness</div>
+        <div class="car-prog-wrap">
+          <div class="car-prog" id="car-prog"></div>
         </div>
-        <div style="padding:.9rem 1rem;background:rgba(224,32,32,.06);border:1px solid rgba(224,32,32,.18);border-radius:10px">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--red);line-height:1">49%</div>
-          <div style="font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-top:3px;line-height:1.5">Now have 3 or fewer close friends — was 27% in 1990</div>
-        </div>
-        <div style="padding:.9rem 1rem;background:rgba(224,32,32,.06);border:1px solid rgba(224,32,32,.18);border-radius:10px">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--red);line-height:1">2x</div>
-          <div style="font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-top:3px;line-height:1.5">Odds of social isolation if you scroll 2+ hrs/day</div>
+        <div class="car-nav">
+          <button class="car-btn" onclick="carouselGo(-1)">← Prev</button>
+          <span class="car-idx" id="car-idx">1 of 15</span>
+          <button class="car-btn" onclick="carouselGo(1)">Next →</button>
         </div>
       </div>
-      <p style="font-size:.7rem;color:rgba(240,235,224,.3);margin-top:.8rem;max-width:420px;line-height:1.6">Source: U.S. Surgeon General's Advisory on the Healing Effects of Social Connection and Community, 2023. Highest loneliness rates among young adults.</p>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.2rem,3vw,1.8rem);letter-spacing:.04em;color:var(--yel);margin-top:1rem;line-height:1.1">Loneliness doesn't peak<br/>when you get old.<br/>It peaks when you scroll.</p>
+      <p class="p8-bridge">Those hours are waiting. <strong>Your friends can help you get them back.</strong></p>
+      <div style="margin-top:.9rem">
+        <button class="btn-p" onclick="goTo('p7')">See how it works →</button>
+      </div>
     </div>
   </section>
 
-  <!-- P5 REAL HOURS -->
+  <!-- P7: PHONE DEMO -->
   <section class="s" id="p7">
     <div class="p7-before sc" id="p7-before">
-      <div class="p7-title">Try the app.<br/>Right now.</div>
-      <div class="p7-sub">Experience what Togather actually does. Swipe or tap through.</div>
-      <!-- inline SVG — proximity diagram -->
-      <svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0.6rem 0;opacity:0.7">
-        <!-- person 1 -->
-        <circle cx="40" cy="14" r="8" fill="rgba(245,196,0,0.15)" stroke="#f5c400" stroke-width="1.5"/>
-        <rect x="35" y="26" width="10" height="14" rx="3" fill="rgba(245,196,0,0.15)" stroke="#f5c400" stroke-width="1.5"/>
-        <!-- lock icon on person 1 phone -->
-        <rect x="55" y="28" width="10" height="14" rx="2" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-        <text x="60" y="38" font-size="6" text-anchor="middle" fill="rgba(255,255,255,0.4)">🔒</text>
-        <!-- arrow/signal between -->
-        <path d="M 78 34 C 88 28, 112 28, 122 34" stroke="#f5c400" stroke-width="1" stroke-dasharray="3 2" fill="none" opacity="0.5"/>
-        <path d="M 78 36 C 88 42, 112 42, 122 36" stroke="#f5c400" stroke-width="1" stroke-dasharray="3 2" fill="none" opacity="0.3"/>
-        <text x="100" y="32" font-size="7" text-anchor="middle" fill="rgba(245,196,0,0.6)">BT</text>
-        <!-- person 2 -->
-        <circle cx="160" cy="14" r="8" fill="rgba(46,204,113,0.15)" stroke="#2ecc71" stroke-width="1.5"/>
-        <rect x="155" y="26" width="10" height="14" rx="3" fill="rgba(46,204,113,0.15)" stroke="#2ecc71" stroke-width="1.5"/>
-        <!-- unlock icon on person 2 -->
-        <rect x="135" y="28" width="10" height="14" rx="2" fill="rgba(46,204,113,0.08)" stroke="rgba(46,204,113,0.3)" stroke-width="1"/>
-        <text x="140" y="38" font-size="7" text-anchor="middle" fill="rgba(46,204,113,0.7)">✓</text>
-        <!-- labels -->
-        <text x="40" y="52" font-size="6" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-family="sans-serif">Alone</text>
-        <text x="160" y="52" font-size="6" text-anchor="middle" fill="rgba(46,204,113,0.6)" font-family="sans-serif">Together</text>
-      </svg>
+      <div class="kk">How it works</div>
+      <div class="p7-title">Your friends are<br/>your screen time limit.</div>
+      <div class="p7-sub">Tap through — see what your friends see, and what happens when someone shows up.</div>
       <div class="p7-hint">↓ Scroll or tap to start</div>
     </div>
   </section>
 
-  <!-- P8 YOUR LIFE -->
-  <section class="s" id="p8">
-    <div class="inn sc">
-      <div style="margin-bottom:1rem;padding:.8rem 1rem;background:rgba(46,204,113,.06);border:1px solid rgba(46,204,113,.18);border-radius:8px;max-width:420px">
-        <div style="font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(46,204,113,.7);margin-bottom:.25rem">That's what it feels like</div>
-        <div style="font-size:.8rem;color:var(--mut);line-height:1.65">Locked when alone. Unlocked when someone shows up. <strong style="color:var(--wht)">Real Hours growing every moment you're present.</strong></div>
-      </div>
-      <div class="kk">What you could have done instead</div>
-      <h2 class="h1">Your scroll<br/>time vs your<br/>actual life</h2>
-      <div class="pp-q">What matters most to you?</div>
-      <div class="pp-pills">
-        <button class="pill on" onclick="setPillar(this,'fitness')">Fitness</button>
-        <button class="pill" onclick="setPillar(this,'creative')">Creative</button>
-        <button class="pill" onclick="setPillar(this,'food')">Food</button>
-        <button class="pill" onclick="setPillar(this,'reading')">Reading</button>
-        <button class="pill" onclick="setPillar(this,'travel')">Travel</button>
-      </div>
-      <div class="pstat">
-        <div class="ptag" id="ptag">Fitness</div>
-        <div class="pn" id="pnum">1,752</div>
-        <div class="pl" id="plbl">Workouts missed this year</div>
-      </div>
-      <p class="p8-bridge">Every one of those is a Real Hour you didn't earn. <strong>Togather gives them back</strong> — by making being present with people the thing that unlocks your phone.</p>
-      <div style="margin-top:1.2rem;display:flex;gap:.8rem;flex-wrap:wrap">
-        <button class="btn-p" onclick="goTo('p9')">I want those hours back →</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- P9 MANIFESTO + WAITLIST -->
+  <!-- P9: MANIFESTO + WAITLIST -->
   <section class="s" id="p9">
     <div class="inn sc">
       <div class="p9-grid">
         <div>
-          <p class="mt">Social media forgot<br/>what <span class="ol">social</span> means.<br/>You shouldn't.</p>
-          <p class="mb">Platforms optimize for loneliness. Togather optimizes against it. That's the whole thing.</p>
-          <p class="mq">It's you versus<br/>$100 billion in data science.<br/>We can't beat them alone.</p>
+          <p class="mt">Every other app<br/>makes you the<br/><span class="ol">referee.</span><br/>We gave that job<br/>to your people.</p>
+          <p class="mb">Self-accountability is hard. Social accountability is proven. The most successful habit programs in the world run on one thing — people who care about each other, showing up for each other.</p>
+          <p class="mq">You pick your people.<br/>They opt in.<br/>Everyone's in the same boat.</p>
         </div>
         <div>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,6vw,4.5rem);line-height:.9;letter-spacing:.02em;margin-bottom:.7rem;margin-top:clamp(1rem,2vh,0rem);color:#000">Are you in?</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,6vw,4.5rem);line-height:.9;letter-spacing:.02em;margin-bottom:.7rem;color:#000">Are you in?</h2>
           <p style="font-size:clamp(.82rem,1.6vw,.95rem);color:rgba(0,0,0,.5);line-height:1.7;margin-bottom:1.1rem;max-width:30ch"><strong style="color:#000">2,847 people</strong> already waiting. Join them. Free forever for early members.</p>
           <div id="wl-wrap">
             <div class="wf">
@@ -635,7 +611,7 @@
           <div class="wsucc" id="wl-succ">
             <div class="wmsg">You're in.</div>
             <div class="wmsub">We'll send you the download link the day Togather launches. In the meantime — go be with someone.</div>
-            <button class="tbtn" onclick="textPeople()">Text your people →</button>
+            <button class="tbtn" onclick="textPeople()">Tell your people →</button>
           </div>
         </div>
       </div>
@@ -653,269 +629,327 @@
 </div>
 
 <script>
-  const sc   = document.getElementById('sc');
-  const pids = ['p1','p2','p3','p4','p5','p7','p8','p9'];
+  const sc  = document.getElementById('sc');
+  const pids = ['p1','p2','p3','p8','p7','p9'];
   const dots = document.querySelectorAll('.dot');
   const mls  = document.querySelectorAll('.ml');
 
-  function goTo(id) {
-    const el = document.getElementById(id);
-    if (el) sc.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
-  }
-  function openM()  { document.getElementById('menu').classList.add('open'); }
-  function closeM() { document.getElementById('menu').classList.remove('open'); }
+  function goTo(id){const el=document.getElementById(id);if(el)sc.scrollTo({top:el.offsetTop,behavior:'smooth'})}
+  function openM(){document.getElementById('menu').classList.add('open')}
+  function closeM(){document.getElementById('menu').classList.remove('open')}
 
-  // ── SECTION TRACKING ──
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const idx = pids.indexOf(e.target.id);
-      dots.forEach((d,i) => d.classList.toggle('on', i === idx));
-      mls.forEach((l,i)  => l.classList.toggle('on', i === idx));
+  /* SECTION TRACKING */
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const idx=pids.indexOf(e.target.id);
+      dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+      mls.forEach((l,i)=>l.classList.toggle('on',i===idx));
       e.target.classList.add('live');
-      if (e.target.id === 'p7') enterPhoneMode();
+      if(e.target.id==='p7') enterPhoneMode();
       else exitPhoneMode();
+      if(e.target.id==='p8' && !carInited) initCarousel();
     });
-  }, { root: sc, threshold: 0.6 });
-  pids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+  },{root:sc,threshold:0.6});
+  pids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el)});
 
-  // ── HOOK ──
-  function runHook() {
-    [['hl1',200],['hl2',600],['hl3',1000],['hl4',1400]].forEach(([id,d]) => {
-      setTimeout(() => { const el = document.getElementById(id); if (el) el.classList.add('lit'); }, d);
+  /* HOOK ANIMATION */
+  function runHook(){
+    [['hl1',200],['hl2',700],['hl3',1200],['hl4',1700]].forEach(([id,d])=>{
+      setTimeout(()=>{const el=document.getElementById(id);if(el)el.classList.add('lit')},d);
     });
   }
 
-  // ── REVEAL ──
-  // ── AGE ──
-  let ageHrs = 6.2;
-  function pickAge(btn, hrs, days, label) {
-    document.querySelectorAll('.ab').forEach(b => b.classList.remove('sel'));
-    btn.classList.add('sel');
-    ageHrs = hrs;
-    calc(document.getElementById('slider').value);
-    setTimeout(() => goTo('p3'), 300);
-  }
+  /* ══ CALCULATOR ══ */
+  let scrollHoursVal = 4;
+  function S(id,v){const el=document.getElementById(id);if(el)el.textContent=v}
 
-  // ── CALC ──
-  const passions = {
-    fitness:  { tag:'Fitness',  lbl:'Workouts missed this year',  fn: h => Math.round((h*365)/1.25) },
-    creative: { tag:'Creative', lbl:'Pages unwritten this year',   fn: h => Math.round((h*365)/0.5)  },
-    food:     { tag:'Food',     lbl:'Meals uncooked this year',    fn: h => Math.round((h*365)/0.75) },
-    reading:  { tag:'Reading',  lbl:'Books unread this year',      fn: h => Math.round((h*365)/8)    },
-    travel:   { tag:'Travel',   lbl:'Day trips missed this year',  fn: h => Math.round((h*365)/6)    },
-  };
-  let passion = 'fitness';
-
-  function setPillar(btn, key) {
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
-    btn.classList.add('on'); passion = key;
-    calc(document.getElementById('slider').value);
-  }
-
-  function S(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
-
-  function calc(hrs) {
-    hrs = parseInt(hrs);
-    S('calc-n', hrs);
-    // days lost = scroll hours / 24 hrs in a day × 365 days
-    const days = Math.round(hrs * 365 / 24);
-    // years of scrolling in lifetime = scroll hrs/day ÷ 24 × 80 years
-    const yrs  = (hrs / 24 * 80).toFixed(1);
-    // conversations missed = days lost × 3 conversations/day
-    const conv = days * 3;
-    // solo hours this year = hrs/day × 365 days
-    const solo = Math.round(hrs * 365);
-    // Real Hours waiting = same number — every solo hour is a potential Real Hour
-    S('c-days', days);
-    S('c-yrs',  yrs);
-    S('c-conv', conv.toLocaleString());
-    S('c-mem',  solo.toLocaleString());
-    S('rh-w',   solo.toLocaleString());
-    const p = passions[passion];
-    S('ptag', p.tag); S('pnum', p.fn(hrs).toLocaleString()); S('plbl', p.lbl);
+  function calc(hrs){
+    hrs=parseInt(hrs);
+    scrollHoursVal=hrs;
+    S('calc-n',hrs);
+    const days=Math.round(hrs*365/24);
+    const yrs=(hrs/24*80).toFixed(1);
+    const conv=days*3;
+    const solo=Math.round(hrs*365);
+    S('c-days',days);
+    S('c-yrs',yrs);
+    S('c-conv',conv.toLocaleString());
+    S('c-mem',solo.toLocaleString());
+    renderCarCount();
   }
   calc(4);
 
-  // ══════════════════════════════
-  // PHONE DEMO
-  // ══════════════════════════════
-  let phoneMode  = false;
-  let phoneStep  = 0;
-  let lastEvt    = 0;
-  let touchStartY = 0;
+  /* ══ CAROUSEL ══ */
+  const activities=[
+    {name:'Workouts',         hrs:1.5,  desc:'A proper session, start to finish'},
+    {name:'Great meals cooked',hrs:2,   desc:'Prep, cook, eat, and actually enjoy it'},
+    {name:'Books read',        hrs:8,   desc:'Average adult nonfiction'},
+    {name:'Yoga classes',      hrs:1,   desc:'Full class, mat to savasana'},
+    {name:'Day trips taken',   hrs:9,   desc:'Door to door and back'},
+    {name:'Real conversations',hrs:1.5, desc:'The kind you actually remember'},
+    {name:'Songs learned on guitar',hrs:4,desc:'Beginner to playable'},
+    {name:'Meditations',       hrs:0.33,desc:'20 minutes of actual quiet'},
+    {name:'Certifications earned',hrs:40,desc:'Google, HubSpot, and similar'},
+    {name:'Online courses completed',hrs:45,desc:'A full college-level unit'},
+    {name:'Half-marathon training programs',hrs:48,desc:'12 weeks, start to race day'},
+    {name:'Vegetable gardens grown',hrs:50,desc:'One full growing season'},
+    {name:'Pottery class series',hrs:12,desc:'6 classes, something you keep'},
+    {name:'Times through all of One Piece',hrs:400,desc:'All ~1,000 episodes. Yes, really.'},
+    {name:'Times to conversational Spanish',hrs:600,desc:'FSI estimate to get there'},
+  ];
 
+  let carIdx=0, carAutoTimer=null, carPaused=false, carResumeTimer=null, carInited=false;
+  let currentActivityName=activities[0].name;
+
+  function fmtCount(n){
+    if(n>=1000)return Math.round(n).toLocaleString();
+    if(n>=10)return Math.round(n).toString();
+    return n.toFixed(1);
+  }
+  function fmtHrs(h){
+    if(h<1)return Math.round(h*60)+' min';
+    return h+(h===1?' hr':' hrs');
+  }
+  function getCount(h){return (scrollHoursVal*365)/h}
+
+  function renderCarCount(){
+    const el=document.getElementById('car-big');
+    if(!el)return;
+    el.textContent=fmtCount(getCount(activities[carIdx].hrs));
+  }
+
+  function updateCarDOM(a){
+    currentActivityName=a.name;
+    S('car-big',fmtCount(getCount(a.hrs)));
+    S('car-name',a.name);
+    S('car-time','= '+fmtHrs(a.hrs)+' each');
+    S('car-desc',a.desc);
+    S('car-idx',(carIdx+1)+' of '+activities.length);
+  }
+
+  function renderCar(animate){
+    const a=activities[carIdx];
+    const card=document.getElementById('car-card');
+    if(animate&&card){
+      card.classList.add('fade');
+      setTimeout(()=>{updateCarDOM(a);card.classList.remove('fade')},150);
+    } else {
+      updateCarDOM(a);
+    }
+    startCarBar();
+  }
+
+  function startCarBar(){
+    const bar=document.getElementById('car-prog');
+    if(!bar||carPaused)return;
+    bar.style.transition='none';
+    bar.style.width='0%';
+    void bar.offsetWidth;
+    bar.style.transition='width 3s linear';
+    bar.style.width='100%';
+  }
+
+  function stopCarBar(){
+    const bar=document.getElementById('car-prog');
+    if(!bar)return;
+    const w=bar.getBoundingClientRect().width;
+    const pw=bar.parentElement.getBoundingClientRect().width;
+    bar.style.transition='none';
+    bar.style.width=(pw>0?(w/pw*100):0)+'%';
+  }
+
+  function startCarAuto(){
+    clearTimeout(carAutoTimer);
+    if(carPaused)return;
+    carAutoTimer=setTimeout(()=>{
+      carIdx=(carIdx+1)%activities.length;
+      renderCar(true);
+      startCarAuto();
+    },3000);
+  }
+
+  function carouselGo(dir){
+    clearTimeout(carAutoTimer);
+    clearTimeout(carResumeTimer);
+    carIdx=((carIdx+dir)+activities.length)%activities.length;
+    renderCar(true);
+    carResumeTimer=setTimeout(()=>{if(!carPaused){startCarAuto();}},5000);
+  }
+
+  function initCarousel(){
+    carInited=true;
+    renderCar(false);
+    startCarAuto();
+    const wrap=document.getElementById('car-wrap');
+    if(!wrap)return;
+    wrap.addEventListener('mouseenter',()=>{
+      carPaused=true;
+      clearTimeout(carAutoTimer);
+      clearTimeout(carResumeTimer);
+      stopCarBar();
+    });
+    wrap.addEventListener('mouseleave',()=>{
+      carPaused=false;
+      clearTimeout(carResumeTimer);
+      carResumeTimer=setTimeout(()=>{
+        carIdx=(carIdx+1)%activities.length;
+        renderCar(true);
+        startCarAuto();
+      },5000);
+    });
+    let txStart=0;
+    wrap.addEventListener('touchstart',e=>{
+      txStart=e.touches[0].clientX;
+      carPaused=true;
+      clearTimeout(carAutoTimer);
+      clearTimeout(carResumeTimer);
+      stopCarBar();
+    },{passive:true});
+    wrap.addEventListener('touchend',e=>{
+      const dx=txStart-e.changedTouches[0].clientX;
+      if(Math.abs(dx)>30) carouselGo(dx>0?1:-1);
+      carPaused=false;
+      carResumeTimer=setTimeout(()=>startCarAuto(),5000);
+    },{passive:true});
+  }
+
+  /* ══ PHONE DEMO — 5 screens ══ */
+  let phoneMode=false,phoneStep=0,lastEvt=0,touchStartY=0;
   const phone    = document.getElementById('floatphone');
   const overlay  = document.getElementById('phone-overlay');
   const controls = document.getElementById('phone-controls');
   const figsWrap = document.getElementById('figs-wrap');
   const p7before = document.getElementById('p7-before');
 
-  const stepLabels = [
-    'Your apps are locked',
-    'Scanning for someone near you…',
+  const stepLabels=[
+    'Your friends can see this right now',
+    'Alone — your apps are locked',
+    'Scanning for someone nearby…',
     'Someone showed up. Unlocked.',
     'Real Hours are growing.'
   ];
-  const nextLabels = ['Next →', 'Next →', 'Next →', 'Done →'];
-
-  const figStates = [
-    { fig2: false, yellow: false },
-    { fig2: true,  yellow: false },
-    { fig2: true,  yellow: true  },
-    { fig2: true,  yellow: true  },
+  const nextLabels=['Next →','Next →','Next →','Next →','Done →'];
+  const figStates=[
+    {fig2:false,yellow:false},
+    {fig2:false,yellow:false},
+    {fig2:true, yellow:false},
+    {fig2:true, yellow:true },
+    {fig2:true, yellow:true },
   ];
 
-  function enterPhoneMode() {
-    if (phoneMode) return;
-    phoneMode = true; phoneStep = 0;
-    overlay.classList.add('vis');
-    controls.classList.add('vis');
-    figsWrap.classList.add('vis');
-    phone.classList.add('risen');
-    p7before.classList.add('hidden');
-    sc.style.overflow = 'hidden';
+  function enterPhoneMode(){
+    if(phoneMode)return;
+    phoneMode=true;phoneStep=0;
+    overlay.classList.add('vis');controls.classList.add('vis');
+    figsWrap.classList.add('vis');phone.classList.add('risen');
+    p7before.classList.add('hidden');sc.style.overflow='hidden';
     updatePhoneState();
   }
 
-  function exitPhoneMode() {
-    if (!phoneMode) return;
-    phoneMode = false;
-    overlay.classList.remove('vis');
-    controls.classList.remove('vis');
-    figsWrap.classList.remove('vis');
-    phone.classList.remove('risen');
-    phone.classList.add('exiting');
-    p7before.classList.remove('hidden');
-    sc.style.overflow = '';
-    setTimeout(() => phone.classList.remove('exiting'), 700);
+  function exitPhoneMode(){
+    if(!phoneMode)return;
+    phoneMode=false;
+    overlay.classList.remove('vis');controls.classList.remove('vis');
+    figsWrap.classList.remove('vis');phone.classList.remove('risen');
+    phone.classList.add('exiting');p7before.classList.remove('hidden');
+    sc.style.overflow='';
+    setTimeout(()=>phone.classList.remove('exiting'),700);
   }
 
-  function advancePhone(dir) {
-    if (!phoneMode) return;
-    const now = Date.now();
-    if (now - lastEvt < 500) return;
-    lastEvt = now;
-
-    if (dir > 0) {
-      if (phoneStep < 3) {
-        phoneStep++;
-        updatePhoneState();
-      } else {
-        exitPhoneMode();
-        setTimeout(() => goTo('p8'), 500);
-      }
-    } else {
-      if (phoneStep > 0) {
-        phoneStep--;
-        updatePhoneState();
-      } else {
-        exitPhoneMode();
-      }
+  function advancePhone(dir){
+    if(!phoneMode)return;
+    const now=Date.now();
+    if(now-lastEvt<500)return;
+    lastEvt=now;
+    if(dir>0){
+      if(phoneStep<4){phoneStep++;updatePhoneState();}
+      else{exitPhoneMode();setTimeout(()=>goTo('p9'),500);}
+    }else{
+      if(phoneStep>0){phoneStep--;updatePhoneState();}
+      else exitPhoneMode();
     }
   }
 
-  function updatePhoneState() {
-    // screens
-    ['fps0','fps1','fps2','fps3'].forEach((id, i) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle('vis', i === phoneStep);
+  function updatePhoneState(){
+    ['fps0','fps1','fps2','fps3','fps4'].forEach((id,i)=>{
+      const el=document.getElementById(id);
+      if(el)el.classList.toggle('vis',i===phoneStep);
     });
-    // burst animation on screen 2
-    if (phoneStep === 2) {
-      document.querySelectorAll('.fp-br').forEach(el => {
-        el.classList.remove('go');
-        void el.offsetWidth; // reflow
-        el.classList.add('go');
+    if(phoneStep===3){
+      document.querySelectorAll('.fp-br').forEach(el=>{
+        el.classList.remove('go');void el.offsetWidth;el.classList.add('go');
       });
     }
-    // figs
-    const d = figStates[phoneStep];
-    const fig2 = document.getElementById('fig2');
-    const fig1 = document.getElementById('fig1');
-    const fsep = document.getElementById('fsep');
-    if (fig2) fig2.style.opacity = d.fig2 ? '1' : '0.15';
-    if (fig1) fig1.classList.toggle('y', d.yellow);
-    if (fig2) { fig2.classList.toggle('y', d.yellow); if (d.fig2) fig2.style.opacity = '1'; }
-    if (fsep) fsep.classList.toggle('y', d.yellow);
-    // controls
-    S('step-lbl', stepLabels[phoneStep]);
-    const nb = document.getElementById('next-btn');
-    if (nb) nb.textContent = nextLabels[phoneStep];
-    // RH counter on last screen
-    if (phoneStep === 3) {
-      let t = 0;
-      const el = document.getElementById('fp-rh-num');
-      if (el) {
-        const iv = setInterval(() => {
-          t = Math.min(t + 0.1, 0.4);
-          el.textContent = t.toFixed(1);
-          if (t >= 0.4) clearInterval(iv);
-        }, 80);
+    const d=figStates[phoneStep];
+    const fig2=document.getElementById('fig2');
+    const fig1=document.getElementById('fig1');
+    const fsep=document.getElementById('fsep');
+    if(fig2)fig2.style.opacity=d.fig2?'1':'0.15';
+    if(fig1)fig1.classList.toggle('y',d.yellow);
+    if(fig2){fig2.classList.toggle('y',d.yellow);if(d.fig2)fig2.style.opacity='1';}
+    if(fsep)fsep.classList.toggle('y',d.yellow);
+    S('step-lbl',stepLabels[phoneStep]);
+    const nb=document.getElementById('next-btn');
+    if(nb)nb.textContent=nextLabels[phoneStep];
+    if(phoneStep===4){
+      let t=0;
+      const el=document.getElementById('fp-rh-num');
+      if(el){
+        const iv=setInterval(()=>{
+          t=Math.min(t+0.1,0.4);el.textContent=t.toFixed(1);
+          if(t>=0.4)clearInterval(iv);
+        },80);
       }
     }
   }
 
-  // wheel
-  document.addEventListener('wheel', e => {
-    if (!phoneMode) return;
-    e.preventDefault();
-    advancePhone(e.deltaY > 0 ? 1 : -1);
-  }, { passive: false });
+  document.addEventListener('wheel',e=>{
+    if(!phoneMode)return;
+    e.preventDefault();advancePhone(e.deltaY>0?1:-1);
+  },{passive:false});
 
-  // touch
-  document.addEventListener('touchstart', e => {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
+  document.addEventListener('touchstart',e=>{touchStartY=e.touches[0].clientY},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(!phoneMode)return;
+    const dy=touchStartY-e.changedTouches[0].clientY;
+    if(Math.abs(dy)<25)return;
+    e.preventDefault();advancePhone(dy>0?1:-1);
+  },{passive:false});
 
-  document.addEventListener('touchend', e => {
-    if (!phoneMode) return;
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) < 25) return;
-    e.preventDefault();
-    advancePhone(dy > 0 ? 1 : -1);
-  }, { passive: false });
-
-  // ── WAITLIST ──
-  async function submitWL() {
-    const emailEl = document.getElementById('wl-email');
-    const em = emailEl.value.trim();
-    if (!em || !em.includes('@')) {
-      emailEl.style.outline = '2px solid rgba(0,0,0,.4)';
-      return;
-    }
-
-    const btn = document.querySelector('#wl-wrap button');
-    btn.textContent = '...';
-    btn.disabled = true;
-
-    try {
-      const res = await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: em }),
+  /* ══ WAITLIST — passes data to API ══ */
+  async function submitWL(){
+    const emailEl=document.getElementById('wl-email');
+    const em=emailEl.value.trim();
+    if(!em||!em.includes('@')){emailEl.style.outline='2px solid rgba(0,0,0,.4)';return;}
+    const btn=document.querySelector('#wl-wrap button');
+    btn.textContent='...';btn.disabled=true;
+    try{
+      const res=await fetch('/api/subscribe',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          email:em,
+          scroll_hours:scrollHoursVal,
+          top_activity:currentActivityName
+        }),
       });
-
-      if (res.ok) {
-        document.getElementById('wl-wrap').style.display = 'none';
-        document.getElementById('wl-succ').style.display = 'flex';
-      } else {
-        btn.textContent = 'Try again →';
-        btn.disabled = false;
-        emailEl.style.outline = '2px solid rgba(0,0,0,.4)';
+      if(res.ok){
+        document.getElementById('wl-wrap').style.display='none';
+        document.getElementById('wl-succ').style.display='flex';
+      }else{
+        btn.textContent='Try again →';btn.disabled=false;
+        emailEl.style.outline='2px solid rgba(0,0,0,.4)';
       }
-    } catch (err) {
-      btn.textContent = 'Try again →';
-      btn.disabled = false;
-    }
+    }catch(err){btn.textContent='Try again →';btn.disabled=false;}
   }
 
-  function textPeople() {
-    const msg = encodeURIComponent('Gather your people — gettogather.me');
-    window.location.href = 'sms:?body=' + msg;
+  function textPeople(){
+    const msg=encodeURIComponent("There's an app that lets your friends see when you're scrolling alone — and locks your apps until someone shows up. I'm on the waitlist: gettogather.me");
+    window.location.href='sms:?body='+msg;
   }
 
-  window.addEventListener('load', runHook);
+  window.addEventListener('load',runHook);
 </script>
 </body>
 </html>

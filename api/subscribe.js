@@ -1,52 +1,61 @@
+// api/subscribe.js
+// NOTE: Before deploying, create these custom fields in Beehiiv dashboard:
+//   Settings → Publication → Custom Fields
+//   Add: "scroll_hours" (type: text)
+//   Add: "top_activity" (type: text)
+// Without creating them first, Beehiiv will ignore these fields silently.
+
 export default async function handler(req, res) {
-  // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email } = req.body;
+  const { email, scroll_hours, top_activity } = req.body;
 
   if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'Valid email required' });
+    return res.status(400).json({ error: 'Invalid email' });
   }
 
-  const BEEHIIV_API_KEY = process.env.BEEHIIV_API_KEY;
-  const BEEHIIV_PUB_ID  = process.env.BEEHIIV_PUB_ID;
+  const payload = {
+    email,
+    reactivate_existing: true,
+    send_welcome_email: true,
+  };
 
-  if (!BEEHIIV_API_KEY || !BEEHIIV_PUB_ID) {
-    return res.status(500).json({ error: 'Server misconfigured' });
+  // Attach custom fields if present
+  const customFields = [];
+  if (scroll_hours !== undefined && scroll_hours !== null) {
+    customFields.push({ name: 'scroll_hours', value: String(scroll_hours) });
+  }
+  if (top_activity) {
+    customFields.push({ name: 'top_activity', value: String(top_activity) });
+  }
+  if (customFields.length > 0) {
+    payload.custom_fields = customFields;
   }
 
   try {
     const response = await fetch(
-      `https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`,
+      `https://api.beehiiv.com/v2/publications/${process.env.BEEHIIV_PUB_ID}/subscriptions`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${BEEHIIV_API_KEY}`,
+          'Authorization': `Bearer ${process.env.BEEHIIV_API_KEY}`,
         },
-        body: JSON.stringify({
-          email,
-          reactivate_existing: false,
-          send_welcome_email: true,
-          utm_source: 'gettogather.me',
-          utm_medium: 'landing_page',
-        }),
+        body: JSON.stringify(payload),
       }
     );
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('Beehiiv error:', data);
-      return res.status(response.status).json({ error: 'Subscription failed' });
+    if (response.ok) {
+      return res.status(200).json({ success: true });
+    } else {
+      const errorText = await response.text();
+      console.error('Beehiiv error:', response.status, errorText);
+      return res.status(500).json({ error: 'Subscription failed' });
     }
-
-    return res.status(200).json({ success: true });
-
   } catch (err) {
-    console.error('Subscribe error:', err);
+    console.error('Subscribe handler error:', err);
     return res.status(500).json({ error: 'Server error' });
   }
 }
