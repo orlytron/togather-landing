@@ -581,7 +581,7 @@
 
   <!-- P7: PHONE DEMO -->
   <section class="s" id="p7">
-    <div class="p7-before sc" id="p7-before">
+    <div class="p7-before sc" id="p7-before" onclick="enterPhoneMode()">
       <div class="kk">How it works</div>
       <div class="p7-title">Your friends are<br/>your screen time limit.</div>
       <div class="p7-sub">Tap through — see what your friends see, and what happens when someone shows up.</div>
@@ -843,7 +843,7 @@
     phoneMode=true;phoneStep=0;
     overlay.classList.add('vis');controls.classList.add('vis');
     figsWrap.classList.add('vis');phone.classList.add('risen');
-    p7before.classList.add('hidden');sc.style.overflow='hidden';
+    p7before.classList.add('hidden');
     updatePhoneState();
   }
 
@@ -949,7 +949,7 @@
     window.location.href='sms:?body='+msg;
   }
 
-  window.addEventListener('load',runHook);
+  window.addEventListener('load',()=>{runHook(); readSection(); initCarousel();});
 </script>
 </body>
 </html>
